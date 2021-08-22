@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Windows.Input;
+using ExplorerHub.ViewModels.Explorers;
 using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class AddBrowserCommand : ICommand
     {
         private readonly IViewModelRepository<ExplorerViewModel> _explorerRepository;
         private readonly ExplorerHubViewModel _owner;
-        private readonly IKnownFolderManager _folderManager;
+        private readonly IShellUrlParser _parser;
 
         public AddBrowserCommand(
             IViewModelRepository<ExplorerViewModel> explorerRepository,
             ExplorerHubViewModel owner,
-            IKnownFolderManager folderManager)
+            IShellUrlParser parser)
         {
             _explorerRepository = explorerRepository;
             _owner = owner;
-            _folderManager = folderManager;
+            _parser = parser;
         }
 
         public bool CanExecute(object parameter) => true;
@@ -31,7 +32,7 @@ namespace ExplorerHub.ViewModels
         {
             var vm = _explorerRepository.Create();
             vm.OwnerId = _owner.ManagedObjectId;
-            vm.Browser.Navigate(initialNav ?? _folderManager.Default);
+            vm.Browser.Navigate(initialNav ?? _parser.Default);
 
             _owner.Explorers.Add(vm);
             _owner.SelectedIndex = _owner.Explorers.Count - 1;

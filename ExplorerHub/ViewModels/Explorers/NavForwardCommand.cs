@@ -1,36 +1,34 @@
 ﻿using System;
 using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Controls;
-using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.Explorers
 {
-    public class GoToParentCommand:ICommand
+    public class NavForwardCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
         private bool _canExec = false;
-        private ShellObject _parent;
 
-        public GoToParentCommand(ExplorerViewModel owner)
+        public NavForwardCommand(ExplorerViewModel owner)
         {
             _owner = owner;
+            
             _owner.Browser.NavigationLog.NavigationLogChanged += NavigationLogOnNavigationLogChanged;
+            _canExec = _owner.Browser.NavigationLog.CanNavigateForward;
         }
 
         private void NavigationLogOnNavigationLogChanged(object sender, NavigationLogEventArgs e)
         {
-            var log = (ExplorerBrowserNavigationLog)sender;
-            var target = log.CurrentLocation;
-            
-            _parent = target.Parent;
-            var canExec = _parent != null;
-            if (canExec != _canExec)
-            {
-                _canExec = canExec;
-                CanExecuteChanged?.Invoke(this, e);
-            }
-        }
+            var canExec = _owner.Browser.NavigationLog.CanNavigateForward;
 
+            if (canExec == _canExec)
+            {
+                return;
+            }
+            _canExec = canExec;
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+        
         public bool CanExecute(object parameter) => _canExec;
 
         public void Execute(object parameter)
@@ -38,9 +36,15 @@ namespace ExplorerHub.ViewModels
             Execute();
         }
 
-        public void Execute()
+        public bool Execute()
         {
-            _owner.Browser.Navigate(_parent);
+            if (!_canExec)
+            {
+                return false;
+            }
+
+            _owner.Browser.NavigateLogLocation(NavigationLogDirection.Forward);
+            return true;
         }
 
         public event EventHandler CanExecuteChanged;

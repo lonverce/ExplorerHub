@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Controls;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.Explorers
 {
     public class NavBackCommand : ICommand
     {

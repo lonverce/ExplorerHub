@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Shell;
 using SHDocVw;
@@ -10,16 +9,16 @@ namespace ExplorerHub.Infrastructures
 {
     public class ShellWindowManager : IShellWindowsManager, IDisposable
     {
-        private readonly IKnownFolderManager _folderManager;
+        private readonly IShellUrlParser _parser;
         private readonly IUserNotificationService _notificationService;
         public event EventHandler WindowCreated;
         private readonly ShellWindowsClass _shell = new ShellWindowsClass();
 
         public ShellWindowManager(
-            IKnownFolderManager folderManager, 
+            IShellUrlParser parser, 
             IUserNotificationService notificationService)
         {
-            _folderManager = folderManager;
+            _parser = parser;
             _notificationService = notificationService;
             _shell.WindowRegistered += ShellOnWindowRegistered;
         }
@@ -31,14 +30,14 @@ namespace ExplorerHub.Infrastructures
 
         public IEnumerable<IShellWindow> GetCurrentWindows()
         {
-            foreach (IWebBrowser2 shellBrowser in _shell)
+            foreach (InternetExplorer shellBrowser in _shell)
             {
                 if (!string.Equals("explorer.exe", Path.GetFileName(shellBrowser.FullName), StringComparison.CurrentCultureIgnoreCase))
                 {
                     continue;
                 }
 
-                var parsingName = shellBrowser.LocationName;
+                //var parsingName = shellBrowser.LocationName;
                 if (!string.IsNullOrWhiteSpace(shellBrowser.LocationURL))
                 {
                     var uri = new Uri(shellBrowser.LocationURL);
@@ -46,14 +45,26 @@ namespace ExplorerHub.Infrastructures
                     {
                         _notificationService.Notify(
                             $"无法识别URL: {shellBrowser.LocationURL}",
-                            "ExplorerHub", ToolTipIcon.Warning);
+                            "ExplorerHub", NotificationLevel.Warn);
                         continue;
                     }
 
-                    parsingName = string.Join($"{Path.DirectorySeparatorChar}", uri.Segments.Select(seg => Uri.UnescapeDataString(seg.TrimEnd('/'))).Where(seg => !string.IsNullOrEmpty(seg)));
-                    yield return new ShellWindowController(ShellObject.FromParsingName(parsingName), shellBrowser);
+                    ShellObject target;
+
+                    try
+                    {
+                        target = ShellObject.FromParsingName(shellBrowser.LocationURL);
+                    }
+                    catch (Exception e)
+                    {
+                        _notificationService.Notify($"无法导航到: {shellBrowser.LocationURL}\n原因: {e.Message}",
+                            "错误", NotificationLevel.Error);
+                        continue;
+                    }
+
+                    yield return new ShellWindowController(target, shellBrowser);
                 }
-                else if (_folderManager.Folders.TryGetValue(shellBrowser.LocationName, out var objs))
+                else if (_parser.KnownFolders.TryGetValue(shellBrowser.LocationName, out var objs))
                 {
                     yield return new ShellWindowController(objs[0], shellBrowser);
                 }
@@ -61,8 +72,8 @@ namespace ExplorerHub.Infrastructures
                 {
                     _notificationService.Notify(
                         $"无法识别路径: {shellBrowser.LocationName}", 
-                        "ExplorerHub", ToolTipIcon.Warning);
-                    yield return new ShellWindowController(_folderManager.Default, shellBrowser);
+                        "ExplorerHub", NotificationLevel.Warn);
+                    yield return new ShellWindowController(_parser.Default, shellBrowser);
                 }
             }
         }
@@ -85,6 +96,7 @@ namespace ExplorerHub.Infrastructures
 
             public void Close()
             {
+                _nativeBrowser.Stop();
                 _nativeBrowser.Quit();
             }
         }

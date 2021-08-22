@@ -5,15 +5,15 @@ using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.Infrastructures
 {
-    public class KnownFolderManager : IKnownFolderManager
+    public class ShellUrlParser : IShellUrlParser
     {
-        public IReadOnlyDictionary<string, ShellObject[]> Folders { get; }
+        public IReadOnlyDictionary<string, ShellObject[]> KnownFolders { get; }
 
-        public ShellObject Default { get; } = (ShellObject) KnownFolders.Computer;
+        public ShellObject Default { get; } = (ShellObject) Microsoft.WindowsAPICodePack.Shell.KnownFolders.Computer;
 
-        public KnownFolderManager()
+        public ShellUrlParser()
         {
-            var folders = KnownFolders.All
+            var folders = Microsoft.WindowsAPICodePack.Shell.KnownFolders.All
                 .GroupBy(folder => folder.ToString(), folder => folder as ShellObject, StringComparer.CurrentCultureIgnoreCase)
                 .ToDictionary(folder => folder.Key,
                     folder => folder.ToArray(),
@@ -22,7 +22,7 @@ namespace ExplorerHub.Infrastructures
             // 快速访问
             //var quickVisit = .FromParsingName("");//KnownFolderHelper.FromKnownFolderId(Guid.Parse("{679F85CB-0220-4080-B29B-5540CC05AAB6}"));
             //folders[quickVisit.ToString()] = new[] {(ShellObject)quickVisit};
-            Folders = folders;
+            KnownFolders = folders;
         }
     }
 }

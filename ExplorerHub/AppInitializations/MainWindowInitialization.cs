@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 
 namespace ExplorerHub.AppInitializations
 {

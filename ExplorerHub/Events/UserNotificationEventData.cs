@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace ExplorerHub.Events
+﻿namespace ExplorerHub.Events
 {
     public class UserNotificationEventData : IEventData
     {
@@ -18,8 +16,10 @@ namespace ExplorerHub.Events
             Message = message;
         }
 
-        public string Title { get; set; } = "通知";
+        public string Title { get; set; }
 
-        public ToolTipIcon Icon { get; set; } = ToolTipIcon.Info;
+        public NotificationLevel Level { get; set; }
+
+        public bool IsAsync { get; set; } = true;
     }
 }

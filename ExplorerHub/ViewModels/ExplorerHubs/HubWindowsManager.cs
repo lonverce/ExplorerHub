@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class HubWindowsManager : IHubWindowsManager
     {

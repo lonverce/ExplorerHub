@@ -2,8 +2,9 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Input;
+using ExplorerHub.ViewModels.ExplorerHubs;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.Explorers
 {
     public class ShowInNewWindowCommand : ICommand, IDisposable
     {

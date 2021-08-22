@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using ExplorerHub.Annotations;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

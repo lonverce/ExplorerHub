@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
-using ExplorerHub.Events;
+﻿using ExplorerHub.Events;
 using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 
 namespace ExplorerHub.Subscribers
 {
@@ -8,16 +8,16 @@ namespace ExplorerHub.Subscribers
     public class FollowerStartupEventSubscriber : IEventSubscriber
     {
         private readonly IUserNotificationService _notificationService;
-        private readonly IKnownFolderManager _folderManager;
+        private readonly IShellUrlParser _parser;
         private readonly IHubWindowsManager _windowsManager;
 
         public FollowerStartupEventSubscriber(
             IUserNotificationService notificationService,
-            IKnownFolderManager folderManager, 
+            IShellUrlParser parser, 
             IHubWindowsManager windowsManager)
         {
             _notificationService = notificationService;
-            _folderManager = folderManager;
+            _parser = parser;
             _windowsManager = windowsManager;
         }
 
@@ -37,9 +37,9 @@ namespace ExplorerHub.Subscribers
             else
             {
                 var firstPath = args[0];
-                if (!_folderManager.TryParse(firstPath, out var shellObject))
+                if (!_parser.TryParse(firstPath, out var shellObject))
                 {
-                    _notificationService.Notify($"错误路径：'{firstPath}'", "ExplorerHub", ToolTipIcon.Error);
+                    _notificationService.Notify($"错误路径：'{firstPath}'", "ExplorerHub", NotificationLevel.Error);
                     return;
                 }
 

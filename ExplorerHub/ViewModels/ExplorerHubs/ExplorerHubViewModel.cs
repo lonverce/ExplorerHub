@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using ExplorerHub.ViewModels.Explorers;
 using GongSolutions.Wpf.DragDrop;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class ExplorerHubViewModel : ViewModelBase, IManagedObject
     {

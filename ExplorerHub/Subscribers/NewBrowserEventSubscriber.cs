@@ -1,5 +1,5 @@
 ﻿using ExplorerHub.Events;
-using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 
 namespace ExplorerHub.Subscribers
 {

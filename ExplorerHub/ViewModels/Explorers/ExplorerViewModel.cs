@@ -4,7 +4,7 @@ using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Controls.WindowsForms;
 using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.Explorers
 {
     public class ExplorerViewModel : ViewModelBase,IManagedObject, IDisposable
     {

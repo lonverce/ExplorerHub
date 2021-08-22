@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Windows.Forms;
 using ExplorerHub.Events;
 
 namespace ExplorerHub.Infrastructures
 {
-    public class UserNotificationService:IUserNotificationService
+    public class UserNotificationService : IUserNotificationService
     {
         private readonly IEventBus _eventBus;
 
@@ -13,7 +12,7 @@ namespace ExplorerHub.Infrastructures
             _eventBus = eventBus;
         }
 
-        public void Notify(string message, string title, ToolTipIcon icon)
+        public void Notify(string message, string title, NotificationLevel level, bool isAsync)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -23,7 +22,8 @@ namespace ExplorerHub.Infrastructures
             _eventBus.PublishEvent(new UserNotificationEventData(message)
             {
                 Title = title,
-                Icon = icon
+                Level = level,
+                IsAsync = isAsync
             });
         }
     }

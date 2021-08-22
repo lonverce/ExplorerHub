@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.AppInitializations
@@ -13,18 +13,18 @@ namespace ExplorerHub.AppInitializations
     {
         private readonly App _app;
         private readonly IHubWindowsManager _windowsManager;
-        private readonly IKnownFolderManager _folderManager;
+        private readonly IShellUrlParser _parser;
         private readonly SplashScreen _splash;
 
         public StartupArgInitialization(
             App app, 
             IHubWindowsManager windowsManager,
-            IKnownFolderManager folderManager,
+            IShellUrlParser parser,
             SplashScreen splash)
         {
             _app = app;
             _windowsManager = windowsManager;
-            _folderManager = folderManager;
+            _parser = parser;
             _splash = splash;
         }
 
@@ -36,9 +36,9 @@ namespace ExplorerHub.AppInitializations
 
             if (e.Args.Any())
             {
-                if (!_folderManager.TryParse(e.Args[0], out initShellObj))
+                if (!_parser.TryParse(e.Args[0], out initShellObj))
                 {
-                    initShellObj = _folderManager.Default;
+                    initShellObj = _parser.Default;
                 }
             }
 

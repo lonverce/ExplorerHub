@@ -1,4 +1,4 @@
-﻿namespace ExplorerHub.ViewModels
+﻿namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public interface IHubWindowsManager
     {

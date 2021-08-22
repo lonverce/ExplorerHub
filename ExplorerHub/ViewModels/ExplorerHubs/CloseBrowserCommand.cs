@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using ExplorerHub.ViewModels.Explorers;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class CloseBrowserCommand : ICommand
     {

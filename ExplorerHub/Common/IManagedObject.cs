@@ -1,4 +1,7 @@
-﻿namespace ExplorerHub.ViewModels
+﻿using ExplorerHub.Infrastructures;
+using ExplorerHub.ViewModels;
+
+namespace ExplorerHub
 {
     /// <summary>
     /// 托管对象

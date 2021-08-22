@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace ExplorerHub

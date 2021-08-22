@@ -5,14 +5,14 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.ViewModels.Explorers
 {
     public class SearchCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
-        private readonly IKnownFolderManager _folderManager;
+        private readonly IShellUrlParser _folderManager;
 
-        public SearchCommand(ExplorerViewModel owner, IKnownFolderManager folderManager)
+        public SearchCommand(ExplorerViewModel owner, IShellUrlParser folderManager)
         {
             _owner = owner;
             _folderManager = folderManager;
@@ -54,7 +54,7 @@ namespace ExplorerHub.ViewModels
                     _owner.FlushData();
                 }
             }
-            else if (_folderManager.Folders.TryGetValue(address, out var folder))
+            else if (_folderManager.KnownFolders.TryGetValue(address, out var folder))
             {
                 _owner.Browser.Navigate(folder.First());
             }

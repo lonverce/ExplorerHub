@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub
 {
     public class WindowsFormsHostHelper
     {

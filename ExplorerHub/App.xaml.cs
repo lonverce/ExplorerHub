@@ -7,10 +7,10 @@ using Autofac;
 using ExplorerHub.AppInitializations;
 using ExplorerHub.BackgroundTasks;
 using ExplorerHub.Infrastructures;
-using ExplorerHub.Models.Favorites;
-using ExplorerHub.Repositories;
 using ExplorerHub.Subscribers;
 using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
+using ExplorerHub.ViewModels.Explorers;
 using MindLab.Messaging;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -111,8 +111,8 @@ namespace ExplorerHub
                 .As<IHubWindowsManager>()
                 .SingleInstance();
 
-            containerBuilder.RegisterType<KnownFolderManager>()
-                .As<IKnownFolderManager>()
+            containerBuilder.RegisterType<ShellUrlParser>()
+                .As<IShellUrlParser>()
                 .SingleInstance();
 
             containerBuilder.Register(context => new BroadcastMessageRouter<IEventData>())
@@ -128,10 +128,6 @@ namespace ExplorerHub
             containerBuilder.RegisterType<ShellWindowManager>()
                 .As<IShellWindowsManager>()
                 .SingleInstance();
-
-            containerBuilder.RegisterType<FavoritePathRepository>()
-                .SingleInstance()
-                .As<IFavoritePathRepository>();
 
             // initializations
             containerBuilder.AddAppInitialization<MainWindowInitialization>();

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub
 {
     public interface IViewModelRepository<T> : IEnumerable<T>
         where T : IManagedObject

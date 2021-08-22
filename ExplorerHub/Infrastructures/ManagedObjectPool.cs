@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac.Features.OwnedInstances;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub.Infrastructures
 {
     /// <summary>
     /// 托管对象池

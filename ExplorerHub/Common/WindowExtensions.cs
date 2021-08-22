@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ExplorerHub.ViewModels
+namespace ExplorerHub
 {
     public static class WindowExtensions
     {

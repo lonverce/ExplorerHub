@@ -55,12 +55,6 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.DwayneNeed">
-      <HintPath>..\Libraries\Microsoft.DwayneNeed.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.DwayneNeed.Win32">
-      <HintPath>..\Libraries\Microsoft.DwayneNeed.Win32.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack.1.1.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -87,10 +81,6 @@
     </Reference>
     <Reference Include="Panuon.UI.Silver, Version=1.1.3.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Panuon.UI.Silver.1.1.3.4\lib\net45\Panuon.UI.Silver.dll</HintPath>
-    </Reference>
-    <Reference Include="shell32.interop">
-      <HintPath>..\shell32.interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -148,13 +138,13 @@
     <Compile Include="Common\IBackgroundTask.cs" />
     <Compile Include="Common\IEventBus.cs" />
     <Compile Include="Common\IEventSubscriber.cs" />
-    <Compile Include="Common\IKnownFolderManager.cs" />
+    <Compile Include="Common\IShellUrlParser.cs" />
     <Compile Include="Common\InjectPropertyAttribute.cs" />
     <Compile Include="Common\IShellWindowsManager.cs" />
     <Compile Include="Common\IUserNotificationService.cs" />
-    <Compile Include="ViewModels\Common\IHubWindowsManager.cs" />
-    <Compile Include="ViewModels\Common\IManagedObject.cs" />
-    <Compile Include="ViewModels\Common\IViewModelRepository.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\IHubWindowsManager.cs" />
+    <Compile Include="Common\IManagedObject.cs" />
+    <Compile Include="Common\IViewModelRepository.cs" />
     <Compile Include="Events\ExplorerCreatedEventData.cs" />
     <Compile Include="Events\ExplorerRemovedEventData.cs" />
     <Compile Include="Events\FollowerStartupEventData.cs" />
@@ -165,34 +155,29 @@
     </Compile>
     <Compile Include="Infrastructures\AppElector.cs" />
     <Compile Include="Infrastructures\EventBus.cs" />
-    <Compile Include="Infrastructures\KnownFolderManager.cs" />
+    <Compile Include="Infrastructures\ShellUrlParser.cs" />
     <Compile Include="Infrastructures\ShellWindowManager.cs" />
     <Compile Include="Infrastructures\UserNotificationService.cs" />
-    <Compile Include="Models\Favorites\FavoritePath.cs" />
-    <Compile Include="Models\Favorites\IFavoritePathRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Repositories\FavoritePathRepository.cs" />
     <Compile Include="Subscribers\FollowerStartupEventSubscriber.cs" />
     <Compile Include="Subscribers\NewBrowserEventSubscriber.cs" />
     <Compile Include="Subscribers\UserNotificationEventSubscriber.cs" />
-    <Compile Include="ViewModels\AddBrowserCommand.cs" />
-    <Compile Include="ViewModels\CloseBrowserCommand.cs" />
-    <Compile Include="ViewModels\Common\ManagedObjectPool.cs" />
-    <Compile Include="ViewModels\Common\ObservableCollectionEx.cs" />
-    <Compile Include="ViewModels\Common\WindowExtensions.cs" />
-    <Compile Include="ViewModels\Common\WindowsFormsHostHelper.cs" />
-    <Compile Include="ViewModels\ExplorerHubDropTarget.cs" />
-    <Compile Include="ViewModels\ExplorerViewModel.cs" />
-    <Compile Include="ViewModels\ExplorerHubViewModel.cs" />
-    <Compile Include="ViewModels\FavoriteViewModel.cs" />
-    <Compile Include="ViewModels\Common\ViewModelBase.cs" />
-    <Compile Include="ViewModels\Common\HubWindowsManager.cs" />
-    <Compile Include="ViewModels\GoToParentCommand.cs" />
-    <Compile Include="ViewModels\NavBackCommand.cs" />
-    <Compile Include="ViewModels\NavForwardCommand.cs" />
-    <Compile Include="ViewModels\SearchCommand.cs" />
-    <Compile Include="ViewModels\ShowInNewWindowCommand.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\AddBrowserCommand.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\CloseBrowserCommand.cs" />
+    <Compile Include="Infrastructures\ManagedObjectPool.cs" />
+    <Compile Include="Common\WindowExtensions.cs" />
+    <Compile Include="Common\WindowsFormsHostHelper.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\ExplorerHubDropTarget.cs" />
+    <Compile Include="ViewModels\Explorers\ExplorerViewModel.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\ExplorerHubViewModel.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\HubWindowsManager.cs" />
+    <Compile Include="ViewModels\Explorers\GoToParentCommand.cs" />
+    <Compile Include="ViewModels\Explorers\NavBackCommand.cs" />
+    <Compile Include="ViewModels\Explorers\NavForwardCommand.cs" />
+    <Compile Include="ViewModels\Explorers\SearchCommand.cs" />
+    <Compile Include="ViewModels\Explorers\ShowInNewWindowCommand.cs" />
     <Page Include="ExplorerHubWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -254,5 +239,6 @@
   <ItemGroup>
     <SplashScreen Include="Splash.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

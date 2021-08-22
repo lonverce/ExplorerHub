@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
