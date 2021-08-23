@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
+using ExplorerHub.Events;
 using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Controls.WindowsForms;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -8,6 +9,8 @@ namespace ExplorerHub.ViewModels.Explorers
 {
     public class ExplorerViewModel : ViewModelBase,IManagedObject, IDisposable
     {
+        private readonly IEventBus _eventBus;
+
         #region Fields
 
         private string _title;
@@ -91,8 +94,10 @@ namespace ExplorerHub.ViewModels.Explorers
 
         public ExplorerViewModel(
             int managedObjectId,
-            ShellObject initialTarget)
+            ShellObject initialTarget,
+            IEventBus eventBus)
         {
+            _eventBus = eventBus;
             ManagedObjectId = managedObjectId;
 
             Browser = new ExplorerBrowser();
@@ -105,8 +110,8 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
-        public ExplorerViewModel(int managedObjectId)
-            :this(managedObjectId, null)
+        public ExplorerViewModel(int managedObjectId, IEventBus eventBus)
+            :this(managedObjectId, null, eventBus)
         {
         }
 
@@ -118,7 +123,6 @@ namespace ExplorerHub.ViewModels.Explorers
         {
             var log = Browser.NavigationLog;
             log.NavigationLogChanged -= NavigationLogOnNavigationLogChanged;
-            Browser.Dispose();
         }
         
         #endregion
@@ -128,6 +132,7 @@ namespace ExplorerHub.ViewModels.Explorers
         {
             var log = (ExplorerBrowserNavigationLog)sender;
             DisplayingTarget = log.CurrentLocation;
+            _eventBus.PublishEvent(new ExplorerNavigationUpdatedEventData(ManagedObjectId));
         }
 
         private void OnNavigationUpdated()

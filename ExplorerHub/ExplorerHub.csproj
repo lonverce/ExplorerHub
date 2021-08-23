@@ -142,6 +142,9 @@
     <Compile Include="Common\InjectPropertyAttribute.cs" />
     <Compile Include="Common\IShellWindowsManager.cs" />
     <Compile Include="Common\IUserNotificationService.cs" />
+    <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
+    <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
+    <Compile Include="UI\CornerAdorner.cs" />
     <Compile Include="ViewModels\ExplorerHubs\IHubWindowsManager.cs" />
     <Compile Include="Common\IManagedObject.cs" />
     <Compile Include="Common\IViewModelRepository.cs" />

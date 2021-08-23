@@ -38,9 +38,9 @@
             <!-- Tab标签列表 -->
             <ListBox Name="ExplorerHeaderBar" 
                  ItemsSource="{Binding Explorers}" 
-                 BorderThickness="0" 
+                 BorderThickness="1" 
                  HorizontalAlignment="Left" 
-                 Margin="0" 
+                 Padding="10, 5, 10, 0"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True"
                  dd:DragDrop.DropHandler="{Binding DropTarget}"
@@ -49,12 +49,11 @@
                  pu:ListBoxHelper.SelectedBackground="White"
                  SelectionMode="Single"
                  SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-                 Padding="0"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Padding" Value="0"/>
-                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="0"/>
                     <Setter Property="Height" Value="{Binding ElementName=ExplorerHeaderBar, Path=ActualHeight, Mode=OneWay}"/>
                     <Setter Property="ContextMenu">
@@ -70,14 +69,33 @@
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border CornerRadius="10, 10, 0, 0" 
+                                        BorderThickness="1"
+                                        Background="{TemplateBinding Background}"
+                                        Initialized="FrameworkElement_OnInitialized">
+                                    <ContentPresenter Margin="5, 0, 0 ,0"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="White"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="1.0"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>    
+                            </ControlTemplate>
+                            </Setter.Value>
+                    </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" 
                                Background="Transparent" 
-                               Margin="0" 
-                               
+                               Margin="0"
                                HorizontalAlignment="Left" VerticalAlignment="Center" 
                                IsItemsHost="True" />
                 </ItemsPanelTemplate>

@@ -1,21 +1,19 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Windows;
 using System.Windows.Input;
-using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
     public class SearchCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
-        private readonly IShellUrlParser _folderManager;
+        private readonly IShellUrlParser _parser;
+        private readonly IUserNotificationService _notificationService;
 
-        public SearchCommand(ExplorerViewModel owner, IShellUrlParser folderManager)
+        public SearchCommand(ExplorerViewModel owner, IShellUrlParser parser, IUserNotificationService notificationService)
         {
             _owner = owner;
-            _folderManager = folderManager;
+            _parser = parser;
+            _notificationService = notificationService;
         }
 
         public bool CanExecute(object parameter) => true;
@@ -34,34 +32,13 @@ namespace ExplorerHub.ViewModels.Explorers
                 return;
             }
 
-            if (Path.IsPathRooted(address))
+            if (!_parser.TryParse(address, out var target))
             {
-                try
-                {
-                    _owner.Browser.Navigate(ShellObject.FromParsingName(address));
-                }
-                catch (ShellException e)
-                {
-                    if (e.InnerException is FileNotFoundException)
-                    {
-                        MessageBox.Show("无法定位到指定路径", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
-                    {
-                        MessageBox.Show(e.Message, "未知错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-
-                    _owner.FlushData();
-                }
+                _notificationService.Notify("无法导航到指定路径", "操作失败", NotificationLevel.Warn, false);
+                _owner.FlushData();
             }
-            else if (_folderManager.KnownFolders.TryGetValue(address, out var folder))
-            {
-                _owner.Browser.Navigate(folder.First());
-            }
-            else
-            {
-                MessageBox.Show("错误路径");
-            }
+            
+            _owner.Browser.Navigate(target);
         }
 
         public event EventHandler CanExecuteChanged;

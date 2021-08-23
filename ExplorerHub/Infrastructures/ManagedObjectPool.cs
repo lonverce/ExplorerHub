@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading;
 using Autofac.Features.OwnedInstances;
 
 namespace ExplorerHub.Infrastructures
@@ -14,18 +17,18 @@ namespace ExplorerHub.Infrastructures
         where T : class, IManagedObject
     {
         private readonly ManagedObjectConstructFunc _objectFactory;
-        private readonly Dictionary<int, Owned<T>> _pool;
-        private int _idCnt = 1;
+        private readonly ConcurrentDictionary<int, Owned<T>> _pool;
+        private volatile int _idCnt = 1;
 
         public delegate Owned<T> ManagedObjectConstructFunc(int managedObjectId);
         
         public ManagedObjectPool(ManagedObjectConstructFunc objectFactory)
         {
             _objectFactory = objectFactory;
-            _pool = new Dictionary<int, Owned<T>>();
+            _pool = new ConcurrentDictionary<int, Owned<T>>();
         }
 
-        private int CreateId() => _idCnt++;
+        private int CreateId() => Interlocked.Increment(ref _idCnt);
         
         public void Dispose()
         {
@@ -52,23 +55,20 @@ namespace ExplorerHub.Infrastructures
         {
             var newId = CreateId();
             var newItem = _objectFactory(newId);
-            _pool.Add(newItem.Value.ManagedObjectId, newItem);
+            var result = _pool.TryAdd(newItem.Value.ManagedObjectId, newItem);
+            Contract.Assert(result);
+
             return newItem.Value;
         }
 
         public void Delete(int id)
         {
-            if (!_pool.TryGetValue(id, out var owned))
+            if (!_pool.TryRemove(id, out var owner))
             {
                 return;
             }
 
-            if (!_pool.Remove(id))
-            {
-                return;
-            }
-
-            owned.Dispose();
+            owner.Dispose();
         }
 
         public bool TryGetModelById(int id, out T model)

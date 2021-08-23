@@ -145,6 +145,9 @@ namespace ExplorerHub
             containerBuilder.AddEventSubscriber<NewBrowserEventSubscriber>();
             containerBuilder.AddEventSubscriber<FollowerStartupEventSubscriber>();
             containerBuilder.AddEventSubscriber<UserNotificationEventSubscriber>();
+#if DEBUG
+            containerBuilder.AddEventSubscriber<NavigationChangedEventSubscriber>(); 
+#endif
 
             // view models
             containerBuilder.RegisterType<ExplorerHubViewModel>()

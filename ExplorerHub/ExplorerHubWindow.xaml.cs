@@ -3,7 +3,11 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using ExplorerHub.UI;
 using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
 using TextBox = System.Windows.Controls.TextBox;
@@ -99,6 +103,13 @@ namespace ExplorerHub
             AddressBar.BorderThickness = new Thickness(1);
             AddressBar.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
             tb.SelectAll();
+        }
+
+        private void FrameworkElement_OnInitialized(object sender, EventArgs e)
+        {
+            var border = (Border) sender;
+            var layer = AdornerLayer.GetAdornerLayer(border);
+            layer.Add(new CornerAdorner(border));
         }
     }
 }
