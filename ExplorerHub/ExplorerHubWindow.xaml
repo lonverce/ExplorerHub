@@ -35,71 +35,80 @@
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
         <StackPanel Orientation="Horizontal">
+            <!-- Tab标签列表 -->
             <ListBox Name="ExplorerHeaderBar" 
-                     ItemsSource="{Binding Explorers}" 
-                     BorderThickness="0" 
-                     HorizontalAlignment="Left" 
-                     Margin="0" 
-                     dd:DragDrop.IsDragSource="True"
-                     dd:DragDrop.IsDropTarget="True"
-                     dd:DragDrop.DropHandler="{Binding DropTarget}"
-                     Background="Transparent"
-                     pu:ListBoxHelper.HoverBackground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"
-                     pu:ListBoxHelper.SelectedBackground="White"
-                     SelectionMode="Single"
-                     SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-                     Padding="0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="VerticalAlignment" Value="Stretch"/>
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="Height" Value="{Binding ElementName=ExplorerHeaderBar, Path=ActualHeight, Mode=OneWay}"/>
-                        <Setter Property="ContextMenu">
-                            <Setter.Value>
+                 ItemsSource="{Binding Explorers}" 
+                 BorderThickness="0" 
+                 HorizontalAlignment="Left" 
+                 Margin="0" 
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DropHandler="{Binding DropTarget}"
+                 Background="Transparent"
+                 pu:ListBoxHelper.HoverBackground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"
+                 pu:ListBoxHelper.SelectedBackground="White"
+                 SelectionMode="Single"
+                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                 Padding="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Height" Value="{Binding ElementName=ExplorerHeaderBar, Path=ActualHeight, Mode=OneWay}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                                <!-->Tab标签的右键菜单</!-->
                                 <ContextMenu d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
-                                    <MenuItem Header="在新窗口中打开"
-                                              Command="{Binding ShowInNewWindowCommand}">
-                                        <MenuItem.Icon>
-                                            <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf08e;</TextBlock>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" 
-                                   Background="Transparent" 
-                                   Margin="0" 
-                                   
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                   IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="explorers:ExplorerViewModel">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
-                            <StackPanel Orientation="Horizontal" 
-                                        HorizontalAlignment="Left">
-                                <Image Source="{Binding Logo}" Width="15" Height="15" Margin="3, 2" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
-                                           VerticalAlignment="Center" MaxWidth="120" TextTrimming="CharacterEllipsis" Padding="5,0" />
-                            </StackPanel>
-                            <Button FontFamily="{StaticResource FontAwesome}" 
-                                    Content="&#xf00d;" Background="Transparent" 
-                                    BorderThickness="0" 
-                                    Command="{Binding ElementName=ExplorerHeaderBar, Path=DataContext.CloseBrowserCommand}"
-                                    CommandParameter="{Binding}"
-                                    Foreground="LightSlateGray">
-                            </Button>
+                                <MenuItem Header="在新窗口中打开"
+                                          Command="{Binding ShowInNewWindowCommand}">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf08e;</TextBlock>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" 
+                               Background="Transparent" 
+                               Margin="0" 
+                               
+                               HorizontalAlignment="Left" VerticalAlignment="Center" 
+                               IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="explorers:ExplorerViewModel">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
+                        <StackPanel.InputBindings>
+                            <!--便捷操作：按下鼠标滚轮，即可关闭标签页，无需用户准确地点击关闭按钮-->
+                            <MouseBinding MouseAction="MiddleClick" 
+                                          Command="{Binding ElementName=ExplorerHeaderBar, Path=DataContext.CloseBrowserCommand}"
+                                          CommandParameter="{Binding}"/>
+                        </StackPanel.InputBindings>
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Left">
+                            <Image Source="{Binding Logo}" Width="15" Height="15" Margin="3, 2" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
+                                       VerticalAlignment="Center" MaxWidth="120" TextTrimming="CharacterEllipsis" Padding="5,0" />
                         </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                            <!-->Tab标签的关闭按钮</!-->
+                            <Button FontFamily="{StaticResource FontAwesome}" 
+                                Content="&#xf00d;" Background="Transparent" 
+                                BorderThickness="0" 
+                                Command="{Binding ElementName=ExplorerHeaderBar, Path=DataContext.CloseBrowserCommand}"
+                                CommandParameter="{Binding}"
+                                Foreground="LightSlateGray">
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
             <Button Content="&#xf067;" 
                     Command="{Binding AddBrowserCommand}"
                     Margin="10,0" FontFamily="{StaticResource FontAwesome}" 
