@@ -7,6 +7,15 @@ using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
+    [Flags]
+    public enum ItemPositionType
+    {
+        None = 0,
+        Head = 1,
+        Tail = 2,
+        Both = Head | Tail
+    }
+
     public class ExplorerViewModel : ViewModelBase,IManagedObject, IDisposable
     {
         private readonly IEventBus _eventBus;
@@ -17,6 +26,7 @@ namespace ExplorerHub.ViewModels.Explorers
         private string _navigationPath;
         private ShellObject _displayingTarget;
         private int _ownerId = -1;
+        private ItemPositionType _position;
 
         #endregion
 
@@ -65,6 +75,21 @@ namespace ExplorerHub.ViewModels.Explorers
             set
             {
                 _ownerId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ItemPositionType Position
+        {
+            get => _position;
+            set
+            {
+                if (_position == value)
+                {
+                    return;
+                }
+
+                _position = value;
                 OnPropertyChanged();
             }
         }

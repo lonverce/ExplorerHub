@@ -99,17 +99,10 @@ namespace ExplorerHub
             var tb = (TextBox)sender;
             tb.PreviewMouseDown -= OnSearchBoxPreviewMouseDown;
 
-            AddressBar.Background = System.Windows.Media.Brushes.White;
+            AddressBar.Background = Brushes.White;
             AddressBar.BorderThickness = new Thickness(1);
-            AddressBar.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
+            AddressBar.BorderBrush = Brushes.DeepSkyBlue;
             tb.SelectAll();
-        }
-
-        private void FrameworkElement_OnInitialized(object sender, EventArgs e)
-        {
-            var border = (Border) sender;
-            var layer = AdornerLayer.GetAdornerLayer(border);
-            layer.Add(new CornerAdorner(border));
         }
     }
 }

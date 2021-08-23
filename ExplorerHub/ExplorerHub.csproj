@@ -144,7 +144,8 @@
     <Compile Include="Common\IUserNotificationService.cs" />
     <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
     <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
-    <Compile Include="UI\CornerAdorner.cs" />
+    <Compile Include="UI\ChromeTabBorder.cs" />
+    <Compile Include="UI\PointExtensions.cs" />
     <Compile Include="ViewModels\ExplorerHubs\IHubWindowsManager.cs" />
     <Compile Include="Common\IManagedObject.cs" />
     <Compile Include="Common\IViewModelRepository.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Common\WindowExtensions.cs" />
     <Compile Include="Common\WindowsFormsHostHelper.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubDropTarget.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\PositionMarginConverter.cs" />
     <Compile Include="ViewModels\Explorers\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubViewModel.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
@@ -196,6 +198,10 @@
     <Page Include="HiddenMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ChromeTabBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
