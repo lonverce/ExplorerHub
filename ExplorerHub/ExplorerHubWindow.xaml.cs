@@ -66,7 +66,6 @@ namespace ExplorerHub
                 this.ActivateEx();
             };
             SearchBox_OnLostKeyboardFocus(SearchBox, null);
-            //OnLostFocus(SearchBox);
         }
 
         private void ExplorersOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -78,6 +77,7 @@ namespace ExplorerHub
                 Close();
             }
         }
+
         private void OnSearchBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var tb = (TextBox)sender;
@@ -89,9 +89,9 @@ namespace ExplorerHub
             var tb = (TextBox)sender;
             tb.PreviewMouseDown += OnSearchBoxPreviewMouseDown;
 
-            AddressBar.Background = System.Windows.Media.Brushes.WhiteSmoke;
+            AddressBar.Background = Brushes.WhiteSmoke;
             AddressBar.BorderThickness = new Thickness(1);
-            AddressBar.BorderBrush = System.Windows.Media.Brushes.Transparent;
+            AddressBar.BorderBrush = Brushes.Transparent;
         }
 
         private void SearchBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

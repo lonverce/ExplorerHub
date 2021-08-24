@@ -83,6 +83,7 @@
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Background" Value="White"/>
+                                            <Setter Property="Grid.ZIndex" Value="999"></Setter>
                                         </Trigger>
                                         <MultiTrigger>
                                             <MultiTrigger.Conditions>
