@@ -12,6 +12,7 @@
             xmlns:ui="clr-namespace:ExplorerHub.UI"
             pu:WindowXCaption.Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
             Title="文件资源管理器" 
+            Name="TabWnd"
             Height="700" Width="1000"
             d:DataContext="{d:DesignInstance explorerHubs:ExplorerHubViewModel}" 
             Padding="0">
@@ -35,13 +36,16 @@
         </Style>
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Height="35">
+            <StackPanel.Resources>
+                <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
+            </StackPanel.Resources>
             <!-- Tab标签列表 -->
             <ListBox Name="ExplorerHeaderBar" 
                    
              ItemsSource="{Binding Explorers}" 
              Height="30"
-             Margin="0,5,0,0"
+             Margin="0, 5, 0, 0"
              BorderThickness="0"
              VerticalContentAlignment="Stretch"
              dd:DragDrop.IsDragSource="True"
@@ -52,19 +56,38 @@
              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Style TargetType="ListBoxItem" 
+                           BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Style.Resources>
                             <explorerHubs:PositionMarginConverter x:Key="PositionMarginConverter"/>
                         </Style.Resources>
+                        <Setter Property="FontSize" Value="12"></Setter>
+                        <Setter Property="Foreground" Value="#111111"></Setter>
                         <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="{Binding Position, Converter={StaticResource PositionMarginConverter}, ConverterParameter=10}"/>
+                        <Setter Property="Margin">
+                            <Setter.Value>
+                                <Binding Path="Position" Converter="{StaticResource PositionMarginConverter}">
+                                    <Binding.ConverterParameter>
+                                        <Thickness>8,0,10,0</Thickness>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <!-->Tab标签的右键菜单</!-->
-                                <ContextMenu d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+                                <ContextMenu d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}" 
+                                             pu:ContextMenuHelper.ItemPadding="5,0"
+                                             pu:ContextMenuHelper.ItemHeight="25"
+                                             FontSize="10">
+                                    <ContextMenu.ItemContainerStyle>
+                                        <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </ContextMenu.ItemContainerStyle>
                                     <MenuItem Header="在新窗口中打开"
-                                      Command="{Binding ShowInNewWindowCommand}">
+                                              Command="{Binding ShowInNewWindowCommand}">
                                         <MenuItem.Icon>
                                             <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf08e;</TextBlock>
                                         </MenuItem.Icon>
@@ -76,14 +99,17 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
                                     <ui:ChromeTabBorder BorderBrush="{TemplateBinding Background}"
-                                                CornerRadius="10,10,0,0"
+                                                CornerRadius="7,7,0,0"
                                                 Background="{TemplateBinding Background}">
                                         <ContentPresenter/>
                                     </ui:ChromeTabBorder>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Background" Value="White"/>
-                                            <Setter Property="Grid.ZIndex" Value="999"></Setter>
+                                            <Setter Property="Grid.ZIndex" Value="999"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Grid.ZIndex" Value="998"/>
                                         </Trigger>
                                         <MultiTrigger>
                                             <MultiTrigger.Conditions>
@@ -100,7 +126,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" 
+                        <WrapPanel Orientation="Horizontal"
                            Background="Transparent" 
                            HorizontalAlignment="Left" VerticalAlignment="Stretch" 
                            IsItemsHost="True" />
@@ -119,7 +145,7 @@
                                 HorizontalAlignment="Left">
                                 <Image Source="{Binding Logo}" Width="18" Height="18" Margin="8, 2, 6, 2" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
-                                           FontSize="12" Foreground="#333333"
+                                           
                                    VerticalAlignment="Center" MaxWidth="120" TextTrimming="CharacterEllipsis" Padding="5,0" />
                             </StackPanel>
                             <!-->Tab标签的关闭按钮</!-->

@@ -13,5 +13,10 @@ namespace ExplorerHub.UI
         {
             return new Point(p.X, p.Y + offset);
         }
+
+        public static Point Translation(this Point p, double offsetX, double offsetY)
+        {
+            return new Point(p.X + offsetX, p.Y + offsetY);
+        }
     }
 }
