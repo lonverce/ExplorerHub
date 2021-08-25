@@ -13,6 +13,20 @@ namespace ExplorerHub.UI
                 new FrameworkPropertyMetadata(typeof(ChromeTabBorder)));
         }
 
+        public static readonly DependencyProperty SplitBorderBrushProperty = DependencyProperty.Register(
+            nameof(SplitBorderBrush), typeof(Brush), typeof(ChromeTabBorder), 
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender, OnClearPenCache));
+
+        private static void OnClearPenCache(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+        }
+
+        public Brush SplitBorderBrush
+        {
+            get => (Brush)GetValue(SplitBorderBrushProperty);
+            set => SetValue(SplitBorderBrushProperty, value);
+        }
+
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
@@ -38,11 +52,12 @@ namespace ExplorerHub.UI
 
                 dc.DrawGeometry(border.Background, pen, geo);
             }
-            else
+            else if (SplitBorderBrush != null)
             {
-                dc.DrawLine(new Pen(parent.Foreground, 0.1), 
-                    elementRect.TopRight.Translation(1, CornerRadius.TopRight), 
-                    elementRect.BottomRight.Translation(1, -CornerRadius.TopRight));
+                double thickness = 1;
+                dc.DrawLine(new Pen(SplitBorderBrush, thickness), 
+                    elementRect.TopRight.Translation(thickness/2, CornerRadius.TopRight), 
+                    elementRect.BottomRight.Translation(thickness/2, -CornerRadius.TopRight));
             }
         }
     }

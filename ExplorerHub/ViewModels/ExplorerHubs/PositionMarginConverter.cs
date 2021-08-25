@@ -32,7 +32,7 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
         {
             if (value is WindowState wndState && targetType == typeof(Thickness))
             {
-                var marginTop = wndState == WindowState.Maximized ? 0 : System.Convert.ToInt32(parameter);
+                var marginTop = wndState == WindowState.Maximized ? 1 : System.Convert.ToInt32(parameter);
                 return new Thickness(0, marginTop, 0, 0);
             }
 

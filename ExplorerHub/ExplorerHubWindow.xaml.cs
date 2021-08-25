@@ -90,7 +90,6 @@ namespace ExplorerHub
             tb.PreviewMouseDown += OnSearchBoxPreviewMouseDown;
 
             AddressBar.Background = Brushes.WhiteSmoke;
-            AddressBar.BorderThickness = new Thickness(1);
             AddressBar.BorderBrush = Brushes.Transparent;
         }
 
@@ -100,8 +99,7 @@ namespace ExplorerHub
             tb.PreviewMouseDown -= OnSearchBoxPreviewMouseDown;
 
             AddressBar.Background = Brushes.White;
-            AddressBar.BorderThickness = new Thickness(1);
-            AddressBar.BorderBrush = Brushes.DeepSkyBlue;
+            AddressBar.BorderBrush = Brushes.DodgerBlue;
             tb.SelectAll();
         }
     }

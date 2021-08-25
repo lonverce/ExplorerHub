@@ -11,13 +11,16 @@
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
             xmlns:ui="clr-namespace:ExplorerHub.UI"
             pu:WindowXCaption.Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+            pu:WindowXCaption.Height="42"
             Title="文件资源管理器" 
             Name="TabWnd"
+            BorderThickness="0"
             Height="700" Width="1000"
             d:DataContext="{d:DesignInstance explorerHubs:ExplorerHubViewModel}" 
             Padding="0">
     <pu:WindowX.Resources>
         <Style TargetType="Button"
+               x:Key="BtnStyle"
                BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="pu:ButtonHelper.ButtonStyle" 
                     Value="Outline"/>
@@ -34,36 +37,32 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
-        <StackPanel Orientation="Horizontal" Height="35">
-            <StackPanel.Resources>
-                <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
-            </StackPanel.Resources>
+        <StackPanel Orientation="Horizontal"
+                    Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=8}">
             <!-- Tab标签列表 -->
             <ListBox Name="ExplorerHeaderBar" 
-                   
-             ItemsSource="{Binding Explorers}" 
-             Height="30"
-             Margin="0, 5, 0, 0"
-             BorderThickness="0"
-             VerticalContentAlignment="Stretch"
-             dd:DragDrop.IsDragSource="True"
-             dd:DragDrop.IsDropTarget="True"
-             dd:DragDrop.DropHandler="{Binding DropTarget}"
-             Background="Transparent"
-             SelectionMode="Single"
-             SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                 ItemsSource="{Binding Explorers}" 
+                 BorderThickness="0"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DropHandler="{Binding DropTarget}"
+                 Background="Transparent"
+                 SelectionMode="Single"
+                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" 
                            BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Style.Resources>
                             <explorerHubs:PositionMarginConverter x:Key="PositionMarginConverter"/>
                         </Style.Resources>
+                        <Setter Property="Height" Value="{Binding ElementName=ExplorerHeaderBar, Path=ActualHeight}"></Setter>
                         <Setter Property="FontSize" Value="12"></Setter>
                         <Setter Property="Foreground" Value="#111111"></Setter>
-                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="BorderBrush" Value="#555555"></Setter>
                         <Setter Property="Margin">
                             <Setter.Value>
                                 <Binding Path="Position" Converter="{StaticResource PositionMarginConverter}">
@@ -73,7 +72,14 @@
                                 </Binding>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding NavigationPath}" FontSize="12" FontWeight="Light"/>
+                                </StackPanel>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <!-->Tab标签的右键菜单</!-->
@@ -99,9 +105,10 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
                                     <ui:ChromeTabBorder BorderBrush="{TemplateBinding Background}"
-                                                CornerRadius="7,7,0,0"
+                                                CornerRadius="8,8,0,0"
+                                                SplitBorderBrush="{TemplateBinding BorderBrush}"
                                                 Background="{TemplateBinding Background}">
-                                        <ContentPresenter/>
+                                        <ContentPresenter Margin="4,0"/>
                                     </ui:ChromeTabBorder>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
@@ -126,8 +133,8 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"
-                           Background="Transparent" 
+                        <StackPanel Orientation="Horizontal"
+                           Background="Transparent" MaxWidth="700"
                            HorizontalAlignment="Left" VerticalAlignment="Stretch" 
                            IsItemsHost="True" />
                     </ItemsPanelTemplate>
@@ -135,6 +142,11 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="explorers:ExplorerViewModel">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                                    <Setter Property="FontSize" Value="14"/>
+                                </Style>
+                            </StackPanel.Resources>
                             <StackPanel.InputBindings>
                                 <!--便捷操作：按下鼠标滚轮，即可关闭标签页，无需用户准确地点击关闭按钮-->
                                 <MouseBinding MouseAction="MiddleClick" 
@@ -145,8 +157,9 @@
                                 HorizontalAlignment="Left">
                                 <Image Source="{Binding Logo}" Width="18" Height="18" Margin="8, 2, 6, 2" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
-                                           
-                                   VerticalAlignment="Center" MaxWidth="120" TextTrimming="CharacterEllipsis" Padding="5,0" />
+                                           FontSize="12.2" FontWeight="ExtraLight"
+                                            VerticalAlignment="Center" MaxWidth="120" MinWidth="5"
+                                           TextTrimming="CharacterEllipsis" Padding="5,0" />
                             </StackPanel>
                             <!-->Tab标签的关闭按钮</!-->
                             <Button FontFamily="{StaticResource FontAwesome}" 
@@ -161,6 +174,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Button Content="&#xf067;" 
+                    Style="{StaticResource BtnStyle}"
+                    FontSize="16"
                     Command="{Binding AddBrowserCommand}"
                     Margin="0" FontFamily="{StaticResource FontAwesome}" 
                     Background="Transparent" 
@@ -173,14 +188,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" LastChildFill="True" Margin="3,5" 
+        <DockPanel Grid.Row="0" LastChildFill="True" Margin="3,2" 
                    DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}"
                    d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+            <DockPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                    <Setter Property="FontSize" Value="17"/>
+                </Style>
+            </DockPanel.Resources>
             <Button DockPanel.Dock="Left"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    Content="&#xf060;"
-                                    ToolTip="后退"
-                                    Command="{Binding NavigateBackwardCommand}"  />
+                    FontFamily="{StaticResource FontAwesome}"
+                                    
+                    Content="&#xf060;"
+                    ToolTip="后退"
+                    Command="{Binding NavigateBackwardCommand}"  />
             <Button DockPanel.Dock="Left"
                                     Content="&#xf061;"
                                     FontFamily="{StaticResource FontAwesome}"
@@ -194,24 +215,31 @@
             <Button DockPanel.Dock="Right" Content="&#xf013;" FontFamily="{StaticResource FontAwesome}"
                                     ToolTip="设置" />
 
-            <Border CornerRadius="15" Background="WhiteSmoke" Margin="5,3" Padding="10,0"
-                                    VerticalAlignment="Center"
-                                    Name="AddressBar">
-                <DockPanel VerticalAlignment="Center">
+            <Border CornerRadius="15" 
+                    Margin="5,1" Padding="10,0"
+                    BorderThickness="1"
+                    VerticalAlignment="Center"
+                    Name="AddressBar">
+                <DockPanel VerticalAlignment="Center" Height="26">
+                    <DockPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                            <Setter Property="FontSize" Value="14"></Setter>
+                        </Style>
+                    </DockPanel.Resources>
                     <Image Source="{Binding Logo}" Width="15" Height="15" Margin="3, 2"
-                                           VerticalAlignment="Center" />
+                           VerticalAlignment="Center" />
                     <Button DockPanel.Dock="Right" Content="&#xf006;"
                                             FontFamily="{StaticResource FontAwesome}" ToolTip="添加收藏" />
-                    <TextBox TextWrapping="NoWrap" BorderThickness="0"
-                                             MaxLines="1" MaxLength="256" IsReadOnly="False" AutoWordSelection="True"
-                                             Background="Transparent"
-                                             FontFamily="Consola"
-                                             Padding="5, 3" VerticalContentAlignment="Center"
-                                             Text="{Binding NavigationPath, Mode=OneWay}"
-                                             AcceptsReturn="False" 
-                                             LostKeyboardFocus="SearchBox_OnLostKeyboardFocus"
-                                             GotKeyboardFocus="SearchBox_OnGotKeyboardFocus"
-                                             Name="SearchBox">
+                    <TextBox TextWrapping="NoWrap" BorderThickness="0" 
+                             MaxLines="1" MaxLength="256" IsReadOnly="False" AutoWordSelection="True"
+                             Background="Transparent"
+                             FontFamily="微软雅黑"
+                             Padding="5, 3" VerticalContentAlignment="Center"
+                             Text="{Binding NavigationPath, Mode=OneWay}"
+                             AcceptsReturn="False" 
+                             LostKeyboardFocus="SearchBox_OnLostKeyboardFocus"
+                             GotKeyboardFocus="SearchBox_OnGotKeyboardFocus"
+                             Name="SearchBox">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter" Command="{Binding Search}"
                                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}, Path=Text}" />
@@ -221,8 +249,8 @@
             </Border>
         </DockPanel>
         
-        <WindowsFormsHost  MinHeight="200" 
-                           Grid.Row="1" 
+        <WindowsFormsHost  MinHeight="200" MinWidth="300" 
+                           Grid.Row="1"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                            Margin="0, 7, 0, 0" 
                            explorerHub:WindowsFormsHostHelper.ChildForm="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem.(explorers:ExplorerViewModel.Browser), Mode=OneWay}"
