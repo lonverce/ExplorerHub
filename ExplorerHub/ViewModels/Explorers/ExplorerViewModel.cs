@@ -103,16 +103,19 @@ namespace ExplorerHub.ViewModels.Explorers
         public SearchCommand Search { get; set; }
 
         [InjectProperty]
-        public NavBackCommand NavigateBackwardCommand { get; set; }
+        public NavBackCommand NavigateBackward { get; set; }
 
         [InjectProperty]
-        public NavForwardCommand NavigateForwardCommand { get; set; }
+        public NavForwardCommand NavigateForward { get; set; }
 
         [InjectProperty]
-        public GoToParentCommand GoToParentCommand { get; set; }
+        public GoToParentCommand GoToParent { get; set; }
         
         [InjectProperty]
-        public ShowInNewWindowCommand ShowInNewWindowCommand { get; set; }
+        public ShowInNewWindowCommand ShowInNewWindow { get; set; }
+
+        [InjectProperty]
+        public CloseExplorerCommand CloseExplorer { get; set; }
 
         #endregion
 

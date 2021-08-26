@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,6 +13,15 @@ namespace ExplorerHub.UI
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ChromeTabPanel), new FrameworkPropertyMetadata(typeof(ChromeTabPanel)));
         }
 
+        [Bindable(false)]
+        public Thickness Padding { get; set; } = new Thickness(0, 0, 0, 0);
+
+        [Bindable(false)]
+        public double MaxTabWidth { get; set; }
+
+        [Bindable(false)]
+        public double MinTabWidth { get; set; }
+
         /// <summary>
         ///   在派生类中重写时，为 <see cref="T:System.Windows.FrameworkElement" /> 派生类定位子元素并确定大小。
         /// </summary>
@@ -19,22 +29,50 @@ namespace ExplorerHub.UI
         /// <returns>使用的实际大小。</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
+            var padding = Padding;
             var finalRect = new Rect(finalSize);
+            var measureSize = new Size(padding.Left + padding.Right, padding.Top + padding.Bottom);
+            finalRect.X += padding.Left;
+            finalRect.Y += padding.Top;
+            var children = Children;
 
-            foreach (UIElement child in Children)
+            var childAvailableSizeWidth = double.IsPositiveInfinity(finalSize.Width) ? 
+                MaxTabWidth : Math.Min(MaxTabWidth, (finalSize.Width-measureSize.Width) / children.Count);
+            var childAvailableSizeHeight = double.IsPositiveInfinity(finalSize.Height)
+                ? finalSize.Height
+                : finalSize.Height - measureSize.Height;
+
+            var hiddenCnt = 0;
+
+            if (childAvailableSizeWidth < MinTabWidth)
             {
-                var childSize = child.DesiredSize;
-                finalRect.Width = childSize.Width;
-                finalRect.Height = Math.Max(finalSize.Height, child.DesiredSize.Height);
-                child.Arrange(finalRect);
-                finalRect.X += childSize.Width;
+                var displayCnt = (int)Math.Floor((finalSize.Width - measureSize.Width) / MinTabWidth);
+                hiddenCnt = children.Count - displayCnt;
+                childAvailableSizeWidth = MinTabWidth;
             }
 
-            return base.ArrangeOverride(finalSize);
-        }
+            // 前面几个不显示
+            foreach (var child in Children.Cast<UIElement>().Take(hiddenCnt))
+            {
+                var childSize = child.DesiredSize;
+                finalRect.Width = 0;
+                finalRect.Height = Math.Max(childAvailableSizeHeight, childSize.Height);
+                child.Arrange(finalRect);
+            }
 
-        [Bindable(false)]
-        public double MaxTabWidth { get; set; }
+            foreach (var child in Children.Cast<UIElement>().Skip(hiddenCnt))
+            {
+                var childSize = child.DesiredSize;
+                finalRect.Width = Math.Max(childAvailableSizeWidth, childSize.Width);
+                finalRect.Height = Math.Max(childAvailableSizeHeight, childSize.Height);
+                child.Arrange(finalRect);
+                finalRect.X += finalRect.Width;
+            }
+
+            finalRect.Width += padding.Right;
+            finalRect.Height += padding.Bottom;
+            return finalSize;
+        }
 
         /// <summary>
         ///   测量每个Tab标签在布局中所需的大小，并确定自身的大小。
@@ -46,16 +84,37 @@ namespace ExplorerHub.UI
         /// <returns>此元素基于其对子元素大小的计算确定它在布局期间所需要的大小。</returns>
         protected override Size MeasureOverride(Size availableSize)
         {
+            var padding = Padding;
+            var measureSize = new Size(padding.Left + padding.Right, padding.Top + padding.Bottom);
             var children = Children;
-            var childAvailableSizeWidth = double.IsPositiveInfinity(availableSize.Width) ? MaxTabWidth : Math.Max(MaxTabWidth, availableSize.Width / children.Count);
-            var childAvailableSize = new Size(childAvailableSizeWidth, availableSize.Height);
-            var measureSize = new Size();
+            var childAvailableSizeWidth = double.IsPositiveInfinity(availableSize.Width) ? 
+                MaxTabWidth : Math.Min(MaxTabWidth, (availableSize.Width-measureSize.Width) / children.Count);
+            var childAvailableSizeHeight = double.IsPositiveInfinity(availableSize.Height)
+                ? availableSize.Height
+                : availableSize.Height - measureSize.Height;
 
-            foreach (UIElement child in children)
+            var hiddenCnt = 0;
+
+            if (childAvailableSizeWidth < MinTabWidth)
+            {
+                var displayCount = (int)Math.Floor((availableSize.Width - measureSize.Width) / MinTabWidth);
+                hiddenCnt = children.Count - displayCount;
+                childAvailableSizeWidth = MinTabWidth;
+            }
+
+            var childAvailableSize = new Size(childAvailableSizeWidth, childAvailableSizeHeight);
+            
+            // 前面几个不显示
+            foreach (var child in children.Cast<UIElement>().Take(hiddenCnt))
+            {
+                child.Measure(Size.Empty);
+            }
+
+            foreach (var child in children.Cast<UIElement>().Skip(hiddenCnt))
             {
                 child.Measure(childAvailableSize);
                 var childDesiredSize = child.DesiredSize;
-                measureSize.Width += childDesiredSize.Width;
+                measureSize.Width += Math.Max(childAvailableSizeWidth, childDesiredSize.Width);
                 measureSize.Height = Math.Max(childDesiredSize.Height, measureSize.Height);
             }
 

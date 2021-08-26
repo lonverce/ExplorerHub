@@ -69,7 +69,7 @@ namespace ExplorerHub
                 return;
             }
 
-            _windowsManager.CreateHubWindow().AddBrowserCommand.Execute();
+            _windowsManager.CreateHubWindow().AddBrowser.Execute();
         }
     }
 }

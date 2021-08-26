@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="ExplorerHub.UI.ChromeTabItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
+             xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             mc:Ignorable="d" 
+             d:DesignHeight="36" d:DesignWidth="250" 
+             d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.InputBindings>
+            <MouseBinding MouseAction="MiddleClick" Command="{Binding CloseExplorer}"/>
+        </Grid.InputBindings>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Source="{Binding Logo}" Width="18" Height="18" MinWidth="12" Margin="4, 2, 0, 2" VerticalAlignment="Center" />
+        <TextBlock Grid.Column="1" Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
+                                           FontSize="12.2" FontWeight="ExtraLight"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" Padding="5,0" />
+        <Button Grid.Column="2" FontFamily="{StaticResource FontAwesome}" 
+                                Content="&#xf00d;" Background="Transparent" 
+                                BorderThickness="0" 
+                                Command="{Binding CloseExplorer}">
+        </Button>
+    </Grid>
+    <UserControl.ToolTip>
+        <StackPanel>
+            <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold"/>
+            <TextBlock Text="{Binding NavigationPath}" FontSize="12" FontWeight="Light"/>
+        </StackPanel>
+    </UserControl.ToolTip>
+    <UserControl.ContextMenu>
+        <!-->Tab标签的右键菜单</!-->
+        <ContextMenu d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}" 
+                     silver:ContextMenuHelper.ItemPadding="5,0"
+                     silver:ContextMenuHelper.ItemHeight="25"
+                     FontSize="10">
+            <ContextMenu.ItemContainerStyle>
+                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                    <Setter Property="FontSize" Value="12"/>
+                </Style>
+            </ContextMenu.ItemContainerStyle>
+            <MenuItem Header="在新窗口中打开"
+                      Command="{Binding ShowInNewWindow}">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf08e;</TextBlock>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="关闭此标签页"
+                      Command="{Binding CloseExplorer}">
+                <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf00d;</TextBlock>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.ContextMenu>
+</UserControl>

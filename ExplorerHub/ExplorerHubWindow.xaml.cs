@@ -45,7 +45,7 @@ namespace ExplorerHub
             {
                 foreach (var explorerViewModel in vm.Explorers.ToArray())
                 {
-                    vm.CloseBrowserCommand.Execute(explorerViewModel);
+                    vm.CloseBrowser.Execute(explorerViewModel);
                 }
             }
 

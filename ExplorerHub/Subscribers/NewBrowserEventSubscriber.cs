@@ -16,7 +16,7 @@ namespace ExplorerHub.Subscribers
         public void Handle(IEventData eventData)
         {
             var data = (NewExplorerEventData) eventData;
-            _windowsManager.GetOrCreateActiveHubWindow().AddBrowserCommand.Execute(data.Target);
+            _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(data.Target);
         }
     }
 }

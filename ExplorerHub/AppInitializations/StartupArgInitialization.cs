@@ -42,7 +42,7 @@ namespace ExplorerHub.AppInitializations
                 }
             }
 
-            _windowsManager.CreateHubWindow().AddBrowserCommand.Execute(initShellObj);
+            _windowsManager.CreateHubWindow().AddBrowser.Execute(initShellObj);
             _splash.Close(TimeSpan.Zero);
         }
     }

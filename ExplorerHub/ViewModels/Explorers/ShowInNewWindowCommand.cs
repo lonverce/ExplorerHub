@@ -12,7 +12,8 @@ namespace ExplorerHub.ViewModels.Explorers
         private readonly IViewModelRepository<ExplorerHubViewModel> _hubRepository;
         private readonly ExplorerViewModel _model;
         private ExplorerHubViewModel _hubModel;
-        private bool _canExecute = false;
+
+        public bool CanExecute { get; private set; }
 
         public ShowInNewWindowCommand(
             IHubWindowsManager windowsManager,
@@ -29,12 +30,12 @@ namespace ExplorerHub.ViewModels.Explorers
 
         private void SetCanExecute(bool canExec)
         {
-            if (_canExecute == canExec)
+            if (CanExecute == canExec)
             {
                 return;
             }
 
-            _canExecute = canExec;
+            CanExecute = canExec;
 
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -85,13 +86,18 @@ namespace ExplorerHub.ViewModels.Explorers
             StartMonitoring();
         }
 
-        public bool CanExecute(object parameter) => _canExecute;
+        bool ICommand.CanExecute(object parameter) => CanExecute;
 
-        public void Execute(object parameter)
+        void ICommand.Execute(object parameter)
+        {
+            Execute();  
+        }
+
+        public void Execute()
         {
             var hubModel = _hubModel;
-            hubModel.CloseBrowserCommand.Execute(_model, false);
-            _windowsManager.CreateHubWindow().AddBrowserCommand.Execute(_model, 0);
+            hubModel.CloseBrowser.Execute(_model, false);
+            _windowsManager.CreateHubWindow().AddBrowser.Execute(_model, 0);
         }
 
         public event EventHandler CanExecuteChanged;

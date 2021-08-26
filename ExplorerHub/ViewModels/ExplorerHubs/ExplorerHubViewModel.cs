@@ -14,10 +14,10 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
         public ObservableCollection<ExplorerViewModel> Explorers { get; }
 
         [InjectProperty]
-        public AddBrowserCommand AddBrowserCommand { get; set; }
+        public AddBrowserCommand AddBrowser { get; set; }
 
         [InjectProperty]
-        public CloseBrowserCommand CloseBrowserCommand { get; set; }
+        public CloseBrowserCommand CloseBrowser { get; set; }
 
         [InjectProperty(ResolvedType = typeof(ExplorerHubDropTarget))]
         public IDropTarget DropTarget { get; set; }

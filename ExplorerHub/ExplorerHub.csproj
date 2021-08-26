@@ -145,8 +145,12 @@
     <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
     <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
     <Compile Include="UI\ChromeTabBorder.cs" />
+    <Compile Include="UI\ChromeTabItem.xaml.cs">
+      <DependentUpon>ChromeTabItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\ChromeTabListBox.cs" />
     <Compile Include="UI\ChromeTabPanel.cs" />
+    <Compile Include="UI\MaxWidthConverter.cs" />
     <Compile Include="UI\PointExtensions.cs" />
     <Compile Include="ViewModels\ExplorerHubs\IHubWindowsManager.cs" />
     <Compile Include="Common\IManagedObject.cs" />
@@ -176,6 +180,7 @@
     <Compile Include="Common\WindowsFormsHostHelper.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubDropTarget.cs" />
     <Compile Include="ViewModels\ExplorerHubs\PositionMarginConverter.cs" />
+    <Compile Include="ViewModels\Explorers\CloseExplorerCommand.cs" />
     <Compile Include="ViewModels\Explorers\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubViewModel.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
@@ -212,6 +217,10 @@
     <Page Include="Themes\ChromeTabPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\ChromeTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

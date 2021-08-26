@@ -8,7 +8,6 @@ using ExplorerHub.AppInitializations;
 using ExplorerHub.BackgroundTasks;
 using ExplorerHub.Infrastructures;
 using ExplorerHub.Subscribers;
-using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
 using ExplorerHub.ViewModels.Explorers;
 using MindLab.Messaging;
@@ -169,6 +168,7 @@ namespace ExplorerHub
             containerBuilder.RegisterType<CloseBrowserCommand>();
             containerBuilder.RegisterType<ShowInNewWindowCommand>();
             containerBuilder.RegisterType<ExplorerHubDropTarget>();
+            containerBuilder.RegisterType<CloseExplorerCommand>();
 
             // done
             _container = containerBuilder.Build();

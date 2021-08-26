@@ -60,8 +60,8 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
                         return;
                     }
 
-                    ownerHub.CloseBrowserCommand.Execute(sourceItem, false);
-                    _vm.AddBrowserCommand.Execute(sourceItem, targetIndex);
+                    ownerHub.CloseBrowser.Execute(sourceItem, false);
+                    _vm.AddBrowser.Execute(sourceItem, targetIndex);
                 }
             }
         }

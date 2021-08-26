@@ -21,9 +21,9 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             _parser = parser;
         }
 
-        public bool CanExecute(object parameter) => true;
+        bool ICommand.CanExecute(object parameter) => true;
 
-        public void Execute(object parameter)
+        void ICommand.Execute(object parameter)
         {
             Execute(null);
         }
