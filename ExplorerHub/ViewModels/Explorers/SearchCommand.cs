@@ -36,6 +36,7 @@ namespace ExplorerHub.ViewModels.Explorers
             {
                 _notificationService.Notify("无法导航到指定路径", "操作失败", NotificationLevel.Warn, false);
                 _owner.FlushData();
+                return;
             }
             
             _owner.Browser.Navigate(target);

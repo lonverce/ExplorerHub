@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using ExplorerHub.Events;
 using Microsoft.WindowsAPICodePack.Controls;
@@ -126,6 +127,7 @@ namespace ExplorerHub.ViewModels.Explorers
             ManagedObjectId = managedObjectId;
 
             Browser = new ExplorerBrowser();
+            Browser.BorderStyle = BorderStyle.None;
             var log = Browser.NavigationLog;
             log.NavigationLogChanged += NavigationLogOnNavigationLogChanged;
 

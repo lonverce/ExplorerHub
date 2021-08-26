@@ -10,15 +10,23 @@
             xmlns:explorerHubs="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs"
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
             xmlns:ui="clr-namespace:ExplorerHub.UI"
+            xmlns:system="clr-namespace:System;assembly=mscorlib"
             pu:WindowXCaption.Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
-            pu:WindowXCaption.Height="42"
             Title="文件资源管理器" 
             Name="TabWnd"
             BorderThickness="0"
             Height="700" Width="1000"
             d:DataContext="{d:DesignInstance explorerHubs:ExplorerHubViewModel}" 
             Padding="0">
+    <pu:WindowXCaption.Height>
+        <Binding ElementName="TabWnd" Path="WindowState">
+            <Binding.Converter>
+                <explorerHubs:WindowStateHeightConverter MaxHeight="37" NormalHeight="42"/>
+            </Binding.Converter>
+        </Binding>
+    </pu:WindowXCaption.Height>
     <pu:WindowX.Resources>
+        
         <Style TargetType="Button"
                x:Key="BtnStyle"
                BasedOn="{StaticResource {x:Type Button}}">
@@ -41,6 +49,7 @@
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
         <StackPanel Orientation="Horizontal"
+                    Height="36"
                     Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=8}">
             <!-- Tab标签列表 -->
             <ListBox Name="ExplorerHeaderBar" 
@@ -155,7 +164,7 @@
                             </StackPanel.InputBindings>
                             <StackPanel Orientation="Horizontal" 
                                 HorizontalAlignment="Left">
-                                <Image Source="{Binding Logo}" Width="18" Height="18" Margin="8, 2, 6, 2" VerticalAlignment="Center" />
+                                <Image Source="{Binding Logo}" Width="18" Height="18" Margin="6, 2, 0, 2" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
                                            FontSize="12.2" FontWeight="ExtraLight"
                                             VerticalAlignment="Center" MaxWidth="120" MinWidth="5"
@@ -166,8 +175,7 @@
                             Content="&#xf00d;" Background="Transparent" 
                             BorderThickness="0" 
                             Command="{Binding ElementName=ExplorerHeaderBar, Path=DataContext.CloseBrowserCommand}"
-                            CommandParameter="{Binding}"
-                            Foreground="LightSlateGray">
+                            CommandParameter="{Binding}">
                             </Button>
                         </StackPanel>
                     </DataTemplate>
@@ -248,7 +256,6 @@
                 </DockPanel>
             </Border>
         </DockPanel>
-        
         <WindowsFormsHost  MinHeight="200" MinWidth="300" 
                            Grid.Row="1"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

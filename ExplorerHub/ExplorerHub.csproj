@@ -146,6 +146,7 @@
     <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
     <Compile Include="UI\ChromeTabBorder.cs" />
     <Compile Include="UI\ChromeTabListBox.cs" />
+    <Compile Include="UI\ChromeTabPanel.cs" />
     <Compile Include="UI\PointExtensions.cs" />
     <Compile Include="ViewModels\ExplorerHubs\IHubWindowsManager.cs" />
     <Compile Include="Common\IManagedObject.cs" />
@@ -205,6 +206,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\ChromeTabListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ChromeTabPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
