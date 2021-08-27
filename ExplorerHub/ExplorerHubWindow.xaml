@@ -10,7 +10,7 @@
             xmlns:explorerHubs="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs"
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
             xmlns:ui="clr-namespace:ExplorerHub.UI"
-            pu:WindowXCaption.Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+            pu:WindowXCaption.Background="{DynamicResource {x:Static ui:AppColors.SystemBackgroundKey}}"
             Title="文件资源管理器" 
             Name="TabWnd"
             BorderThickness="1"
@@ -59,7 +59,7 @@
                     Command="{Binding AddBrowser}"
                     Margin="0" FontFamily="{StaticResource FontAwesome}" 
                     Background="Transparent" 
-                    Foreground="DimGray"/>
+                    Foreground="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
         </Grid>
     </pu:WindowXCaption.Header>
     <Grid>
@@ -68,10 +68,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ui:ChromeAddressBar Grid.Row="0" DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}" Margin="3,2" />
-        <WindowsFormsHost  MinHeight="200" MinWidth="300" 
+        <WindowsFormsHost  MinHeight="200" MinWidth="300"
                            Grid.Row="1"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                           Margin="0, 7, 0, 0" 
+                           Margin="2, 7, 2, 1" 
                            explorerHub:WindowsFormsHostHelper.ChildForm="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem.(explorers:ExplorerViewModel.Browser), Mode=OneWay}"
         />
     </Grid>

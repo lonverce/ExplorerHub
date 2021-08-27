@@ -8,8 +8,8 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="Foreground" Value="#111111"/>
-        <Setter Property="BorderBrush" Value="#333333"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ui:ChromeTabItem">
@@ -22,6 +22,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="#222222"></Setter>
                             <Setter Property="Grid.ZIndex" Value="999"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -32,7 +33,7 @@
                                 <Condition Property="IsMouseOver" Value="True"/>
                                 <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"/>
+                            <Setter Property="Background" Value="{DynamicResource {x:Static ui:AppColors.SystemInactiveBackgroundKey}}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -41,7 +42,7 @@
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <ui:ChromeTabItemView VerticalAlignment="Stretch"/>
+                    <ui:ChromeTabItemView VerticalAlignment="Stretch" Threshold="50" IsSelected="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=ListBoxItem}, Path=IsSelected}"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

@@ -22,14 +22,14 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="0" Source="{Binding Logo}" Width="18" Height="18" MinWidth="12" Margin="4, 2, 0, 2" VerticalAlignment="Center" />
-        <TextBlock Grid.Column="1" Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
+        <Image Name="Logo" Grid.Column="0" Source="{Binding Logo}" Width="18" Height="18" MinWidth="12" Margin="4, 2, 0, 2" VerticalAlignment="Center" />
+        <TextBlock Name="Title" Grid.Column="1" Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
                                            FontSize="12.2" FontWeight="ExtraLight"
                                            VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Padding="5,0" />
-        <Button Grid.Column="2" FontFamily="{StaticResource FontAwesome}" 
+        <Button Name="CloseBtn" Grid.Column="2" FontFamily="{StaticResource FontAwesome}" 
                                 Content="&#xf00d;" Background="Transparent" 
-                                BorderThickness="0" 
+                                BorderThickness="0" Foreground="{Binding ElementName=Title, Path=Foreground}"
                                 Command="{Binding CloseExplorer}">
         </Button>
     </Grid>

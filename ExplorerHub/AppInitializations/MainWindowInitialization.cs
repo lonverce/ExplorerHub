@@ -10,15 +10,18 @@ namespace ExplorerHub.AppInitializations
     {
         private readonly App _app;
         private readonly IHubWindowsManager _windowsManager;
+        private readonly ISystemColorManager _colorManager;
 
-        public MainWindowInitialization(App app, IHubWindowsManager windowsManager)
+        public MainWindowInitialization(App app, IHubWindowsManager windowsManager, ISystemColorManager colorManager)
         {
             _app = app;
             _windowsManager = windowsManager;
+            _colorManager = colorManager;
         }
 
         public void InitializeAppComponents()
         {
+            _app.SetAppBackground(_colorManager.GetSystemColor());
             var hiddenWnd = new HiddenMainWindow(_app, _windowsManager);
             _app.MainWindow = hiddenWnd;
 

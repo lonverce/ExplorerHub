@@ -132,6 +132,7 @@
     <Compile Include="BackgroundTasks\EventMessageDispatchTask.cs" />
     <Compile Include="BackgroundTasks\ExternalShellWindowsMonitoringTask.cs" />
     <Compile Include="BackgroundTasks\FollowerProcessWatchingTask.cs" />
+    <Compile Include="BackgroundTasks\SystemUserPreferenceMonitoringTask.cs" />
     <Compile Include="Common\ContainerRegistrationExtensions.cs" />
     <Compile Include="Common\IAppInitialization.cs" />
     <Compile Include="Common\IAppLeader.cs" />
@@ -141,9 +142,14 @@
     <Compile Include="Common\IShellUrlParser.cs" />
     <Compile Include="Common\InjectPropertyAttribute.cs" />
     <Compile Include="Common\IShellWindowsManager.cs" />
+    <Compile Include="Common\ISystemColorManager.cs" />
     <Compile Include="Common\IUserNotificationService.cs" />
     <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
+    <Compile Include="Events\SystemColorChangedEventData.cs" />
+    <Compile Include="Infrastructures\SystemColorManager.cs" />
     <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
+    <Compile Include="Subscribers\SystemColorEventSubscriber.cs" />
+    <Compile Include="UI\AppColors.cs" />
     <Compile Include="UI\ChromeAddressBar.xaml.cs">
       <DependentUpon>ChromeAddressBar.xaml</DependentUpon>
     </Compile>

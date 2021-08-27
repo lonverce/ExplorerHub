@@ -29,7 +29,7 @@
                 ToolTip="上一层"
                 Command="{Binding GoToParent}" />
         <Button DockPanel.Dock="Right" 
-                Content="&#xf013;" 
+                Content="&#xf142;" 
                 FontFamily="{StaticResource FontAwesome}"
                 ToolTip="设置" />
         <Border CornerRadius="15" 
