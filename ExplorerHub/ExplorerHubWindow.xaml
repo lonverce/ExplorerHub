@@ -23,7 +23,7 @@
     <pu:WindowXCaption.Height>
         <Binding ElementName="TabWnd" Path="WindowState">
             <Binding.Converter>
-                <explorerHubs:WindowStateHeightConverter MaxHeight="37" NormalHeight="44"/>
+                <explorerHubs:WindowStateHeightConverter MaxHeight="37" NormalHeight="50"/>
             </Binding.Converter>
         </Binding>
     </pu:WindowXCaption.Height>
@@ -31,165 +31,43 @@
         <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
-        <Border BorderBrush="Transparent" BorderThickness="0">
-            <Grid Height="36" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=8}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" MinWidth="150"/>
-                </Grid.ColumnDefinitions>
-                <!-- Tab标签列表 -->
-                <ListBox Name="ExplorerHeaderBar" 
-                         Grid.Column="0"
-                         BorderThickness="0"
-                         ItemsSource="{Binding Explorers}" 
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DropHandler="{Binding DropTarget}"
-                         Background="Transparent"
-                         SelectionMode="Single"
-                         SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListBox.MaxWidth>
-                        <Binding ElementName="TabWnd" Path="ActualWidth">
-                            <Binding.Converter>
-                                <ui:MaxWidthConverter PreservedSize="230"/>
-                            </Binding.Converter>
-                        </Binding>
-                    </ListBox.MaxWidth>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem" 
-                               BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                            <Style.Resources>
-                                <explorerHubs:PositionMarginConverter x:Key="PositionMarginConverter"/>
-                            </Style.Resources>
-                            <Setter Property="Height" Value="{Binding ElementName=ExplorerHeaderBar, Path=ActualHeight}"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter Property="Foreground" Value="#111111"/>
-                            <Setter Property="BorderBrush" Value="#333333"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <ui:ChromeTabBorder BorderBrush="{TemplateBinding Background}"
-                                                    CornerRadius="8,8,0,0"
-                                                    SplitBorderBrush="{TemplateBinding BorderBrush}"
-                                                    Background="{TemplateBinding Background}">
-                                            <ContentPresenter Margin="4,0"/>
-                                        </ui:ChromeTabBorder>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="White"/>
-                                                <Setter Property="Grid.ZIndex" Value="999"/>
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Grid.ZIndex" Value="998"/>
-                                            </Trigger>
-                                            <MultiTrigger>
-                                                <MultiTrigger.Conditions>
-                                                    <Condition Property="IsMouseOver" Value="True"/>
-                                                    <Condition Property="IsSelected" Value="False"></Condition>
-                                                </MultiTrigger.Conditions>
-                                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"></Setter>
-                                            </MultiTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ui:ChromeTabPanel MaxTabWidth="250" MinTabWidth="30"
-                                               Padding="8,0,10,0"
-                                               Background="Transparent" 
-                                               HorizontalAlignment="Stretch" 
-                                               VerticalAlignment="Stretch" 
-                                               IsItemsHost="True"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="explorers:ExplorerViewModel">
-                            <ui:ChromeTabItem/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <Button Content="&#xf067;"
-                        Grid.Column="1"
-                        Style="{StaticResource BtnStyle}"
-                        FontSize="16"
-                        HorizontalAlignment="Left"
-                        Command="{Binding AddBrowser}"
-                        Margin="0" FontFamily="{StaticResource FontAwesome}" 
-                        Background="Transparent" 
-                        Foreground="DimGray"/>
-                </Grid>
-        </Border>
+        <Grid Height="36" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ui:ChromeTabControl x:Name="ExplorerHeaderBar" Grid.Column="0" 
+                                 ItemsSource="{Binding Explorers}"
+                                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                                 dd:DragDrop.IsDragSource="True"
+                                 dd:DragDrop.IsDropTarget="True"
+                                 dd:DragDrop.DropHandler="{Binding DropTarget}">
+                <ui:ChromeTabControl.MaxWidth>
+                    <Binding ElementName="TabWnd" Path="ActualWidth">
+                        <Binding.Converter>
+                            <ui:MaxWidthConverter PreservedSize="230"/>
+                        </Binding.Converter>
+                    </Binding>
+                </ui:ChromeTabControl.MaxWidth>
+            </ui:ChromeTabControl>
+               
+            <Button Content="&#xf067;"
+                    Grid.Column="1"
+                    Style="{StaticResource BtnStyle}"
+                    FontSize="16"
+                    HorizontalAlignment="Left"
+                    Command="{Binding AddBrowser}"
+                    Margin="0" FontFamily="{StaticResource FontAwesome}" 
+                    Background="Transparent" 
+                    Foreground="DimGray"/>
+        </Grid>
     </pu:WindowXCaption.Header>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" LastChildFill="True" Margin="3,2" 
-                   DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}"
-                   d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
-            <DockPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
-                    <Setter Property="FontSize" Value="17"/>
-                </Style>
-            </DockPanel.Resources>
-            <Button DockPanel.Dock="Left"
-                    FontFamily="{StaticResource FontAwesome}"
-                                    
-                    Content="&#xf060;"
-                    ToolTip="后退"
-                    Command="{Binding NavigateBackward}"  />
-            <Button DockPanel.Dock="Left"
-                                    Content="&#xf061;"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    ToolTip="前进"
-                                    Command="{Binding NavigateForward}" />
-            <Button DockPanel.Dock="Left"
-                                    Content="&#xf0aa;"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    ToolTip="上一层"
-                                    Command="{Binding GoToParent}" />
-            <Button DockPanel.Dock="Right" Content="&#xf013;" FontFamily="{StaticResource FontAwesome}"
-                                    ToolTip="设置" />
-
-            <Border CornerRadius="15" 
-                    Margin="5,1" Padding="10,0"
-                    BorderThickness="1"
-                    VerticalAlignment="Center"
-                    Name="AddressBar">
-                <DockPanel VerticalAlignment="Center" Height="26">
-                    <DockPanel.Resources>
-                        <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
-                            <Setter Property="FontSize" Value="14"></Setter>
-                        </Style>
-                    </DockPanel.Resources>
-                    <Image Source="{Binding Logo}" Width="15" Height="15" Margin="3, 2"
-                           VerticalAlignment="Center" />
-                    <Button DockPanel.Dock="Right" Content="&#xf006;"
-                                            FontFamily="{StaticResource FontAwesome}" ToolTip="添加收藏" />
-                    <TextBox TextWrapping="NoWrap" BorderThickness="0" 
-                             MaxLines="1" MaxLength="256" IsReadOnly="False" AutoWordSelection="True"
-                             Background="Transparent"
-                             FontFamily="微软雅黑"
-                             Padding="5, 3" VerticalContentAlignment="Center"
-                             Text="{Binding NavigationPath, Mode=OneWay}"
-                             AcceptsReturn="False" 
-                             LostKeyboardFocus="SearchBox_OnLostKeyboardFocus"
-                             GotKeyboardFocus="SearchBox_OnGotKeyboardFocus"
-                             Name="SearchBox">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding Search}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}, Path=Text}" />
-                        </TextBox.InputBindings>
-                    </TextBox>
-                </DockPanel>
-            </Border>
-        </DockPanel>
+        <ui:ChromeAddressBar Grid.Row="0" DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}" Margin="3,2" />
         <WindowsFormsHost  MinHeight="200" MinWidth="300" 
                            Grid.Row="1"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

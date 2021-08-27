@@ -3,14 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using ExplorerHub.UI;
-using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
-using TextBox = System.Windows.Controls.TextBox;
 
 namespace ExplorerHub
 {
@@ -65,7 +58,6 @@ namespace ExplorerHub
             {
                 this.ActivateEx();
             };
-            SearchBox_OnLostKeyboardFocus(SearchBox, null);
         }
 
         private void ExplorersOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -76,31 +68,6 @@ namespace ExplorerHub
                 // 所有ExplorerBrowser关闭后退出本窗口
                 Close();
             }
-        }
-
-        private void OnSearchBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            e.Handled = tb.Focus();
-        }
-
-        private void SearchBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            tb.PreviewMouseDown += OnSearchBoxPreviewMouseDown;
-
-            AddressBar.Background = Brushes.WhiteSmoke;
-            AddressBar.BorderBrush = Brushes.Transparent;
-        }
-
-        private void SearchBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            tb.PreviewMouseDown -= OnSearchBoxPreviewMouseDown;
-
-            AddressBar.Background = Brushes.White;
-            AddressBar.BorderBrush = Brushes.DodgerBlue;
-            tb.SelectAll();
         }
     }
 }

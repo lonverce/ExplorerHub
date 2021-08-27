@@ -2,6 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="clr-namespace:ExplorerHub.UI">
-    <Style TargetType="{x:Type ui:ChromeTabPanel}" BasedOn="{StaticResource {x:Type Panel}}">
+    <Style TargetType="{x:Type ui:ChromeTabPanel}">
     </Style>
 </ResourceDictionary>

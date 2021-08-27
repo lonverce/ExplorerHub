@@ -7,7 +7,12 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Panuon.UI.Silver;component/Control.xaml" />
+                <ResourceDictionary Source="Themes/ChromeTabControl.xaml"/>
+                <ResourceDictionary Source="Themes/ChromeTabItem.xaml"/>
+                <ResourceDictionary Source="Themes/ChromeTabBorder.xaml"/>
+                <ResourceDictionary Source="Themes/ChromeTabPanel.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
             <Style TargetType="Button"
                    x:Key="BtnStyle"
                    BasedOn="{StaticResource {x:Type Button}}">

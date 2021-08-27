@@ -144,11 +144,15 @@
     <Compile Include="Common\IUserNotificationService.cs" />
     <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
     <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
-    <Compile Include="UI\ChromeTabBorder.cs" />
-    <Compile Include="UI\ChromeTabItem.xaml.cs">
-      <DependentUpon>ChromeTabItem.xaml</DependentUpon>
+    <Compile Include="UI\ChromeAddressBar.xaml.cs">
+      <DependentUpon>ChromeAddressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\ChromeTabListBox.cs" />
+    <Compile Include="UI\ChromeTabBorder.cs" />
+    <Compile Include="UI\ChromeTabControl.cs" />
+    <Compile Include="UI\ChromeTabItem.cs" />
+    <Compile Include="UI\ChromeTabItemView.xaml.cs">
+      <DependentUpon>ChromeTabItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\ChromeTabPanel.cs" />
     <Compile Include="UI\MaxWidthConverter.cs" />
     <Compile Include="UI\PointExtensions.cs" />
@@ -210,15 +214,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ChromeTabListBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Themes\ChromeTabPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\ChromeTabItem.xaml">
+    <Page Include="Themes\ChromeTabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ChromeTabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\ChromeAddressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ChromeTabItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
