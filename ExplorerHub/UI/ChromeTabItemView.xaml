@@ -5,13 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
              xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             xmlns:ui="clr-namespace:ExplorerHub.UI"
              mc:Ignorable="d" 
              d:DesignHeight="36" d:DesignWidth="250" 
              d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
-    <Grid>
+    <Grid Margin="0,0,0,0">
         <Grid.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
                 <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="0"/>
             </Style>
         </Grid.Resources>
         <Grid.InputBindings>
@@ -20,16 +22,22 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Image Name="Logo" Grid.Column="0" Source="{Binding Logo}" Width="18" Height="18" MinWidth="12" Margin="4, 2, 0, 2" VerticalAlignment="Center" />
         <TextBlock Name="Title" Grid.Column="1" Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
                                            FontSize="12.2" FontWeight="ExtraLight"
                                            VerticalAlignment="Center"
-                                           TextTrimming="CharacterEllipsis" Padding="5,0" />
-        <Button Name="CloseBtn" Grid.Column="2" FontFamily="{StaticResource FontAwesome}" 
-                                Content="&#xf00d;" Background="Transparent" 
-                                BorderThickness="0" Foreground="{Binding ElementName=Title, Path=Foreground}"
+                                           TextTrimming="None" Padding="5,0" />
+        <Button Name="CloseBtn"  FontFamily="{StaticResource FontAwesome}" 
+                                Margin="0,0,0,0"
+                                Width="20"
+                                Grid.Column="1"
+                                Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=ui:ChromeTabItem}, Path=Background}"
+                                HorizontalAlignment="Right" 
+                                Content="&#xf00d;"  
+                                VerticalAlignment="Center" 
+                                BorderThickness="0" 
+                                Foreground="{Binding ElementName=Title, Path=Foreground}"
                                 Command="{Binding CloseExplorer}">
         </Button>
     </Grid>
@@ -45,11 +53,6 @@
                      silver:ContextMenuHelper.ItemPadding="5,0"
                      silver:ContextMenuHelper.ItemHeight="25"
                      FontSize="10">
-            <ContextMenu.ItemContainerStyle>
-                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                    <Setter Property="FontSize" Value="12"/>
-                </Style>
-            </ContextMenu.ItemContainerStyle>
             <MenuItem Header="在新窗口中打开"
                       Command="{Binding ShowInNewWindow}">
                 <MenuItem.Icon>

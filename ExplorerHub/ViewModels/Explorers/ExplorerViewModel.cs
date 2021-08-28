@@ -28,6 +28,7 @@ namespace ExplorerHub.ViewModels.Explorers
         private ShellObject _displayingTarget;
         private int _ownerId = -1;
         private ItemPositionType _position;
+        private bool _isDrawLine;
 
         #endregion
 
@@ -91,6 +92,16 @@ namespace ExplorerHub.ViewModels.Explorers
                 }
 
                 _position = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDrawLine
+        {
+            get => _isDrawLine;
+            set
+            {
+                _isDrawLine = value;
                 OnPropertyChanged();
             }
         }

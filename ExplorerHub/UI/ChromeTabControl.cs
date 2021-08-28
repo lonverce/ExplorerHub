@@ -12,7 +12,7 @@ namespace ExplorerHub.UI
 
         protected override DependencyObject GetContainerForItemOverride()
         {
-            return new ChromeTabItem();
+            return new ChromeTabItem(this);
         }
     }
 }

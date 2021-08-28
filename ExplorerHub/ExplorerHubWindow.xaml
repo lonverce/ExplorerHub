@@ -13,7 +13,7 @@
             pu:WindowXCaption.Background="{DynamicResource {x:Static ui:AppColors.SystemBackgroundKey}}"
             Title="文件资源管理器" 
             Name="TabWnd"
-            BorderThickness="1"
+            BorderThickness="0"
             BorderBrush="Transparent"
             Height="700" Width="1000"
             MinHeight="400"
@@ -23,7 +23,7 @@
     <pu:WindowXCaption.Height>
         <Binding ElementName="TabWnd" Path="WindowState">
             <Binding.Converter>
-                <explorerHubs:WindowStateHeightConverter MaxHeight="37" NormalHeight="50"/>
+                <explorerHubs:WindowStateHeightConverter MaxHeight="35" NormalHeight="48"/>
             </Binding.Converter>
         </Binding>
     </pu:WindowXCaption.Height>
@@ -31,7 +31,7 @@
         <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
-        <Grid Height="36" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">
+        <Grid Height="34" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"/>

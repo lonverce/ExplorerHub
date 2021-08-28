@@ -37,7 +37,7 @@ namespace ExplorerHub.Infrastructures
                 (byte)(value >> 16),
                 (byte)(value >> 8),
                 (byte)value
-            );
+            ).RemoveAlpha();
         }
     }
 
