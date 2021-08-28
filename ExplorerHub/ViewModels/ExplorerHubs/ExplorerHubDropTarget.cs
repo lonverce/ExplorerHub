@@ -27,7 +27,8 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             if (dropInfo.TargetItem is ExplorerViewModel)
             {
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
-                dropInfo.Effects = DragDropEffects.Move;
+                dropInfo.Effects = DragDropEffects.All;
+                dropInfo.DestinationText = "放置到这里";
             }
         }
 

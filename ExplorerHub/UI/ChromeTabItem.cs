@@ -52,33 +52,19 @@ namespace ExplorerHub.UI
             base.OnRender(dc);
             var elementRect = new Rect(RenderSize);
             var pen = new Pen(Background, BorderThickness.Left);
-            var border = this;
-            //var index = _tabControl.Items.IndexOf(this.DataContext);
             
-            //if (index == -1)
-            //{
-            //    return;
-            //}
-
-            //ChromeTabItem previousItem = null;
-
-            //if (index > 0)
-            //{
-            //    previousItem = (ChromeTabItem)_tabControl.Items[index - 1];
-            //}
-
             if (DrawShape)
             {
                 var geo = new StreamGeometry();
                 using var gtx = geo.Open();
-                var bottomLeft = elementRect.BottomLeft.Translation(BorderThickness.Left/2, 0.5);
+                var bottomLeft = elementRect.BottomLeft;
                 gtx.BeginFigure(bottomLeft, true, true);
                 gtx.LineTo(bottomLeft.TranslationX(-BorderCornerRadius.TopLeft), true, true);
                 gtx.ArcTo(bottomLeft.TranslationY(-BorderCornerRadius.TopLeft),
                     new Size(BorderCornerRadius.TopLeft, BorderCornerRadius.TopLeft), 0, false,
                     SweepDirection.Counterclockwise, true, true);
 
-                var bottomRight = elementRect.BottomRight.Translation(-BorderThickness.Right/2, 0.5);
+                var bottomRight = elementRect.BottomRight;
                 gtx.BeginFigure(bottomRight, true, true);
                 gtx.LineTo(bottomRight.TranslationX(BorderCornerRadius.TopRight), true, true);
                 gtx.ArcTo(bottomRight.TranslationY(-BorderCornerRadius.TopRight),
@@ -87,17 +73,66 @@ namespace ExplorerHub.UI
 
                 dc.DrawGeometry(Background, pen, geo);
 
-                //if (previousItem != null)
-                //{
-                //    previousItem.DrawLine = false;
-                //}
+                var idx = _tabControl.ItemContainerGenerator.IndexFromContainer(this);
+                if (idx > 0)
+                {
+                    var item = (ChromeTabItem)_tabControl.ItemContainerGenerator.ContainerFromIndex(idx - 1);
+                    if (!item.DrawShape && item.DrawLine)
+                    {
+                        item.DrawLine = false;
+                    }
+                }
+
+                DrawLine = true;
             }
-            else if (DrawLine)
+            else 
             {
-                double thickness = BorderThickness.Right;
-                dc.DrawLine(new Pen(BorderBrush, thickness),
-                    elementRect.TopRight.Translation(-BorderThickness.Right*2, BorderCornerRadius.TopRight),
-                    elementRect.BottomRight.Translation(-BorderThickness.Right*2, -BorderCornerRadius.TopRight));
+                var idx = _tabControl.ItemContainerGenerator.IndexFromContainer(this);
+
+                // pre-check
+                if (DrawLine)
+                {
+                    if (idx + 1 < _tabControl.Items.Count)
+                    {
+                        var nextItem = (ChromeTabItem)_tabControl.ItemContainerGenerator.ContainerFromIndex(idx + 1);
+                        if (nextItem.DrawShape)
+                        {
+                            DrawLine = false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (idx + 1 < _tabControl.Items.Count)
+                    {
+                        var nextItem = (ChromeTabItem)_tabControl.ItemContainerGenerator.ContainerFromIndex(idx + 1);
+                        if (!nextItem.DrawShape)
+                        {
+                            DrawLine = true;
+                        }
+                    }
+                    else
+                    {
+                        DrawLine = true;
+                    }
+                }
+
+                if (DrawLine)
+                {
+                    double thickness = 1;
+                    dc.DrawLine(new Pen(BorderBrush, thickness),
+                        elementRect.TopRight.Translation(0, BorderCornerRadius.TopRight),
+                        elementRect.BottomRight.Translation(0, -BorderCornerRadius.TopRight));
+                }
+
+                if (idx > 0)
+                {
+                    var item = (ChromeTabItem)_tabControl.ItemContainerGenerator.ContainerFromIndex(idx - 1);
+                    if (!item.DrawShape)
+                    {
+                        item.DrawLine = true;
+                    }
+                }
             }
         }
     }

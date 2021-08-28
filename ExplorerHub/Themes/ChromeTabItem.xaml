@@ -10,19 +10,20 @@
         <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=ListBox}, Path=ActualHeight}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="BorderThickness" Value="1,0,1,0"></Setter>
+        <Setter Property="Margin" Value="0,0,1,0"></Setter>
+        <Setter Property="BorderThickness" Value="0,0,0,0"></Setter>
         <Setter Property="BorderCornerRadius" Value="8,8,0,0"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static ui:AppColors.SystemBackgroundKey}}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
-        <Setter Property="DrawLine" Value="{Binding (explorers:ExplorerViewModel.IsDrawLine), Mode=OneWay}"/>
-        <Setter Property="DrawShape" Value="{Binding RelativeSource={RelativeSource Mode=PreviousData}, Path=IsDrawLine, Mode=OneWayToSource, Converter={StaticResource BoolInverseConverter}}"></Setter>
+        <Setter Property="DrawLine" Value="True"/>
+        <Setter Property="DrawShape" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ui:ChromeTabItem">
                     <Border BorderBrush="Transparent"
                             CornerRadius="{TemplateBinding BorderCornerRadius}"
-                            BorderThickness="0,0,1,0"
+                            BorderThickness="0,0,0,0"
                             Background="{TemplateBinding Background}">
                         <ContentPresenter Margin="4,0"/>
                     </Border>
@@ -55,8 +56,6 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="DrawShape" Value="False"/>
-        <Setter Property="DrawLine" Value="True"/>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="White"/>
@@ -72,7 +71,7 @@
                     <Condition Property="IsSelected" Value="True"/>
                 </MultiTrigger.Conditions>
                 <Setter Property="DrawShape" Value="True"/>
-                <Setter Property="DrawLine" Value="False"/>
+                <Setter Property="DrawLine" Value="True"/>
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -80,7 +79,7 @@
                     <Condition Property="IsSelected" Value="True"/>
                 </MultiTrigger.Conditions>
                 <Setter Property="DrawShape" Value="True"/>
-                <Setter Property="DrawLine" Value="False"/>
+                <Setter Property="DrawLine" Value="True"/>
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -88,7 +87,7 @@
                     <Condition Property="IsSelected" Value="False"/>
                 </MultiTrigger.Conditions>
                 <Setter Property="DrawShape" Value="True"/>
-                <Setter Property="DrawLine" Value="False"/>
+                <Setter Property="DrawLine" Value="True"/>
                 <Setter Property="Background" Value="{DynamicResource {x:Static ui:AppColors.SystemInactiveBackgroundKey}}"/>
             </MultiTrigger>
             <MultiTrigger>
