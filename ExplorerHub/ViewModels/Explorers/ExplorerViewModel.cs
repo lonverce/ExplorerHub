@@ -1,19 +1,34 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
+using ExplorerHub.Events;
 using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Controls.WindowsForms;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
+    [Flags]
+    public enum ItemPositionType
+    {
+        None = 0,
+        Head = 1,
+        Tail = 2,
+        Both = Head | Tail
+    }
+
     public class ExplorerViewModel : ViewModelBase,IManagedObject, IDisposable
     {
+        private readonly IEventBus _eventBus;
+
         #region Fields
 
         private string _title;
         private string _navigationPath;
         private ShellObject _displayingTarget;
         private int _ownerId = -1;
+        private ItemPositionType _position;
+        private bool _isDrawLine;
 
         #endregion
 
@@ -66,6 +81,31 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
+        public ItemPositionType Position
+        {
+            get => _position;
+            set
+            {
+                if (_position == value)
+                {
+                    return;
+                }
+
+                _position = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDrawLine
+        {
+            get => _isDrawLine;
+            set
+            {
+                _isDrawLine = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -74,16 +114,19 @@ namespace ExplorerHub.ViewModels.Explorers
         public SearchCommand Search { get; set; }
 
         [InjectProperty]
-        public NavBackCommand NavigateBackwardCommand { get; set; }
+        public NavBackCommand NavigateBackward { get; set; }
 
         [InjectProperty]
-        public NavForwardCommand NavigateForwardCommand { get; set; }
+        public NavForwardCommand NavigateForward { get; set; }
 
         [InjectProperty]
-        public GoToParentCommand GoToParentCommand { get; set; }
+        public GoToParentCommand GoToParent { get; set; }
         
         [InjectProperty]
-        public ShowInNewWindowCommand ShowInNewWindowCommand { get; set; }
+        public ShowInNewWindowCommand ShowInNewWindow { get; set; }
+
+        [InjectProperty]
+        public CloseExplorerCommand CloseExplorer { get; set; }
 
         #endregion
 
@@ -91,11 +134,14 @@ namespace ExplorerHub.ViewModels.Explorers
 
         public ExplorerViewModel(
             int managedObjectId,
-            ShellObject initialTarget)
+            ShellObject initialTarget,
+            IEventBus eventBus)
         {
+            _eventBus = eventBus;
             ManagedObjectId = managedObjectId;
 
             Browser = new ExplorerBrowser();
+            Browser.BorderStyle = BorderStyle.None;
             var log = Browser.NavigationLog;
             log.NavigationLogChanged += NavigationLogOnNavigationLogChanged;
 
@@ -105,8 +151,8 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
-        public ExplorerViewModel(int managedObjectId)
-            :this(managedObjectId, null)
+        public ExplorerViewModel(int managedObjectId, IEventBus eventBus)
+            :this(managedObjectId, null, eventBus)
         {
         }
 
@@ -118,7 +164,6 @@ namespace ExplorerHub.ViewModels.Explorers
         {
             var log = Browser.NavigationLog;
             log.NavigationLogChanged -= NavigationLogOnNavigationLogChanged;
-            Browser.Dispose();
         }
         
         #endregion
@@ -128,6 +173,7 @@ namespace ExplorerHub.ViewModels.Explorers
         {
             var log = (ExplorerBrowserNavigationLog)sender;
             DisplayingTarget = log.CurrentLocation;
+            _eventBus.PublishEvent(new ExplorerNavigationUpdatedEventData(ManagedObjectId));
         }
 
         private void OnNavigationUpdated()

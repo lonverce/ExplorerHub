@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
-using TextBox = System.Windows.Controls.TextBox;
 
 namespace ExplorerHub
 {
@@ -41,7 +38,7 @@ namespace ExplorerHub
             {
                 foreach (var explorerViewModel in vm.Explorers.ToArray())
                 {
-                    vm.CloseBrowserCommand.Execute(explorerViewModel);
+                    vm.CloseBrowser.Execute(explorerViewModel);
                 }
             }
 
@@ -61,8 +58,6 @@ namespace ExplorerHub
             {
                 this.ActivateEx();
             };
-            SearchBox_OnLostKeyboardFocus(SearchBox, null);
-            //OnLostFocus(SearchBox);
         }
 
         private void ExplorersOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -73,32 +68,6 @@ namespace ExplorerHub
                 // 所有ExplorerBrowser关闭后退出本窗口
                 Close();
             }
-        }
-        private void OnSearchBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            e.Handled = tb.Focus();
-        }
-
-        private void SearchBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            tb.PreviewMouseDown += OnSearchBoxPreviewMouseDown;
-
-            AddressBar.Background = System.Windows.Media.Brushes.WhiteSmoke;
-            AddressBar.BorderThickness = new Thickness(1);
-            AddressBar.BorderBrush = System.Windows.Media.Brushes.Transparent;
-        }
-
-        private void SearchBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            tb.PreviewMouseDown -= OnSearchBoxPreviewMouseDown;
-
-            AddressBar.Background = System.Windows.Media.Brushes.White;
-            AddressBar.BorderThickness = new Thickness(1);
-            AddressBar.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            tb.SelectAll();
         }
     }
 }

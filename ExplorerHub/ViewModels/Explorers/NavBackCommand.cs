@@ -7,39 +7,39 @@ namespace ExplorerHub.ViewModels.Explorers
     public class NavBackCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
-        private bool _canExec = false;
+        public bool CanExecute { get; private set; } = false;
 
         public NavBackCommand(ExplorerViewModel owner)
         {
             _owner = owner;
 
             _owner.Browser.NavigationLog.NavigationLogChanged += NavigationLogOnNavigationLogChanged;
-            _canExec = _owner.Browser.NavigationLog.CanNavigateBackward;
+            CanExecute = _owner.Browser.NavigationLog.CanNavigateBackward;
         }
 
         private void NavigationLogOnNavigationLogChanged(object sender, NavigationLogEventArgs e)
         {
             var canExec = _owner.Browser.NavigationLog.CanNavigateBackward;
 
-            if (canExec == _canExec)
+            if (canExec == CanExecute)
             {
                 return;
             }
 
-            _canExec = canExec;
+            CanExecute = canExec;
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public bool CanExecute(object parameter) => _canExec;
+        bool ICommand.CanExecute(object parameter) => CanExecute;
 
-        public void Execute(object parameter)
+        void ICommand.Execute(object parameter)
         {
             Execute();   
         }
 
         public bool Execute()
         {
-            if (!_canExec)
+            if (!CanExecute)
             {
                 return false;
             }

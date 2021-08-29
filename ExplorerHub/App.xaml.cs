@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Autofac;
 using ExplorerHub.AppInitializations;
 using ExplorerHub.BackgroundTasks;
 using ExplorerHub.Infrastructures;
 using ExplorerHub.Subscribers;
-using ExplorerHub.ViewModels;
+using ExplorerHub.UI;
 using ExplorerHub.ViewModels.ExplorerHubs;
 using ExplorerHub.ViewModels.Explorers;
 using MindLab.Messaging;
@@ -82,6 +83,24 @@ namespace ExplorerHub
             return true;
         }
 
+        public void SetAppBackground(Color color)
+        {
+            var sameColor = color.RemoveAlpha();
+            // 背景亮度
+            var brightness = (sameColor.R * 19595 + sameColor.G * 38469 + sameColor.B * 7472) >> 16;
+
+            // 背景灰度百分比
+            var gray = (1 - brightness / 255f) * 100;
+            var foregroundColor = gray < 50 ? Color.FromRgb(40,40,40) : Colors.White;
+
+            Resources[AppColors.SystemBackgroundKey] = new SolidColorBrush(color);
+            Resources[AppColors.SystemForegroundKey] = new SolidColorBrush(foregroundColor);
+
+            sameColor.A = 180;
+            var inactiveBg = sameColor.RemoveAlpha();
+            Resources[AppColors.SystemInactiveBackgroundKey] = new SolidColorBrush(inactiveBg);
+        }
+
         /// <summary>
         /// 注册所有组件
         /// </summary>
@@ -97,6 +116,10 @@ namespace ExplorerHub
                 .As<Application>();
 
             // infrastructures 
+            containerBuilder.RegisterType<SystemColorManager>()
+                .As<ISystemColorManager>()
+                .SingleInstance();
+
             containerBuilder.RegisterType<ManagedObjectPool<ExplorerViewModel>>()
                 .AsSelf()
                 .As<IViewModelRepository<ExplorerViewModel>>()
@@ -140,11 +163,16 @@ namespace ExplorerHub
             containerBuilder.AddBackgroundTask<FollowerProcessWatchingTask>()
                 .WithParameter(new TypedParameter(typeof(IAppLeader), _leader));
             containerBuilder.AddBackgroundTask<ExternalShellWindowsMonitoringTask>();
-            
+            containerBuilder.AddBackgroundTask<SystemUserPreferenceMonitoringTask>();
+
             // event subscribers
             containerBuilder.AddEventSubscriber<NewBrowserEventSubscriber>();
             containerBuilder.AddEventSubscriber<FollowerStartupEventSubscriber>();
             containerBuilder.AddEventSubscriber<UserNotificationEventSubscriber>();
+            containerBuilder.AddEventSubscriber<SystemColorEventSubscriber>();
+#if DEBUG
+            containerBuilder.AddEventSubscriber<NavigationChangedEventSubscriber>(); 
+#endif
 
             // view models
             containerBuilder.RegisterType<ExplorerHubViewModel>()
@@ -166,6 +194,7 @@ namespace ExplorerHub
             containerBuilder.RegisterType<CloseBrowserCommand>();
             containerBuilder.RegisterType<ShowInNewWindowCommand>();
             containerBuilder.RegisterType<ExplorerHubDropTarget>();
+            containerBuilder.RegisterType<CloseExplorerCommand>();
 
             // done
             _container = containerBuilder.Build();

@@ -31,7 +31,7 @@ namespace ExplorerHub.Subscribers
                 var hub = _windowsManager.GetOrCreateActiveHubWindow();
                 if (hub.Explorers.Count == 0)
                 {
-                    hub.AddBrowserCommand.Execute();
+                    hub.AddBrowser.Execute();
                 }
             }
             else
@@ -43,7 +43,7 @@ namespace ExplorerHub.Subscribers
                     return;
                 }
 
-                _windowsManager.GetOrCreateActiveHubWindow().AddBrowserCommand.Execute(shellObject);
+                _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(shellObject);
             }
         }
     }

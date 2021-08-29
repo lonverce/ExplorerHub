@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="ExplorerHub.UI.ChromeAddressBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
+             mc:Ignorable="d" 
+             d:DesignHeight="35" d:DesignWidth="800">
+    <DockPanel LastChildFill="True" 
+               d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+        <DockPanel.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                <Setter Property="FontSize" Value="17"/>
+                <Setter Property="Margin" Value="10,0,10,0"></Setter>
+            </Style>
+        </DockPanel.Resources>
+        <Button DockPanel.Dock="Left"
+                FontFamily="{StaticResource FontAwesome}"
+                Content="&#xf060;"
+                ToolTip="后退"
+                Command="{Binding NavigateBackward}"  />
+        <Button DockPanel.Dock="Left"
+                Content="&#xf061;"
+                FontFamily="{StaticResource FontAwesome}"
+                ToolTip="前进"
+                Command="{Binding NavigateForward}" />
+        <Button DockPanel.Dock="Left"
+                Content="&#xf0aa;"
+                FontFamily="{StaticResource FontAwesome}"
+                ToolTip="上一层"
+                Command="{Binding GoToParent}" />
+        <Button DockPanel.Dock="Right" 
+                Content="&#xf142;" 
+                FontFamily="{StaticResource FontAwesome}"
+                ToolTip="设置" />
+        <Border CornerRadius="15" 
+                Margin="15,1" Padding="10,0"
+                BorderThickness="2"
+                VerticalAlignment="Center"
+                Name="AddressBar">
+            <DockPanel VerticalAlignment="Center" Height="26">
+                <DockPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                        <Setter Property="FontSize" Value="14"/>
+                    </Style>
+                </DockPanel.Resources>
+                <Image Source="{Binding Logo}" 
+                       Width="15" Height="15" Margin="3, 2"
+                       VerticalAlignment="Center" />
+                <Button DockPanel.Dock="Right" Content="&#xf006;"
+                        FontFamily="{StaticResource FontAwesome}" ToolTip="添加收藏" />
+                <TextBox TextWrapping="NoWrap" BorderThickness="0" 
+                         MaxLines="1" MaxLength="256" IsReadOnly="False" AutoWordSelection="True"
+                         Background="Transparent"
+                         FontFamily="微软雅黑"
+                         Padding="5, 3" VerticalContentAlignment="Center"
+                         Text="{Binding NavigationPath, Mode=OneWay}"
+                         AcceptsReturn="False" 
+                         LostKeyboardFocus="OnLostKeyboardFocus"
+                         GotKeyboardFocus="OnGotKeyboardFocus"
+                         Name="SearchBox">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" 
+                                    Command="{Binding Search}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}, Path=Text}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</UserControl>

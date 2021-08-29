@@ -42,7 +42,7 @@
     <StartupObject>ExplorerHub.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>bitbug_favicon.ico</ApplicationIcon>
+    <ApplicationIcon>AppLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=6.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -132,6 +132,7 @@
     <Compile Include="BackgroundTasks\EventMessageDispatchTask.cs" />
     <Compile Include="BackgroundTasks\ExternalShellWindowsMonitoringTask.cs" />
     <Compile Include="BackgroundTasks\FollowerProcessWatchingTask.cs" />
+    <Compile Include="BackgroundTasks\SystemUserPreferenceMonitoringTask.cs" />
     <Compile Include="Common\ContainerRegistrationExtensions.cs" />
     <Compile Include="Common\IAppInitialization.cs" />
     <Compile Include="Common\IAppLeader.cs" />
@@ -141,7 +142,25 @@
     <Compile Include="Common\IShellUrlParser.cs" />
     <Compile Include="Common\InjectPropertyAttribute.cs" />
     <Compile Include="Common\IShellWindowsManager.cs" />
+    <Compile Include="Common\ISystemColorManager.cs" />
     <Compile Include="Common\IUserNotificationService.cs" />
+    <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
+    <Compile Include="Events\SystemColorChangedEventData.cs" />
+    <Compile Include="Infrastructures\SystemColorManager.cs" />
+    <Compile Include="Subscribers\NavigationChangedEventSubscriber.cs" />
+    <Compile Include="Subscribers\SystemColorEventSubscriber.cs" />
+    <Compile Include="UI\AppColors.cs" />
+    <Compile Include="UI\ChromeAddressBar.xaml.cs">
+      <DependentUpon>ChromeAddressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ChromeTabControl.cs" />
+    <Compile Include="UI\ChromeTabItem.cs" />
+    <Compile Include="UI\ChromeTabItemView.xaml.cs">
+      <DependentUpon>ChromeTabItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ChromeTabPanel.cs" />
+    <Compile Include="UI\MaxWidthConverter.cs" />
+    <Compile Include="UI\PointExtensions.cs" />
     <Compile Include="ViewModels\ExplorerHubs\IHubWindowsManager.cs" />
     <Compile Include="Common\IManagedObject.cs" />
     <Compile Include="Common\IViewModelRepository.cs" />
@@ -169,10 +188,12 @@
     <Compile Include="Common\WindowExtensions.cs" />
     <Compile Include="Common\WindowsFormsHostHelper.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubDropTarget.cs" />
+    <Compile Include="ViewModels\ExplorerHubs\PositionMarginConverter.cs" />
+    <Compile Include="ViewModels\Explorers\CloseExplorerCommand.cs" />
     <Compile Include="ViewModels\Explorers\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubViewModel.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
-    <Compile Include="ViewModels\ExplorerHubs\HubWindowsManager.cs" />
+    <Compile Include="Infrastructures\HubWindowsManager.cs" />
     <Compile Include="ViewModels\Explorers\GoToParentCommand.cs" />
     <Compile Include="ViewModels\Explorers\NavBackCommand.cs" />
     <Compile Include="ViewModels\Explorers\NavForwardCommand.cs" />
@@ -191,6 +212,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="HiddenMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ChromeTabPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ChromeTabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ChromeTabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\ChromeAddressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ChromeTabItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -223,7 +264,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="bitbug_favicon.ico" />
+    <Resource Include="AppLogo.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="SHDocVw">

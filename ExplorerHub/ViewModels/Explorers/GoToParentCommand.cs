@@ -8,8 +8,9 @@ namespace ExplorerHub.ViewModels.Explorers
     public class GoToParentCommand:ICommand
     {
         private readonly ExplorerViewModel _owner;
-        private bool _canExec = false;
         private ShellObject _parent;
+
+        public bool CanExecute { get; private set; } = false;
 
         public GoToParentCommand(ExplorerViewModel owner)
         {
@@ -24,16 +25,16 @@ namespace ExplorerHub.ViewModels.Explorers
             
             _parent = target.Parent;
             var canExec = _parent != null;
-            if (canExec != _canExec)
+            if (canExec != CanExecute)
             {
-                _canExec = canExec;
+                CanExecute = canExec;
                 CanExecuteChanged?.Invoke(this, e);
             }
         }
 
-        public bool CanExecute(object parameter) => _canExec;
+        bool ICommand.CanExecute(object parameter) => CanExecute;
 
-        public void Execute(object parameter)
+        void ICommand.Execute(object parameter)
         {
             Execute();
         }

@@ -9,170 +9,71 @@
             xmlns:explorerHub="clr-namespace:ExplorerHub"
             xmlns:explorerHubs="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs"
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
-            pu:WindowXCaption.Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
-            Title="文件资源管理器" 
+            xmlns:ui="clr-namespace:ExplorerHub.UI"
+            pu:WindowXCaption.Background="{DynamicResource {x:Static ui:AppColors.SystemBackgroundKey}}"
+            Name="TabWnd"
+            BorderThickness="0"
+            BorderBrush="Transparent"
             Height="700" Width="1000"
+            MinHeight="400"
+            MinWidth="500"
             d:DataContext="{d:DesignInstance explorerHubs:ExplorerHubViewModel}" 
             Padding="0">
+    <pu:WindowXCaption.Height>
+        <Binding ElementName="TabWnd" Path="WindowState">
+            <Binding.Converter>
+                <explorerHubs:WindowStateHeightConverter MaxHeight="35" NormalHeight="48"/>
+            </Binding.Converter>
+        </Binding>
+    </pu:WindowXCaption.Height>
     <pu:WindowX.Resources>
-        <Style TargetType="Button"
-               BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="pu:ButtonHelper.ButtonStyle" 
-                    Value="Outline"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=(pu:ButtonHelper.ButtonStyle),RelativeSource={RelativeSource Self}, Mode=OneWay}"
-                             Value="Outline">
-                    <Setter Property="pu:ButtonHelper.ClickStyle"
-                            Value="Sink"/>
-                    <Setter Property="Padding" Value="5,3"/>
-                    <Setter Property="BorderThickness" Value="0"></Setter>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Margin" Value="3,0"></Setter>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
-        <StackPanel Orientation="Horizontal">
-            <!-- Tab标签列表 -->
-            <ListBox Name="ExplorerHeaderBar" 
-                 ItemsSource="{Binding Explorers}" 
-                 BorderThickness="0" 
-                 HorizontalAlignment="Left" 
-                 Margin="0" 
-                 dd:DragDrop.IsDragSource="True"
-                 dd:DragDrop.IsDropTarget="True"
-                 dd:DragDrop.DropHandler="{Binding DropTarget}"
-                 Background="Transparent"
-                 pu:ListBoxHelper.HoverBackground="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"
-                 pu:ListBoxHelper.SelectedBackground="White"
-                 SelectionMode="Single"
-                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-                 Padding="0"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="VerticalAlignment" Value="Stretch"/>
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Height" Value="{Binding ElementName=ExplorerHeaderBar, Path=ActualHeight, Mode=OneWay}"/>
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                                <!-->Tab标签的右键菜单</!-->
-                                <ContextMenu d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
-                                <MenuItem Header="在新窗口中打开"
-                                          Command="{Binding ShowInNewWindowCommand}">
-                                    <MenuItem.Icon>
-                                        <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf08e;</TextBlock>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" 
-                               Background="Transparent" 
-                               Margin="0" 
-                               
-                               HorizontalAlignment="Left" VerticalAlignment="Center" 
-                               IsItemsHost="True" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="explorers:ExplorerViewModel">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
-                        <StackPanel.InputBindings>
-                            <!--便捷操作：按下鼠标滚轮，即可关闭标签页，无需用户准确地点击关闭按钮-->
-                            <MouseBinding MouseAction="MiddleClick" 
-                                          Command="{Binding ElementName=ExplorerHeaderBar, Path=DataContext.CloseBrowserCommand}"
-                                          CommandParameter="{Binding}"/>
-                        </StackPanel.InputBindings>
-                        <StackPanel Orientation="Horizontal" 
-                                    HorizontalAlignment="Left">
-                            <Image Source="{Binding Logo}" Width="15" Height="15" Margin="3, 2" VerticalAlignment="Center" />
-                            <TextBlock Text="{Binding Title, Mode=OneWay, TargetNullValue=新标签}"
-                                       VerticalAlignment="Center" MaxWidth="120" TextTrimming="CharacterEllipsis" Padding="5,0" />
-                        </StackPanel>
-                            <!-->Tab标签的关闭按钮</!-->
-                            <Button FontFamily="{StaticResource FontAwesome}" 
-                                Content="&#xf00d;" Background="Transparent" 
-                                BorderThickness="0" 
-                                Command="{Binding ElementName=ExplorerHeaderBar, Path=DataContext.CloseBrowserCommand}"
-                                CommandParameter="{Binding}"
-                                Foreground="LightSlateGray">
-                        </Button>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-            <Button Content="&#xf067;" 
-                    Command="{Binding AddBrowserCommand}"
-                    Margin="10,0" FontFamily="{StaticResource FontAwesome}" 
+        <Grid Height="34" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ui:ChromeTabControl x:Name="ExplorerHeaderBar" Grid.Column="0" 
+                                 ItemsSource="{Binding Explorers}"
+                                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                                 dd:DragDrop.IsDragSource="True"
+                                 dd:DragDrop.IsDropTarget="True"
+                                 dd:DragDrop.DropHandler="{Binding DropTarget}">
+                <ui:ChromeTabControl.MaxWidth>
+                    <Binding ElementName="TabWnd" Path="ActualWidth">
+                        <Binding.Converter>
+                            <ui:MaxWidthConverter PreservedSize="230"/>
+                        </Binding.Converter>
+                    </Binding>
+                </ui:ChromeTabControl.MaxWidth>
+            </ui:ChromeTabControl>
+               
+            <Button Content="&#xf067;"
+                    Grid.Column="1"
+                    Style="{StaticResource BtnStyle}"
+                    FontSize="16"
+                    HorizontalAlignment="Left"
+                    Command="{Binding AddBrowser}"
+                    Margin="0" FontFamily="{StaticResource FontAwesome}" 
                     Background="Transparent" 
-                    Foreground="DimGray"/>
-        </StackPanel>
+                    Foreground="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
+        </Grid>
     </pu:WindowXCaption.Header>
+    <Window.Title>
+        <Binding ElementName="ExplorerHeaderBar" Path="SelectedItem.(explorers:ExplorerViewModel.Title)" FallbackValue="文件资源管理器"/>
+    </Window.Title>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" LastChildFill="True" Margin="3,5" 
-                   DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}"
-                   d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
-            <Button DockPanel.Dock="Left"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    Content="&#xf060;"
-                                    ToolTip="后退"
-                                    Command="{Binding NavigateBackwardCommand}"  />
-            <Button DockPanel.Dock="Left"
-                                    Content="&#xf061;"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    ToolTip="前进"
-                                    Command="{Binding NavigateForwardCommand}" />
-            <Button DockPanel.Dock="Left"
-                                    Content="&#xf0aa;"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    ToolTip="上一层"
-                                    Command="{Binding GoToParentCommand}" />
-            <Button DockPanel.Dock="Right" Content="&#xf013;" FontFamily="{StaticResource FontAwesome}"
-                                    ToolTip="设置" />
-
-            <Border CornerRadius="15" Background="WhiteSmoke" Margin="5,3" Padding="10,0"
-                                    VerticalAlignment="Center"
-                                    Name="AddressBar">
-                <DockPanel VerticalAlignment="Center">
-                    <Image Source="{Binding Logo}" Width="15" Height="15" Margin="3, 2"
-                                           VerticalAlignment="Center" />
-                    <Button DockPanel.Dock="Right" Content="&#xf006;"
-                                            FontFamily="{StaticResource FontAwesome}" ToolTip="添加收藏" />
-                    <TextBox TextWrapping="NoWrap" BorderThickness="0"
-                                             MaxLines="1" MaxLength="256" IsReadOnly="False" AutoWordSelection="True"
-                                             Background="Transparent"
-                                             FontFamily="Consola"
-                                             Padding="5, 3" VerticalContentAlignment="Center"
-                                             Text="{Binding NavigationPath, Mode=OneWay}"
-                                             AcceptsReturn="False" 
-                                             LostKeyboardFocus="SearchBox_OnLostKeyboardFocus"
-                                             GotKeyboardFocus="SearchBox_OnGotKeyboardFocus"
-                                             Name="SearchBox">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding Search}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}, Path=Text}" />
-                        </TextBox.InputBindings>
-                    </TextBox>
-                </DockPanel>
-            </Border>
-        </DockPanel>
-        
-        <WindowsFormsHost  MinHeight="200" 
-                           Grid.Row="1" 
+        <ui:ChromeAddressBar Grid.Row="0" DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}" Margin="3,2" />
+        <WindowsFormsHost  MinHeight="200" MinWidth="300"
+                           Grid.Row="1"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                           Margin="0, 7, 0, 0" 
+                           Margin="2, 7, 2, 1" 
                            explorerHub:WindowsFormsHostHelper.ChildForm="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem.(explorers:ExplorerViewModel.Browser), Mode=OneWay}"
         />
     </Grid>
