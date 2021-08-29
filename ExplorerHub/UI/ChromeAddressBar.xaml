@@ -11,6 +11,7 @@
         <DockPanel.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
                 <Setter Property="FontSize" Value="17"/>
+                <Setter Property="Margin" Value="10,0,10,0"></Setter>
             </Style>
         </DockPanel.Resources>
         <Button DockPanel.Dock="Left"
@@ -33,8 +34,8 @@
                 FontFamily="{StaticResource FontAwesome}"
                 ToolTip="设置" />
         <Border CornerRadius="15" 
-                Margin="5,1" Padding="10,0"
-                BorderThickness="1"
+                Margin="15,1" Padding="10,0"
+                BorderThickness="2"
                 VerticalAlignment="Center"
                 Name="AddressBar">
             <DockPanel VerticalAlignment="Center" Height="26">

@@ -11,7 +11,6 @@
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
             xmlns:ui="clr-namespace:ExplorerHub.UI"
             pu:WindowXCaption.Background="{DynamicResource {x:Static ui:AppColors.SystemBackgroundKey}}"
-            Title="文件资源管理器" 
             Name="TabWnd"
             BorderThickness="0"
             BorderBrush="Transparent"
@@ -62,6 +61,9 @@
                     Foreground="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
         </Grid>
     </pu:WindowXCaption.Header>
+    <Window.Title>
+        <Binding ElementName="ExplorerHeaderBar" Path="SelectedItem.(explorers:ExplorerViewModel.Title)" FallbackValue="文件资源管理器"/>
+    </Window.Title>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

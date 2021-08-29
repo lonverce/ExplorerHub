@@ -42,7 +42,7 @@
     <StartupObject>ExplorerHub.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>bitbug_favicon.ico</ApplicationIcon>
+    <ApplicationIcon>AppLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=6.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -153,7 +153,6 @@
     <Compile Include="UI\ChromeAddressBar.xaml.cs">
       <DependentUpon>ChromeAddressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\ChromeTabBorder.cs" />
     <Compile Include="UI\ChromeTabControl.cs" />
     <Compile Include="UI\ChromeTabItem.cs" />
     <Compile Include="UI\ChromeTabItemView.xaml.cs">
@@ -194,7 +193,7 @@
     <Compile Include="ViewModels\Explorers\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\ExplorerHubs\ExplorerHubViewModel.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
-    <Compile Include="ViewModels\ExplorerHubs\HubWindowsManager.cs" />
+    <Compile Include="Infrastructures\HubWindowsManager.cs" />
     <Compile Include="ViewModels\Explorers\GoToParentCommand.cs" />
     <Compile Include="ViewModels\Explorers\NavBackCommand.cs" />
     <Compile Include="ViewModels\Explorers\NavForwardCommand.cs" />
@@ -215,10 +214,6 @@
     <Page Include="HiddenMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\ChromeTabBorder.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\ChromeTabPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -269,7 +264,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="bitbug_favicon.ico" />
+    <Resource Include="AppLogo.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="SHDocVw">
