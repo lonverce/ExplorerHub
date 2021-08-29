@@ -9,7 +9,7 @@ namespace ExplorerHub.ViewModels.Explorers
     public class ShowInNewWindowCommand : ICommand, IDisposable
     {
         private readonly IHubWindowsManager _windowsManager;
-        private readonly IViewModelRepository<ExplorerHubViewModel> _hubRepository;
+        private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubRepository;
         private readonly ExplorerViewModel _model;
         private ExplorerHubViewModel _hubModel;
 
@@ -17,7 +17,7 @@ namespace ExplorerHub.ViewModels.Explorers
 
         public ShowInNewWindowCommand(
             IHubWindowsManager windowsManager,
-            IViewModelRepository<ExplorerHubViewModel> hubRepository,
+            IManagedObjectRepository<ExplorerHubViewModel> hubRepository,
             ExplorerViewModel model)
         {
             _windowsManager = windowsManager;

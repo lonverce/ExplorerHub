@@ -6,11 +6,11 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class ExplorerHubDropTarget : IDropTarget
     {
-        private readonly IViewModelRepository<ExplorerHubViewModel> _hubRepository;
+        private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubRepository;
         private readonly ExplorerHubViewModel _vm;
 
         public ExplorerHubDropTarget(
-            IViewModelRepository<ExplorerHubViewModel> hubRepository,
+            IManagedObjectRepository<ExplorerHubViewModel> hubRepository,
             ExplorerHubViewModel vm)
         {
             _hubRepository = hubRepository;

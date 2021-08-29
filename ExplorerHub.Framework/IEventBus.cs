@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ExplorerHub
+﻿namespace ExplorerHub
 {
     /// <summary>
     /// 事件消息发布对象

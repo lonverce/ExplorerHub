@@ -122,12 +122,12 @@ namespace ExplorerHub
 
             containerBuilder.RegisterType<ManagedObjectPool<ExplorerViewModel>>()
                 .AsSelf()
-                .As<IViewModelRepository<ExplorerViewModel>>()
+                .As<IManagedObjectRepository<ExplorerViewModel>>()
                 .SingleInstance();
 
             containerBuilder.RegisterType<ManagedObjectPool<ExplorerHubViewModel>>()
                 .AsSelf()
-                .As<IViewModelRepository<ExplorerHubViewModel>>()
+                .As<IManagedObjectRepository<ExplorerHubViewModel>>()
                 .SingleInstance();
 
             containerBuilder.RegisterType<HubWindowsManager>()

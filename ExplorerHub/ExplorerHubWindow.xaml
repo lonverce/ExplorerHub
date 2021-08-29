@@ -7,9 +7,10 @@
             mc:Ignorable="d" 
             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
             xmlns:explorerHub="clr-namespace:ExplorerHub"
-            xmlns:explorerHubs="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs"
-            xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
+            xmlns:explorerHubs="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs;assembly=ExplorerHub.ViewModels"
+            xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers;assembly=ExplorerHub.ViewModels"
             xmlns:ui="clr-namespace:ExplorerHub.UI"
+            xmlns:explorerHubs1="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs;assembly=ExplorerHub.ViewModels"
             pu:WindowXCaption.Background="{DynamicResource {x:Static ui:AppColors.SystemBackgroundKey}}"
             Name="TabWnd"
             BorderThickness="0"
@@ -17,17 +18,17 @@
             Height="700" Width="1000"
             MinHeight="400"
             MinWidth="500"
-            d:DataContext="{d:DesignInstance explorerHubs:ExplorerHubViewModel}" 
+            d:DataContext="{d:DesignInstance explorerHubs1:ExplorerHubViewModel}" 
             Padding="0">
     <pu:WindowXCaption.Height>
         <Binding ElementName="TabWnd" Path="WindowState">
             <Binding.Converter>
-                <explorerHubs:WindowStateHeightConverter MaxHeight="35" NormalHeight="48"/>
+                <explorerHubs1:WindowStateHeightConverter MaxHeight="35" NormalHeight="48"/>
             </Binding.Converter>
         </Binding>
     </pu:WindowXCaption.Height>
     <pu:WindowX.Resources>
-        <explorerHubs:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
+        <explorerHubs1:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
         <Grid Height="34" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">

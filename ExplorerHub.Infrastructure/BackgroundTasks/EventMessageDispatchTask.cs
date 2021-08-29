@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Autofac.Features.Metadata;
 using Autofac.Features.OwnedInstances;
 using MindLab.Messaging;
@@ -14,7 +15,7 @@ namespace ExplorerHub.BackgroundTasks
     /// </summary>
     public class EventMessageDispatchTask : IBackgroundTask
     {
-        private readonly App _app;
+        private readonly Application _app;
         private readonly IMessageRouter<IEventData> _messageRouter;
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private readonly IReadOnlyDictionary<string, SubscriberCollection> _subscribers;
@@ -31,7 +32,7 @@ namespace ExplorerHub.BackgroundTasks
         }
 
         public EventMessageDispatchTask(
-            App app,
+            Application app,
             IMessageRouter<IEventData> messageRouter, 
             IEnumerable<Meta<Func<Owned<IEventSubscriber>>>> subscribers)
         {

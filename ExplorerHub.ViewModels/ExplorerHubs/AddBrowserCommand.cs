@@ -7,12 +7,12 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class AddBrowserCommand : ICommand
     {
-        private readonly IViewModelRepository<ExplorerViewModel> _explorerRepository;
+        private readonly IManagedObjectRepository<ExplorerViewModel> _explorerRepository;
         private readonly ExplorerHubViewModel _owner;
         private readonly IShellUrlParser _parser;
 
         public AddBrowserCommand(
-            IViewModelRepository<ExplorerViewModel> explorerRepository,
+            IManagedObjectRepository<ExplorerViewModel> explorerRepository,
             ExplorerHubViewModel owner,
             IShellUrlParser parser)
         {

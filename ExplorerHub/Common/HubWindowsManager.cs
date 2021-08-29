@@ -6,11 +6,11 @@ namespace ExplorerHub.Infrastructures
     public class HubWindowsManager : IHubWindowsManager
     {
         private readonly App _app;
-        private readonly IViewModelRepository<ExplorerHubViewModel> _hubRepository;
+        private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubRepository;
 
         public HubWindowsManager(
             App app,
-            IViewModelRepository<ExplorerHubViewModel> hubRepository)
+            IManagedObjectRepository<ExplorerHubViewModel> hubRepository)
         {
             _app = app;
             _hubRepository = hubRepository;

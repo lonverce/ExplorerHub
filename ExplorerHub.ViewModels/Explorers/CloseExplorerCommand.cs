@@ -6,10 +6,10 @@ namespace ExplorerHub.ViewModels.Explorers
 {
     public class CloseExplorerCommand : ICommand
     {
-        private readonly IViewModelRepository<ExplorerHubViewModel> _hubs;
+        private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubs;
         private readonly ExplorerViewModel _vm;
 
-        public CloseExplorerCommand(IViewModelRepository<ExplorerHubViewModel> hubs, ExplorerViewModel vm)
+        public CloseExplorerCommand(IManagedObjectRepository<ExplorerHubViewModel> hubs, ExplorerViewModel vm)
         {
             _hubs = hubs;
             _vm = vm;

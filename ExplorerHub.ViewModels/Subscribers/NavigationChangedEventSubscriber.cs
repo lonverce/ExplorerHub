@@ -8,9 +8,9 @@ namespace ExplorerHub.Subscribers
     [EventSubscriber(ExplorerNavigationUpdatedEventData.EventName, UiHandle = false)]
     public class NavigationChangedEventSubscriber : IEventSubscriber
     {
-        private readonly IViewModelRepository<ExplorerViewModel> _explorers;
+        private readonly IManagedObjectRepository<ExplorerViewModel> _explorers;
 
-        public NavigationChangedEventSubscriber(IViewModelRepository<ExplorerViewModel> explorers)
+        public NavigationChangedEventSubscriber(IManagedObjectRepository<ExplorerViewModel> explorers)
         {
             _explorers = explorers;
         }

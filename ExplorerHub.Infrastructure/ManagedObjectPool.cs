@@ -13,7 +13,7 @@ namespace ExplorerHub.Infrastructures
     /// 托管对象池
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ManagedObjectPool<T> : IViewModelRepository<T>, IDisposable
+    public class ManagedObjectPool<T> : IManagedObjectRepository<T>, IDisposable
         where T : class, IManagedObject
     {
         private readonly ManagedObjectConstructFunc _objectFactory;

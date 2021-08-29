@@ -6,11 +6,11 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
 {
     public class CloseBrowserCommand : ICommand
     {
-        private readonly IViewModelRepository<ExplorerViewModel> _explorerRepository;
+        private readonly IManagedObjectRepository<ExplorerViewModel> _explorerRepository;
         private readonly ExplorerHubViewModel _hubViewModel;
 
         public CloseBrowserCommand(
-            IViewModelRepository<ExplorerViewModel> explorerRepository,
+            IManagedObjectRepository<ExplorerViewModel> explorerRepository,
             ExplorerHubViewModel hubViewModel)
         {
             _explorerRepository = explorerRepository;
