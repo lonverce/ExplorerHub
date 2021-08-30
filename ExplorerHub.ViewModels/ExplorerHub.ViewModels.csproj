@@ -66,8 +66,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IShellWindowsManager.cs" />
+    <Compile Include="Common\ISystemColorManager.cs" />
     <Compile Include="Common\IUserNotificationService.cs" />
     <Compile Include="Events\ExplorerCreatedEventData.cs" />
+    <Compile Include="Events\FollowerStartupEventData.cs" />
+    <Compile Include="Events\NewExplorerEventData.cs" />
+    <Compile Include="Events\SystemColorChangedEventData.cs" />
     <Compile Include="ExplorerHubs\AddBrowserCommand.cs" />
     <Compile Include="ExplorerHubs\CloseBrowserCommand.cs" />
     <Compile Include="ExplorerHubs\ExplorerHubDropTarget.cs" />
