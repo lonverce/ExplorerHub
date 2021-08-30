@@ -5,6 +5,12 @@ using System.Windows.Input;
 using Autofac;
 using Autofac.Builder;
 using Autofac.Extras.DynamicProxy;
+using AutoMapper;
+using Castle.DynamicProxy;
+using ExplorerHub.Applications;
+using ExplorerHub.Applications.Favorites;
+using ExplorerHub.Domain.Favorites;
+using ExplorerHub.EfCore.Favorites;
 
 namespace ExplorerHub.Infrastructure
 {
@@ -90,6 +96,38 @@ namespace ExplorerHub.Infrastructure
             builder.RegisterType<TCommand>()
                 .EnableClassInterceptors()
                 .InterceptedBy(typeof(CommandInterceptor));
+        }
+
+        public static void AddApplicationServices(this ContainerBuilder builder, string connectionStr)
+        {
+            builder.RegisterType<ApplicationInterceptor>();
+            builder.RegisterType<ProxyGenerator>()
+                .IfNotRegistered(typeof(ProxyGenerator));
+
+            builder.Register(context =>
+            {
+                var interceptor = context.Resolve<ApplicationInterceptor>();
+                var generator = context.Resolve<ProxyGenerator>();
+                return generator.CreateInterfaceProxyWithoutTarget<IFavoriteApplication>(interceptor);
+            });
+
+            builder.RegisterType<FavoriteApplication>()
+                .As<IApplicationService>()
+                .WithMetadata(ApplicationInterceptor.ApplicationInterfaceKey, typeof(IFavoriteApplication))
+                .InstancePerOwned<IApplicationService>();
+
+            builder.Register(context => new FavoriteDbContext(connectionStr))
+                .InjectProperties()
+                .As<IFavoriteRepository>()
+                .InstancePerOwned<IApplicationService>();
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Favorite, FavoriteDto>()
+                    .ForMember(dto => dto.Url, expression => expression.MapFrom(favorite => favorite.Location));
+            });
+
+            builder.RegisterInstance(config.CreateMapper());
         }
     }
 }

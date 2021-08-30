@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>ExplorerHub.Applications</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ExplorerHub.Domain.Contract\ExplorerHub.Domain.Contract.csproj" />
-    <ProjectReference Include="..\ExplorerHub.Framework\ExplorerHub.Framework.csproj" />
   </ItemGroup>
 
 </Project>

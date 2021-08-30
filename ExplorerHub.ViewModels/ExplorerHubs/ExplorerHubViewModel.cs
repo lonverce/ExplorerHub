@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows.Controls;
+using ExplorerHub.Applications.Favorites;
 using ExplorerHub.ViewModels.Explorers;
 using GongSolutions.Wpf.DragDrop;
 
@@ -12,6 +13,8 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
         private int _selectedIndex = -1;
 
         public ObservableCollection<ExplorerViewModel> Explorers { get; }
+
+        public ObservableCollection<FavoriteViewModel> Favorites { get; }
 
         [InjectProperty]
         public AddBrowserCommand AddBrowser { get; set; }
@@ -34,11 +37,17 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             }
         }
 
-        public ExplorerHubViewModel(int managedObjectId)
+        public ExplorerHubViewModel(
+            int managedObjectId, 
+            Func<FavoriteDto, FavoriteViewModel> favoriteFunc,
+            IFavoriteApplication favoriteApplication)
         {
             ManagedObjectId = managedObjectId;
             Explorers = new ObservableCollection<ExplorerViewModel>();
             Explorers.CollectionChanged += ExplorersOnCollectionChanged;
+
+            var favorites = favoriteApplication.GetAllFavorites().Select(favoriteFunc);
+            Favorites = new ObservableCollection<FavoriteViewModel>(favorites);
         }
 
         private void ExplorersOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

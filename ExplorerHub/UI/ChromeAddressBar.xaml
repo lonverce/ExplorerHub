@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
+             xmlns:explorers1="clr-namespace:ExplorerHub.ViewModels.Explorers;assembly=ExplorerHub.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="800">
     <DockPanel LastChildFill="True" 
-               d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+               d:DataContext="{d:DesignInstance explorers1:ExplorerViewModel}">
         <DockPanel.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
                 <Setter Property="FontSize" Value="17"/>

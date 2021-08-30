@@ -31,5 +31,7 @@ namespace ExplorerHub.Framework.Domain
         {
             return _domainEventDataList?.ToArray() ?? Array.Empty<IEventData>();
         }
+
+        public bool HasDomainEvents() => _domainEventDataList?.Count > 0;
     }
 }

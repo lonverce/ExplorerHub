@@ -1,14 +1,23 @@
-﻿using ExplorerHub.Domain.Favorites;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ExplorerHub.Domain.Favorites;
+using ExplorerHub.Framework.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExplorerHub.EfCore.Favorites
 {
-    public class FavoriteDbContext : DbContext
+    public class FavoriteDbContext : DbContext, IFavoriteRepository
     {
+        private readonly string _connectionString;
         public DbSet<Favorite> Favorites { get; set; }
 
-        public FavoriteDbContext(DbContextOptions<FavoriteDbContext> options) : base(options)
+        [InjectProperty]
+        public IEventBus EventBus { get; set; }
+
+        public FavoriteDbContext(string connectionString)
         {
+            _connectionString = connectionString;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,11 +29,11 @@ namespace ExplorerHub.EfCore.Favorites
                     .ValueGeneratedOnAdd();
 
                 builder.Property(favorite => favorite.Name)
-                    .HasMaxLength(256)
+                    .HasMaxLength(FavoriteDomainConstants.MaxNameLength)
                     .IsRequired();
 
                 builder.Property(favorite => favorite.Location)
-                    .HasMaxLength(256)
+                    .HasMaxLength(FavoriteDomainConstants.MaxUrlLength)
                     .IsRequired();
 
                 builder.HasIndex(favorite => favorite.Name)
@@ -35,6 +44,69 @@ namespace ExplorerHub.EfCore.Favorites
             });
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite($"Data Source={_connectionString}");
+        }
+
+        public override int SaveChanges()
+        {
+            var changedEntities = ChangeTracker
+                .Entries<AggregateRoot>()
+                .Where(entry => entry.Entity.HasDomainEvents())
+                .Select(entry => entry.Entity)
+                .ToArray();
+
+            var result = base.SaveChanges();
+
+            foreach (var entity in changedEntities)
+            {
+                var events = entity.GetDomainEvents();
+
+                foreach (var eventData in events)
+                {
+                    EventBus.PublishEvent(eventData);
+                }
+
+                entity.ClearDomainEvents();
+            }
+
+            return result;
+        }
+
+        public Favorite Add(Favorite favorite)
+        {
+            favorite = Favorites.Add(favorite).Entity;
+            favorite.AddDomainEvent(new FavoriteAddedEventData(favorite.Id));
+            return favorite;
+        }
+
+        public void Delete(Favorite favorite)
+        {
+            Favorites.Remove(favorite);
+            favorite.AddDomainEvent(new FavoriteRemovedEventData(favorite.Id));
+        }
+
+        public Favorite FindById(Guid id)
+        {
+            return Favorites.AsTracking().FirstOrDefault(favorite => favorite.Id == id);
+        }
+
+        public List<Favorite> GetAll()
+        {
+            return Favorites.AsTracking().ToList();
+        }
+
+        public override void Dispose()
+        {
+            if (ChangeTracker.Entries().Any())
+            {
+                SaveChanges();
+            }
+
+            base.Dispose();
         }
     }
 }

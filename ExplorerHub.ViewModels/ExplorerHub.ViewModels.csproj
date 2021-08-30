@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
@@ -78,9 +80,11 @@
     <Compile Include="ExplorerHubs\ExplorerHubDropTarget.cs" />
     <Compile Include="ExplorerHubs\ExplorerHubViewModel.cs" />
     <Compile Include="Common\IHubWindowsManager.cs" />
+    <Compile Include="ExplorerHubs\FavoriteViewModel.cs" />
     <Compile Include="ExplorerHubs\PositionMarginConverter.cs" />
     <Compile Include="Events\ExplorerNavigationUpdatedEventData.cs" />
     <Compile Include="Events\ExplorerRemovedEventData.cs" />
+    <Compile Include="ExplorerHubs\AddFavoriteCommand.cs" />
     <Compile Include="Explorers\CloseExplorerCommand.cs" />
     <Compile Include="Explorers\ExplorerViewModel.cs" />
     <Compile Include="Explorers\GoToParentCommand.cs" />
@@ -96,6 +100,10 @@
     <Compile Include="Subscribers\NewBrowserEventSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExplorerHub.Applications.Contract\ExplorerHub.Applications.Contract.csproj">
+      <Project>{9e62a8fd-cd90-4b4c-865a-a950dadf8761}</Project>
+      <Name>ExplorerHub.Applications.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExplorerHub.Framework\ExplorerHub.Framework.csproj">
       <Project>{c3dd16ee-d4dd-4f3f-8efe-28ce935cfd84}</Project>
       <Name>ExplorerHub.Framework</Name>
@@ -105,6 +113,8 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Initializations\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

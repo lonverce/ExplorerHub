@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -188,6 +189,10 @@ namespace ExplorerHub
                 .AsSelf()
                 .InstancePerOwned<ExplorerViewModel>();
 
+            containerBuilder.RegisterType<FavoriteViewModel>()
+                .InjectProperties()
+                .AsSelf();
+
             // commands
             containerBuilder.AddCommand<AddBrowserCommand>();
             containerBuilder.AddCommand<SearchCommand>();
@@ -198,6 +203,13 @@ namespace ExplorerHub
             containerBuilder.AddCommand<ShowInNewWindowCommand>();
             containerBuilder.RegisterType<ExplorerHubDropTarget>();
             containerBuilder.AddCommand<CloseExplorerCommand>();
+
+            // application services
+            var appDataDir = Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData,
+                Environment.SpecialFolderOption.Create);
+
+            containerBuilder.AddApplicationServices(Path.Combine(appDataDir, "explorer-hub.db"));
 
             // done
             _container = containerBuilder.Build();
