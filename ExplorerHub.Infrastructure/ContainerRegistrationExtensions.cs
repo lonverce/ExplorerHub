@@ -83,8 +83,8 @@ namespace ExplorerHub.Infrastructure
             where TInitialization : IAppInitialization
         {
             return builder.RegisterType<TInitialization>()
-                .As<IAppInitialization>()
-                .SingleInstance();
+                .SingleInstance()
+                .As<IAppInitialization>();
         }
 
         public static void AddCommand<TCommand>(this ContainerBuilder builder)
@@ -113,13 +113,13 @@ namespace ExplorerHub.Infrastructure
 
             builder.RegisterType<FavoriteApplication>()
                 .As<IApplicationService>()
-                .WithMetadata(ApplicationInterceptor.ApplicationInterfaceKey, typeof(IFavoriteApplication))
-                .InstancePerOwned<IApplicationService>();
+                .WithMetadata(ApplicationInterceptor.ApplicationInterfaceKey, typeof(IFavoriteApplication));
 
             builder.Register(context => new FavoriteDbContext(connectionStr))
                 .InjectProperties()
+                .AsSelf()
                 .As<IFavoriteRepository>()
-                .InstancePerOwned<IApplicationService>();
+                .InstancePerLifetimeScope();
 
             var config = new MapperConfiguration(cfg =>
             {

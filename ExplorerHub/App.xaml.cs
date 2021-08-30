@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Autofac;
 using ExplorerHub.AppInitializations;
+using ExplorerHub.EfCore;
 using ExplorerHub.Infrastructure;
 using ExplorerHub.Infrastructure.BackgroundTasks;
 using ExplorerHub.Infrastructure.Initializations;
@@ -157,6 +158,7 @@ namespace ExplorerHub
                 .SingleInstance();
 
             // initializations
+            containerBuilder.AddAppInitialization<DbContextInitialization>();
             containerBuilder.AddAppInitialization<MainWindowInitialization>();
             containerBuilder.AddAppInitialization<StartupArgInitialization>()
                 .WithParameter(new TypedParameter(typeof(SplashScreen), splashScreen));

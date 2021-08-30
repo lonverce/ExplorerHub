@@ -9,15 +9,16 @@ namespace ExplorerHub.EfCore.Favorites
 {
     public class FavoriteDbContext : DbContext, IFavoriteRepository
     {
-        private readonly string _connectionString;
+        private readonly string _dbFilePath;
+
         public DbSet<Favorite> Favorites { get; set; }
 
         [InjectProperty]
         public IEventBus EventBus { get; set; }
 
-        public FavoriteDbContext(string connectionString)
+        public FavoriteDbContext(string dbFilePath)
         {
-            _connectionString = connectionString;
+            _dbFilePath = dbFilePath;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,7 +49,7 @@ namespace ExplorerHub.EfCore.Favorites
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={_connectionString}");
+            optionsBuilder.UseSqlite($"Data Source={_dbFilePath}");
         }
 
         public override int SaveChanges()
