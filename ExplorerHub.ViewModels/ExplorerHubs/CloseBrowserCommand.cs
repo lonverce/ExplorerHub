@@ -19,7 +19,8 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
 
         bool ICommand.CanExecute(object parameter) => true;
 
-        void ICommand.Execute(object parameter)
+        [Obsolete]
+        public virtual void Execute(object parameter)
         {
             var explorerVm = (ExplorerViewModel)parameter;
             Execute(explorerVm, true);

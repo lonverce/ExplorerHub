@@ -189,15 +189,15 @@ namespace ExplorerHub
                 .InstancePerOwned<ExplorerViewModel>();
 
             // commands
-            containerBuilder.RegisterType<AddBrowserCommand>();
-            containerBuilder.RegisterType<SearchCommand>();
-            containerBuilder.RegisterType<NavBackCommand>();
-            containerBuilder.RegisterType<NavForwardCommand>();
-            containerBuilder.RegisterType<GoToParentCommand>();
-            containerBuilder.RegisterType<CloseBrowserCommand>();
-            containerBuilder.RegisterType<ShowInNewWindowCommand>();
+            containerBuilder.AddCommand<AddBrowserCommand>();
+            containerBuilder.AddCommand<SearchCommand>();
+            containerBuilder.AddCommand<NavBackCommand>();
+            containerBuilder.AddCommand<NavForwardCommand>();
+            containerBuilder.AddCommand<GoToParentCommand>();
+            containerBuilder.AddCommand<CloseBrowserCommand>();
+            containerBuilder.AddCommand<ShowInNewWindowCommand>();
             containerBuilder.RegisterType<ExplorerHubDropTarget>();
-            containerBuilder.RegisterType<CloseExplorerCommand>();
+            containerBuilder.AddCommand<CloseExplorerCommand>();
 
             // done
             _container = containerBuilder.Build();

@@ -18,7 +18,8 @@ namespace ExplorerHub.ViewModels.Explorers
 
         bool ICommand.CanExecute(object parameter) => true;
 
-        void ICommand.Execute(object parameter)
+        [Obsolete]
+        public virtual void Execute(object parameter)
         {
             var address = (string) parameter;
             Execute(address:address);

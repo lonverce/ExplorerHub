@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Input;
 using Autofac;
 using Autofac.Builder;
+using Autofac.Extras.DynamicProxy;
 
-namespace ExplorerHub
+namespace ExplorerHub.Infrastructure
 {
     public static class ContainerRegistrationExtensions
     {
@@ -15,7 +17,7 @@ namespace ExplorerHub
                                                               BindingFlags.Instance).Select(prop => new
             {
                 prop,
-                attr = CustomAttributeExtensions.GetCustomAttribute<InjectPropertyAttribute>((MemberInfo) prop)
+                attr = prop.GetCustomAttribute<InjectPropertyAttribute>()
             }).Where(arg => arg.attr != null).ToArray();
 
             if (!propCollection.Any())
@@ -77,6 +79,17 @@ namespace ExplorerHub
             return builder.RegisterType<TInitialization>()
                 .As<IAppInitialization>()
                 .SingleInstance();
+        }
+
+        public static void AddCommand<TCommand>(this ContainerBuilder builder)
+            where TCommand : ICommand
+        {
+            builder.RegisterType<CommandInterceptor>()
+                .IfNotRegistered(typeof(CommandInterceptor));
+
+            builder.RegisterType<TCommand>()
+                .EnableClassInterceptors()
+                .InterceptedBy(typeof(CommandInterceptor));
         }
     }
 }

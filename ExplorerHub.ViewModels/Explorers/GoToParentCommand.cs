@@ -5,7 +5,7 @@ using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class GoToParentCommand:ICommand
+    public class GoToParentCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
         private ShellObject _parent;
@@ -34,7 +34,8 @@ namespace ExplorerHub.ViewModels.Explorers
 
         bool ICommand.CanExecute(object parameter) => CanExecute;
 
-        void ICommand.Execute(object parameter)
+        [Obsolete]
+        public virtual void Execute(object parameter)
         {
             Execute();
         }
