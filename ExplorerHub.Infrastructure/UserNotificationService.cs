@@ -1,7 +1,8 @@
 ﻿using System;
-using ExplorerHub.Events;
+using ExplorerHub.Infrastructure.Events;
+using ExplorerHub.ViewModels;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     public class UserNotificationService : IUserNotificationService
     {

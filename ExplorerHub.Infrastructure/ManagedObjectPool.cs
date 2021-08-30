@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using Autofac.Features.OwnedInstances;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     /// <summary>
     /// 托管对象池

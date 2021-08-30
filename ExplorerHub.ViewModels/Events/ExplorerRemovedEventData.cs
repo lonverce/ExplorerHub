@@ -1,4 +1,4 @@
-﻿namespace ExplorerHub.Events
+﻿namespace ExplorerHub.ViewModels
 {
     public class ExplorerRemovedEventData : IEventData
     {

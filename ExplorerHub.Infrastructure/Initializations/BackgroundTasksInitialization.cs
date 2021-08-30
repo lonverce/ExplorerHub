@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac.Features.OwnedInstances;
 
-namespace ExplorerHub.AppInitializations
+namespace ExplorerHub.Infrastructure.Initializations
 {
     /// <summary>
     /// 启动所有后台任务

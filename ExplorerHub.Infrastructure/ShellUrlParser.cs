@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExplorerHub.ViewModels;
 using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     public class ShellUrlParser : IShellUrlParser
     {

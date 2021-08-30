@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using ExplorerHub.Events;
 
-namespace ExplorerHub.BackgroundTasks
+namespace ExplorerHub.Infrastructure.BackgroundTasks
 {
     /// <summary>
     /// 监测Win10系统主题颜色变化

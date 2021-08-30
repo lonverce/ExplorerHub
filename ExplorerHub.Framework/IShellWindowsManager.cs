@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub
 {
@@ -13,7 +12,9 @@ namespace ExplorerHub
 
     public interface IShellWindow
     {
-        ShellObject Target { get; }
+        string LocationName { get; }
+
+        string LocationUrl { get; }
 
         void Close();
     }

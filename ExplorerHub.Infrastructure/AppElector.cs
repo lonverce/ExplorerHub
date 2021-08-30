@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     public class AppElector
     {

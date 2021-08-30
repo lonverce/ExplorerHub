@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub
+namespace ExplorerHub.ViewModels
 {
     public interface IShellUrlParser
     {

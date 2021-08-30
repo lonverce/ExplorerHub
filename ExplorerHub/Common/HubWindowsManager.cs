@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub
 {
     public class HubWindowsManager : IHubWindowsManager
     {

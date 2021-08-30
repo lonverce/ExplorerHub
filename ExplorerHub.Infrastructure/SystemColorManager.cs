@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using Microsoft.Win32;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     public class SystemColorManager : ISystemColorManager
     {
@@ -24,6 +24,7 @@ namespace ExplorerHub.Infrastructures
 
         public Color GetSystemColor()
         {
+            
             return GetAccentColor();
         }
 
@@ -31,7 +32,9 @@ namespace ExplorerHub.Infrastructures
 
         private Color GetAccentColor()
         {
-            var value = (int)Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\DWM").GetValue(@"ColorizationColor");
+            var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\DWM");
+            var value = (int)(key?.GetValue(@"ColorizationColor") ?? 0xc4744da9);
+
             return Color.FromArgb(
                 (byte)(value >> 24),
                 (byte)(value >> 16),

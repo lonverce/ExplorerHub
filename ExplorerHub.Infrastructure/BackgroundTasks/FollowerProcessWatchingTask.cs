@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ExplorerHub.Events;
 
-namespace ExplorerHub.BackgroundTasks
+namespace ExplorerHub.Infrastructure.BackgroundTasks
 {
     /// <summary>
     /// 监听由Follower进程发送的启动请求，并推送事件<see cref="FollowerStartupEventData"/>

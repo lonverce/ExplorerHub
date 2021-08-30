@@ -1,6 +1,6 @@
 ﻿using MindLab.Messaging;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     public class EventBus : IEventBus
     {

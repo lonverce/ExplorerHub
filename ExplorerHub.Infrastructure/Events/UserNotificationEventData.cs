@@ -1,4 +1,6 @@
-﻿namespace ExplorerHub.Events
+﻿using ExplorerHub.ViewModels;
+
+namespace ExplorerHub.Infrastructure.Events
 {
     public class UserNotificationEventData : IEventData
     {

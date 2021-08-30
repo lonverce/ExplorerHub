@@ -1,4 +1,4 @@
-﻿namespace ExplorerHub
+﻿namespace ExplorerHub.ViewModels
 {
     public enum NotificationLevel
     {

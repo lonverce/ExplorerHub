@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
-using Microsoft.WindowsAPICodePack.Shell;
 using SHDocVw;
 
-namespace ExplorerHub.Infrastructures
+namespace ExplorerHub.Infrastructure
 {
     public class ShellWindowManager : IShellWindowsManager, IDisposable
     {
-        private readonly IShellUrlParser _parser;
-        private readonly IUserNotificationService _notificationService;
         public event EventHandler WindowCreated;
         private readonly ShellWindowsClass _shell = new ShellWindowsClass();
 
-        public ShellWindowManager(
-            IShellUrlParser parser, 
-            IUserNotificationService notificationService)
+        public ShellWindowManager()
         {
-            _parser = parser;
-            _notificationService = notificationService;
             _shell.WindowRegistered += ShellOnWindowRegistered;
         }
 
@@ -37,44 +29,7 @@ namespace ExplorerHub.Infrastructures
                     continue;
                 }
 
-                //var parsingName = shellBrowser.LocationName;
-                if (!string.IsNullOrWhiteSpace(shellBrowser.LocationURL))
-                {
-                    var uri = new Uri(shellBrowser.LocationURL);
-                    if (!uri.IsFile)
-                    {
-                        _notificationService.Notify(
-                            $"无法识别URL: {shellBrowser.LocationURL}",
-                            "ExplorerHub", NotificationLevel.Warn);
-                        continue;
-                    }
-
-                    ShellObject target;
-
-                    try
-                    {
-                        target = ShellObject.FromParsingName(shellBrowser.LocationURL);
-                    }
-                    catch (Exception e)
-                    {
-                        _notificationService.Notify($"无法导航到: {shellBrowser.LocationURL}\n原因: {e.Message}",
-                            "错误", NotificationLevel.Error);
-                        continue;
-                    }
-
-                    yield return new ShellWindowController(target, shellBrowser);
-                }
-                else if (_parser.KnownFolders.TryGetValue(shellBrowser.LocationName, out var objs))
-                {
-                    yield return new ShellWindowController(objs[0], shellBrowser);
-                }
-                else
-                {
-                    _notificationService.Notify(
-                        $"无法识别路径: {shellBrowser.LocationName}", 
-                        "ExplorerHub", NotificationLevel.Warn);
-                    yield return new ShellWindowController(_parser.Default, shellBrowser);
-                }
+                yield return new ShellWindowController(shellBrowser);
             }
         }
 
@@ -86,12 +41,14 @@ namespace ExplorerHub.Infrastructures
         public class ShellWindowController : IShellWindow
         {
             private readonly IWebBrowser2 _nativeBrowser;
-            public ShellObject Target { get; }
+            
+            public string LocationName => _nativeBrowser.LocationName;
 
-            public ShellWindowController(ShellObject target, IWebBrowser2 nativeBrowser)
+            public string LocationUrl => _nativeBrowser.LocationURL;
+
+            public ShellWindowController(IWebBrowser2 nativeBrowser)
             {
                 _nativeBrowser = nativeBrowser;
-                Target = target;
             }
 
             public void Close()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using ExplorerHub.ViewModels.ExplorerHubs;
+using ExplorerHub.ViewModels;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.AppInitializations

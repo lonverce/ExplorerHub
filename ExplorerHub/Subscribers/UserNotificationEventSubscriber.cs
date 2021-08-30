@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
-using ExplorerHub.Events;
+using ExplorerHub.Infrastructure.Events;
+using ExplorerHub.ViewModels;
 
 namespace ExplorerHub.Subscribers
 {

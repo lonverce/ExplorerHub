@@ -1,18 +1,16 @@
-﻿using Microsoft.WindowsAPICodePack.Shell;
-
-namespace ExplorerHub.Events
+﻿namespace ExplorerHub.Events
 {
     /// <summary>
     /// 新建浏览器页面
     /// </summary>
     public class NewExplorerEventData : IEventData
     {
-        public NewExplorerEventData(ShellObject target)
+        public NewExplorerEventData(IShellWindow window)
         {
-            Target = target;
+            Window = window;
         }
 
-        public ShellObject Target { get; }
+        public IShellWindow Window { get; }
 
         string IEventData.Name => EventName;
 

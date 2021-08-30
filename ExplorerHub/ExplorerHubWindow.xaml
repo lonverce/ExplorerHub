@@ -7,7 +7,6 @@
             mc:Ignorable="d" 
             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
             xmlns:explorerHub="clr-namespace:ExplorerHub"
-            xmlns:explorerHubs="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs;assembly=ExplorerHub.ViewModels"
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers;assembly=ExplorerHub.ViewModels"
             xmlns:ui="clr-namespace:ExplorerHub.UI"
             xmlns:explorerHubs1="clr-namespace:ExplorerHub.ViewModels.ExplorerHubs;assembly=ExplorerHub.ViewModels"
@@ -63,7 +62,7 @@
         </Grid>
     </pu:WindowXCaption.Header>
     <Window.Title>
-        <Binding ElementName="ExplorerHeaderBar" Path="SelectedItem.(explorers:ExplorerViewModel.Title)" FallbackValue="文件资源管理器"/>
+        <Binding ElementName="ExplorerHeaderBar" Path="SelectedItem.(explorers:ExplorerViewModel.Title)" FallbackValue="文件资源管理器" TargetNullValue="文件资源管理器"/>
     </Window.Title>
     <Grid>
         <Grid.RowDefinitions>

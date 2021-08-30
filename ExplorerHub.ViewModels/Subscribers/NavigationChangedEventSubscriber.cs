@@ -1,9 +1,8 @@
 ﻿using System;
-using ExplorerHub.Events;
 using ExplorerHub.ViewModels.Explorers;
 using Microsoft.WindowsAPICodePack.Shell;
 
-namespace ExplorerHub.Subscribers
+namespace ExplorerHub.ViewModels.Subscribers
 {
     [EventSubscriber(ExplorerNavigationUpdatedEventData.EventName, UiHandle = false)]
     public class NavigationChangedEventSubscriber : IEventSubscriber

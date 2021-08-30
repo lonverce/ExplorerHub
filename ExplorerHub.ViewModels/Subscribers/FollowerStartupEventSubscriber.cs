@@ -1,8 +1,6 @@
 ﻿using ExplorerHub.Events;
-using ExplorerHub.ViewModels;
-using ExplorerHub.ViewModels.ExplorerHubs;
 
-namespace ExplorerHub.Subscribers
+namespace ExplorerHub.ViewModels.Subscribers
 {
     [EventSubscriber(FollowerStartupEventData.EventName, UiHandle = true)]
     public class FollowerStartupEventSubscriber : IEventSubscriber

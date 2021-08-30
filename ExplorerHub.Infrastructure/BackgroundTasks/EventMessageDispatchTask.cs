@@ -8,7 +8,7 @@ using Autofac.Features.Metadata;
 using Autofac.Features.OwnedInstances;
 using MindLab.Messaging;
 
-namespace ExplorerHub.BackgroundTasks
+namespace ExplorerHub.Infrastructure.BackgroundTasks
 {
     /// <summary>
     /// 负责把由<see cref="IEventBus"/>发布的事件推送给相关的<see cref="IEventSubscriber"/>
