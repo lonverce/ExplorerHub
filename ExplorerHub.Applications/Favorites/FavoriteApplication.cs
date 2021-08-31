@@ -37,5 +37,16 @@ namespace ExplorerHub.Applications.Favorites
         {
             return _mapper.Map<List<FavoriteDto>>(_favorites.GetAll());
         }
+
+        public FavoriteDto Find(Guid id)
+        {
+            var favorite = _favorites.FindById(id);
+            if (favorite == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<FavoriteDto>(favorite);
+        }
     }
 }

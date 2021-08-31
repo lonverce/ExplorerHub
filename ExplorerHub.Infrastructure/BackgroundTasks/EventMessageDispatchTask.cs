@@ -152,8 +152,15 @@ namespace ExplorerHub.Infrastructure.BackgroundTasks
             {
                 foreach (var uiSubscriber in subscriberCollection.UiSubscribers)
                 {
-                    using var usb = uiSubscriber();
-                    usb.Value.Handle(data);
+                    try
+                    {
+                        using var usb = uiSubscriber();
+                        usb.Value.Handle(data);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             });
             

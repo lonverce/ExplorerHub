@@ -67,13 +67,54 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ui:ChromeAddressBar Grid.Row="0" DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}" Margin="3,2" />
+        
+        <ToolBar Grid.Row="1" ItemsSource="{Binding Favorites}"
+              Padding="0" HorizontalAlignment="Stretch" Margin="10, 5"
+              FontSize="12" Background="Transparent" OverflowMode="AsNeeded"
+              BorderThickness="0">
+            <ToolBar.ItemTemplate>
+                <DataTemplate>
+                    <Button ToolTip="{Binding LocationUrl}"
+                            Command="{Binding OpenFavoriteLink}"
+                            CommandParameter="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="18" Height="18" Margin="5,1" VerticalAlignment="Center" Source="{Binding Logo}"/>
+                            <TextBlock Text="{Binding Name}" Foreground="#FF222222" MaxWidth="120" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Padding" Value="8,3"/>
+                                <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Link"></Setter>
+                                <Setter Property="FontSize" Value="12"></Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFF0F0F0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.ContextMenu>
+                            <ContextMenu Padding="0">
+                                <MenuItem Header="移除此书签" FontSize="12" Command="{Binding RemoveFavoriteLink}">
+                                    <MenuItem.Icon>
+                                        <TextBlock FontFamily="{StaticResource FontAwesome}">&#xf00d;</TextBlock>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </DataTemplate>
+            </ToolBar.ItemTemplate>
+        </ToolBar>
         <WindowsFormsHost  MinHeight="200" MinWidth="300"
-                           Grid.Row="1"
+                           Grid.Row="2"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                           Margin="2, 7, 2, 1" 
+                           Margin="2, 2, 2, 1" 
                            explorerHub:WindowsFormsHostHelper.ChildForm="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem.(explorers:ExplorerViewModel.Browser), Mode=OneWay}"
         />
     </Grid>

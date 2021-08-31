@@ -1,34 +1,26 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using ExplorerHub.Events;
+using ExplorerHub.ViewModels.Favorites;
 using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Controls.WindowsForms;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    [Flags]
-    public enum ItemPositionType
-    {
-        None = 0,
-        Head = 1,
-        Tail = 2,
-        Both = Head | Tail
-    }
-
     public class ExplorerViewModel : ViewModelBase,IManagedObject, IDisposable
     {
-        private readonly IEventBus _eventBus;
-
         #region Fields
 
         private string _title;
         private string _navigationPath;
         private ShellObject _displayingTarget;
         private int _ownerId = -1;
-        private ItemPositionType _position;
-        private bool _isDrawLine;
+        private readonly FavoriteViewModelProvider _favoriteViewModelProvider;
+        private readonly IEventBus _eventBus;
+        private bool _isCurrentNavigationInFavorite;
 
         #endregion
 
@@ -60,10 +52,10 @@ namespace ExplorerHub.ViewModels.Explorers
 
         public BitmapSource Logo { get; private set; }
 
-        private ShellObject DisplayingTarget
+        public ShellObject DisplayingTarget
         {
             get => _displayingTarget;
-            set
+            private set
             {
                 _displayingTarget = value ?? throw new ArgumentNullException();
                 OnPropertyChanged();
@@ -81,27 +73,12 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
-        public ItemPositionType Position
+        public bool IsCurrentNavigationInFavorite
         {
-            get => _position;
-            set
+            get => _isCurrentNavigationInFavorite;
+            private set
             {
-                if (_position == value)
-                {
-                    return;
-                }
-
-                _position = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsDrawLine
-        {
-            get => _isDrawLine;
-            set
-            {
-                _isDrawLine = value;
+                _isCurrentNavigationInFavorite = value;
                 OnPropertyChanged();
             }
         }
@@ -128,6 +105,12 @@ namespace ExplorerHub.ViewModels.Explorers
         [InjectProperty]
         public CloseExplorerCommand CloseExplorer { get; set; }
 
+        [InjectProperty]
+        public AddFavoriteCommand AddToFavorite { get; set; }
+
+        [InjectProperty]
+        public RemoveFavoriteCommand RemoveFavorite { get; set; }
+        
         #endregion
 
         #region Constructor
@@ -135,8 +118,10 @@ namespace ExplorerHub.ViewModels.Explorers
         public ExplorerViewModel(
             int managedObjectId,
             ShellObject initialTarget,
+            FavoriteViewModelProvider favoriteViewModelProvider,
             IEventBus eventBus)
         {
+            _favoriteViewModelProvider = favoriteViewModelProvider;
             _eventBus = eventBus;
             ManagedObjectId = managedObjectId;
 
@@ -149,10 +134,13 @@ namespace ExplorerHub.ViewModels.Explorers
             {
                 Browser.Navigate(initialTarget);
             }
-        }
 
-        public ExplorerViewModel(int managedObjectId, IEventBus eventBus)
-            :this(managedObjectId, null, eventBus)
+            favoriteViewModelProvider.Favorites.CollectionChanged += FavoritesOnCollectionChanged;
+            CheckFavorite();
+        }
+        
+        public ExplorerViewModel(int managedObjectId, FavoriteViewModelProvider favoriteViewModelProvider, IEventBus eventBus)
+            :this(managedObjectId, null, favoriteViewModelProvider, eventBus)
         {
         }
 
@@ -169,6 +157,29 @@ namespace ExplorerHub.ViewModels.Explorers
         #endregion
 
         #region Private methods
+
+        private void CheckFavorite()
+        {
+            if (_displayingTarget == null)
+            {
+                IsCurrentNavigationInFavorite = false;
+            }
+            else if(!_displayingTarget.IsFileSystemObject)
+            {
+                IsCurrentNavigationInFavorite = false;
+            }
+            else
+            {
+                IsCurrentNavigationInFavorite =
+                    _favoriteViewModelProvider.Favorites.Any(model => string.Equals(model.LocationUrl, NavigationPath));
+            }
+        }
+
+        private void FavoritesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            CheckFavorite();
+        }
+
         private void NavigationLogOnNavigationLogChanged(object sender, NavigationLogEventArgs e)
         {
             var log = (ExplorerBrowserNavigationLog)sender;
@@ -189,12 +200,14 @@ namespace ExplorerHub.ViewModels.Explorers
             Title = target.Name;
             Logo = target.Thumbnail.SmallBitmapSource;
             OnPropertyChanged(nameof(Logo));
+            CheckFavorite();
         }
 
         public void FlushData()
         {
             OnNavigationUpdated();
         }
+
         #endregion
     }
 }

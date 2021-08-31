@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using ExplorerHub.Applications.Favorites;
+﻿using System.Collections.ObjectModel;
 using ExplorerHub.ViewModels.Explorers;
-using GongSolutions.Wpf.DragDrop;
+using ExplorerHub.ViewModels.Favorites;
 
 namespace ExplorerHub.ViewModels.ExplorerHubs
 {
@@ -22,8 +18,8 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
         [InjectProperty]
         public CloseBrowserCommand CloseBrowser { get; set; }
 
-        [InjectProperty(ResolvedType = typeof(ExplorerHubDropTarget))]
-        public IDropTarget DropTarget { get; set; }
+        [InjectProperty]
+        public ExplorerHubDropTarget DropTarget { get; set; }
 
         public int ManagedObjectId { get; }
 
@@ -37,42 +33,11 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             }
         }
 
-        public ExplorerHubViewModel(
-            int managedObjectId, 
-            Func<FavoriteDto, FavoriteViewModel> favoriteFunc,
-            IFavoriteApplication favoriteApplication)
+        public ExplorerHubViewModel(int managedObjectId, FavoriteViewModelProvider favoriteViewModelProvider)
         {
             ManagedObjectId = managedObjectId;
             Explorers = new ObservableCollection<ExplorerViewModel>();
-            Explorers.CollectionChanged += ExplorersOnCollectionChanged;
-
-            var favorites = favoriteApplication.GetAllFavorites().Select(favoriteFunc);
-            Favorites = new ObservableCollection<FavoriteViewModel>(favorites);
-        }
-
-        private void ExplorersOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            var explorers = Explorers.ToArray();
-
-            if (!explorers.Any())
-            {
-                return;
-            }
-
-            if (explorers.Length == 1)
-            {
-                explorers.Single().Position = ItemPositionType.Both;
-            }
-            else
-            {
-                explorers.First().Position = ItemPositionType.Head;
-                foreach (var explorer in explorers.Skip(1).Take(explorers.Length-2))
-                {
-                    explorer.Position = ItemPositionType.None;
-                }
-
-                explorers.Last().Position = ItemPositionType.Tail;
-            }
+            Favorites = favoriteViewModelProvider.Favorites;
         }
     }
 }

@@ -16,6 +16,8 @@ using ExplorerHub.UI;
 using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
 using ExplorerHub.ViewModels.Explorers;
+using ExplorerHub.ViewModels.Favorites;
+using ExplorerHub.ViewModels.Initializations;
 using ExplorerHub.ViewModels.Subscribers;
 using MindLab.Messaging;
 using Application = System.Windows.Application;
@@ -159,6 +161,7 @@ namespace ExplorerHub
 
             // initializations
             containerBuilder.AddAppInitialization<DbContextInitialization>();
+            containerBuilder.AddAppInitialization<FavoriteInitialization>();
             containerBuilder.AddAppInitialization<MainWindowInitialization>();
             containerBuilder.AddAppInitialization<StartupArgInitialization>()
                 .WithParameter(new TypedParameter(typeof(SplashScreen), splashScreen));
@@ -179,8 +182,13 @@ namespace ExplorerHub
 #if DEBUG
             containerBuilder.AddEventSubscriber<NavigationChangedEventSubscriber>(); 
 #endif
+            containerBuilder.AddEventSubscriber<FavoriteAddedEventSubscriber>();
+            containerBuilder.AddEventSubscriber<FavoriteRemovedEventSubscriber>();
 
             // view models
+            containerBuilder.RegisterType<FavoriteViewModelProvider>()
+                .SingleInstance();
+
             containerBuilder.RegisterType<ExplorerHubViewModel>()
                 .InjectProperties()
                 .AsSelf()
@@ -193,6 +201,7 @@ namespace ExplorerHub
 
             containerBuilder.RegisterType<FavoriteViewModel>()
                 .InjectProperties()
+                .InstancePerOwned<FavoriteViewModel>()
                 .AsSelf();
 
             // commands
@@ -205,6 +214,10 @@ namespace ExplorerHub
             containerBuilder.AddCommand<ShowInNewWindowCommand>();
             containerBuilder.RegisterType<ExplorerHubDropTarget>();
             containerBuilder.AddCommand<CloseExplorerCommand>();
+            containerBuilder.AddCommand<AddFavoriteCommand>();
+            containerBuilder.AddCommand<RemoveFavoriteCommand>();
+            containerBuilder.AddCommand<OpenFavoriteLinkCommand>();
+            containerBuilder.AddCommand<RemoveFavoriteLinkCommand>();
 
             // application services
             var appDataDir = Environment.GetFolderPath(

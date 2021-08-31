@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Autofac.Features.OwnedInstances;
 using ExplorerHub.Applications.Favorites;
 
-namespace ExplorerHub.ViewModels.ExplorerHubs
+namespace ExplorerHub.ViewModels.Favorites
 {
     public class FavoriteViewModel
     {
@@ -15,6 +16,14 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
 
         public BitmapSource Logo { get; }
 
+        [InjectProperty]
+        public OpenFavoriteLinkCommand OpenFavoriteLink { get; set; }
+
+        [InjectProperty]
+        public RemoveFavoriteLinkCommand RemoveFavoriteLink { get; set; }
+        
+        public delegate Owned<FavoriteViewModel> ConstructFunc(FavoriteDto data);
+
         public FavoriteViewModel(FavoriteDto data)
         {
             Id = data.Id;
@@ -22,7 +31,7 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             LocationUrl = data.Url;
             
             using var logoStream = new MemoryStream(data.Icon, false);
-            var decoder = new JpegBitmapDecoder(logoStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            var decoder = new JpegBitmapDecoder(logoStream, BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
             var frame = decoder.Frames[0];
             Logo = frame;
         }

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows.Input;
 using Autofac;
 using Autofac.Builder;
+using Autofac.Core;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Castle.DynamicProxy;
@@ -19,42 +20,19 @@ namespace ExplorerHub.Infrastructure
         public static IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> InjectProperties<TLimit, TActivatorData, TRegistrationStyle>(
             this IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> builder)
         {
-            var propCollection = typeof(TLimit).GetProperties(BindingFlags.CreateInstance | BindingFlags.SetProperty | BindingFlags.Public |
-                                                              BindingFlags.Instance).Select(prop => new
-            {
-                prop,
-                attr = prop.GetCustomAttribute<InjectPropertyAttribute>()
-            }).Where(arg => arg.attr != null).ToArray();
-
-            if (!propCollection.Any())
-            {
-                return builder;
-            }
-
-            foreach (var p in propCollection)
-            {
-                if (p.attr.ResolvedType == null)
-                {
-                    p.attr.ResolvedType = p.prop.PropertyType;
-                }
-            }
-            
-            return builder.OnActivated(args =>
-            {
-                var instance = args.Instance;
-                var ctx = args.Context;
-
-                foreach (var p in propCollection)
-                {
-                    if (!ctx.TryResolve(p.attr.ResolvedType, out var pVal))
-                    {
-                        continue;
-                    }
-
-                    p.prop.SetValue(instance, pVal);
-                }
-            });
+            return builder.PropertiesAutowired(PropertySelector, true);
         }
+
+        private class InjectPropertySelector : IPropertySelector
+        {
+            public bool InjectProperty(PropertyInfo propertyInfo, object instance)
+            {
+                var attr = propertyInfo.GetCustomAttribute<InjectPropertyAttribute>();
+                return attr != null;
+            }
+        }
+
+        private static readonly IPropertySelector PropertySelector = new InjectPropertySelector();
 
         public static IRegistrationBuilder<TBackgroundTask, ConcreteReflectionActivatorData, SingleRegistrationStyle> AddBackgroundTask<TBackgroundTask>(this ContainerBuilder builder)
             where TBackgroundTask : IBackgroundTask

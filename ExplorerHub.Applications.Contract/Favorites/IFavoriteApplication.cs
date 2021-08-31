@@ -10,5 +10,7 @@ namespace ExplorerHub.Applications.Favorites
         void DeleteFavorite(Guid favoriteId);
 
         List<FavoriteDto> GetAllFavorites();
+
+        FavoriteDto Find(Guid id);
     }
 }

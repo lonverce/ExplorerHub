@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
              xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              xmlns:ui="clr-namespace:ExplorerHub.UI"
+             xmlns:explorers1="clr-namespace:ExplorerHub.ViewModels.Explorers;assembly=ExplorerHub.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="36" d:DesignWidth="250" 
-             d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+             d:DataContext="{d:DesignInstance explorers1:ExplorerViewModel}">
     <Grid Margin="0,0,0,0">
         <Grid.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
@@ -49,7 +49,7 @@
     </UserControl.ToolTip>
     <UserControl.ContextMenu>
         <!-->Tab标签的右键菜单</!-->
-        <ContextMenu d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}" 
+        <ContextMenu d:DataContext="{d:DesignInstance explorers1:ExplorerViewModel}" 
                      silver:ContextMenuHelper.ItemPadding="5,0"
                      silver:ContextMenuHelper.ItemHeight="25"
                      FontSize="10">
