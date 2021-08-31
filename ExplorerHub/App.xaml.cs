@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Autofac;
 using ExplorerHub.AppInitializations;
+using ExplorerHub.Applications.Favorites;
 using ExplorerHub.EfCore;
 using ExplorerHub.Infrastructure;
 using ExplorerHub.Infrastructure.BackgroundTasks;
@@ -160,12 +161,12 @@ namespace ExplorerHub
                 .SingleInstance();
 
             // initializations
-            containerBuilder.AddAppInitialization<DbContextInitialization>();
-            containerBuilder.AddAppInitialization<FavoriteInitialization>();
             containerBuilder.AddAppInitialization<MainWindowInitialization>();
             containerBuilder.AddAppInitialization<StartupArgInitialization>()
                 .WithParameter(new TypedParameter(typeof(SplashScreen), splashScreen));
             containerBuilder.AddAppInitialization<BackgroundTasksInitialization>();
+            containerBuilder.AddAppInitialization<DbContextInitialization>();
+            containerBuilder.AddAppInitialization<FavoriteInitialization>();
 
             // background tasks
             containerBuilder.AddBackgroundTask<EventMessageDispatchTask>();
@@ -212,19 +213,26 @@ namespace ExplorerHub
             containerBuilder.AddCommand<GoToParentCommand>();
             containerBuilder.AddCommand<CloseBrowserCommand>();
             containerBuilder.AddCommand<ShowInNewWindowCommand>();
-            containerBuilder.RegisterType<ExplorerHubDropTarget>();
             containerBuilder.AddCommand<CloseExplorerCommand>();
             containerBuilder.AddCommand<AddFavoriteCommand>();
             containerBuilder.AddCommand<RemoveFavoriteCommand>();
             containerBuilder.AddCommand<OpenFavoriteLinkCommand>();
             containerBuilder.AddCommand<RemoveFavoriteLinkCommand>();
 
+            // others
+            containerBuilder.RegisterType<ExplorerHubDropTarget>();
+
             // application services
+            containerBuilder.AddApplicationService<IFavoriteApplication, FavoriteApplication>();
+
+            // database
             var appDataDir = Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData,
                 Environment.SpecialFolderOption.Create);
+            containerBuilder.AddExplorerHubDbContext(Path.Combine(appDataDir, "explorer-hub.db"));
 
-            containerBuilder.AddApplicationServices(Path.Combine(appDataDir, "explorer-hub.db"));
+            // mapper
+            containerBuilder.AddEntityMapper();
 
             // done
             _container = containerBuilder.Build();

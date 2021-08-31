@@ -229,6 +229,7 @@
       <DependentUpon>ChromeTabItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ChromeTabPanel.cs" />
+    <Compile Include="UI\HideIfCollectionEmptyConverter.cs" />
     <Compile Include="UI\MaxWidthConverter.cs" />
     <Compile Include="UI\PointExtensions.cs" />
     <Compile Include="HiddenMainWindow.xaml.cs">
@@ -321,6 +322,22 @@
     <SplashScreen Include="Splash.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExplorerHub.Applications.Contract\ExplorerHub.Applications.Contract.csproj">
+      <Project>{9e62a8fd-cd90-4b4c-865a-a950dadf8761}</Project>
+      <Name>ExplorerHub.Applications.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Applications\ExplorerHub.Applications.csproj">
+      <Project>{0212bb64-99bb-44bc-bf7c-678963656d12}</Project>
+      <Name>ExplorerHub.Applications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Domain.Contract\ExplorerHub.Domain.Contract.csproj">
+      <Project>{9d8866bd-c79f-4c45-b1da-f82dac7a31db}</Project>
+      <Name>ExplorerHub.Domain.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Domain\ExplorerHub.Domain.csproj">
+      <Project>{8777e16a-5e74-4e49-9802-82e18a9c033e}</Project>
+      <Name>ExplorerHub.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExplorerHub.EfCore\ExplorerHub.EfCore.csproj">
       <Project>{7f862875-0144-4608-850c-66efc57e8da3}</Project>
       <Name>ExplorerHub.EfCore</Name>

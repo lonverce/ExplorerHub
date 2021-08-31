@@ -33,7 +33,7 @@ namespace ExplorerHub.ViewModels.Explorers
 
         public virtual void Execute(object parameter)
         {
-            var jpegEncoder = new JpegBitmapEncoder();
+            var jpegEncoder = new PngBitmapEncoder();
             using var ms = new MemoryStream();
             jpegEncoder.Frames.Add(BitmapFrame.Create(_vm.Logo));
             jpegEncoder.Save(ms);

@@ -125,8 +125,10 @@ namespace ExplorerHub.ViewModels.Explorers
             _eventBus = eventBus;
             ManagedObjectId = managedObjectId;
 
-            Browser = new ExplorerBrowser();
-            Browser.BorderStyle = BorderStyle.None;
+            Browser = new ExplorerBrowser
+            {
+                BorderStyle = BorderStyle.None
+            };
             var log = Browser.NavigationLog;
             log.NavigationLogChanged += NavigationLogOnNavigationLogChanged;
 

@@ -4,7 +4,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-            mc:Ignorable="d" 
+            mc:Ignorable="d"
             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
             xmlns:explorerHub="clr-namespace:ExplorerHub"
             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers;assembly=ExplorerHub.ViewModels"
@@ -17,25 +17,27 @@
             Height="700" Width="1000"
             MinHeight="400"
             MinWidth="500"
-            d:DataContext="{d:DesignInstance explorerHubs1:ExplorerHubViewModel}" 
+            d:DataContext="{d:DesignInstance explorerHubs1:ExplorerHubViewModel}"
             Padding="0">
     <pu:WindowXCaption.Height>
         <Binding ElementName="TabWnd" Path="WindowState">
             <Binding.Converter>
-                <explorerHubs1:WindowStateHeightConverter MaxHeight="35" NormalHeight="48"/>
+                <explorerHubs1:WindowStateHeightConverter MaxHeight="35" NormalHeight="48" />
             </Binding.Converter>
         </Binding>
     </pu:WindowXCaption.Height>
     <pu:WindowX.Resources>
-        <explorerHubs1:WindowStateMarginConverter x:Key="WindowStateMarginConverter"/>
+        <explorerHubs1:WindowStateMarginConverter x:Key="WindowStateMarginConverter" />
+        <ui:HideIfCollectionEmptyConverter x:Key="HideIfCollectionEmptyConverter" />
     </pu:WindowX.Resources>
     <pu:WindowXCaption.Header>
-        <Grid Height="34" Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">
+        <Grid Height="34"
+              Margin="{Binding ElementName=TabWnd, Path=WindowState, Converter={StaticResource WindowStateMarginConverter}, ConverterParameter=14}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <ui:ChromeTabControl x:Name="ExplorerHeaderBar" Grid.Column="0" 
+            <ui:ChromeTabControl x:Name="ExplorerHeaderBar" Grid.Column="0"
                                  ItemsSource="{Binding Explorers}"
                                  SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
                                  dd:DragDrop.IsDragSource="True"
@@ -44,56 +46,64 @@
                 <ui:ChromeTabControl.MaxWidth>
                     <Binding ElementName="TabWnd" Path="ActualWidth">
                         <Binding.Converter>
-                            <ui:MaxWidthConverter PreservedSize="230"/>
+                            <ui:MaxWidthConverter PreservedSize="230" />
                         </Binding.Converter>
                     </Binding>
                 </ui:ChromeTabControl.MaxWidth>
             </ui:ChromeTabControl>
-               
+
             <Button Content="&#xf067;"
                     Grid.Column="1"
                     Style="{StaticResource BtnStyle}"
                     FontSize="16"
                     HorizontalAlignment="Left"
                     Command="{Binding AddBrowser}"
-                    Margin="0" FontFamily="{StaticResource FontAwesome}" 
-                    Background="Transparent" 
-                    Foreground="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}"/>
+                    Margin="0" FontFamily="{StaticResource FontAwesome}"
+                    Background="Transparent"
+                    Foreground="{DynamicResource {x:Static ui:AppColors.SystemForegroundKey}}" />
         </Grid>
     </pu:WindowXCaption.Header>
     <Window.Title>
-        <Binding ElementName="ExplorerHeaderBar" Path="SelectedItem.(explorers:ExplorerViewModel.Title)" FallbackValue="文件资源管理器" TargetNullValue="文件资源管理器"/>
+        <Binding ElementName="ExplorerHeaderBar" Path="SelectedItem.(explorers:ExplorerViewModel.Title)"
+                 FallbackValue="文件资源管理器" TargetNullValue="文件资源管理器" />
     </Window.Title>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" MinHeight="10" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:ChromeAddressBar Grid.Row="0" DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}" Margin="3,2" />
-        
+        <ui:ChromeAddressBar Grid.Row="0" DataContext="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}"
+                             Margin="3,2" />
+
         <ToolBar Grid.Row="1" ItemsSource="{Binding Favorites}"
-              Padding="0" HorizontalAlignment="Stretch" Margin="10, 5"
-              FontSize="12" Background="Transparent" OverflowMode="AsNeeded"
-              BorderThickness="0">
+                 Padding="0" HorizontalAlignment="Stretch" Margin="10, 0"
+                 FontSize="11" Background="Transparent" OverflowMode="AsNeeded"
+                 Visibility="{Binding Favorites.Count, Converter={StaticResource HideIfCollectionEmptyConverter}}"
+                 BorderThickness="0">
             <ToolBar.ItemTemplate>
                 <DataTemplate>
                     <Button ToolTip="{Binding LocationUrl}"
                             Command="{Binding OpenFavoriteLink}"
                             CommandParameter="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem}">
-                        <StackPanel Orientation="Horizontal" >
-                            <Image Width="18" Height="18" Margin="5,1" VerticalAlignment="Center" Source="{Binding Logo}"/>
-                            <TextBlock Text="{Binding Name}" Foreground="#FF222222" MaxWidth="120" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16" Margin="5,1" VerticalAlignment="Center"
+                                   Source="{Binding Logo}" />
+                            <TextBlock Text="{Binding Name}"
+                                       Foreground="#FF222222"
+                                       MaxWidth="120"
+                                       TextTrimming="CharacterEllipsis"
+                                       VerticalAlignment="Center" />
                         </StackPanel>
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Padding" Value="8,3"/>
-                                <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Link"></Setter>
-                                <Setter Property="FontSize" Value="12"></Setter>
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Padding" Value="8,3" />
+                                <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Link" />
+                                <Setter Property="FontSize" Value="12" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FFF0F0F0"/>
+                                        <Setter Property="Background" Value="#FFF0F0F0" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -110,12 +120,94 @@
                     </Button>
                 </DataTemplate>
             </ToolBar.ItemTemplate>
+            <ToolBar.Resources>
+                <Style x:Key="ToolBarOverflowButtonStyle"
+                       TargetType="{x:Type ToggleButton}">
+                    <Setter Property="OverridesDefaultStyle"
+                            Value="true" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                <Border x:Name="Border"
+                                        Padding="7,5"
+                                        CornerRadius="14" Cursor="Hand"
+                                        VerticalAlignment="Center"
+                                        SnapsToDevicePixels="true">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="LightGray"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid>
+                                        <TextBlock FontSize="15" Text="&#xf101;" FontFamily="{StaticResource FontAwesome}" />
+                                        <ContentPresenter />
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ToolBar.Resources>
+
+            <ToolBar.Style>
+                <Style TargetType="{x:Type ToolBar}">
+                    <Setter Property="SnapsToDevicePixels" Value="true" />
+                    <Setter Property="OverridesDefaultStyle" Value="true" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToolBar}">
+                                <Border x:Name="Border"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                    <DockPanel>
+                                        <ToggleButton DockPanel.Dock="Right"
+                                                      x:Name="ToolBarToggleBtn"
+                                                      IsEnabled="{TemplateBinding HasOverflowItems}"
+                                                      Style="{StaticResource ToolBarOverflowButtonStyle}"
+                                                      ClickMode="Press"
+                                                      Visibility="{TemplateBinding HasOverflowItems, Converter={StaticResource BoolToInvisibleConverter}}"
+                                                      IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Popup x:Name="OverflowPopup"
+                                                   AllowsTransparency="true"
+                                                   Placement="Bottom"
+                                                   StaysOpen="false"
+                                                   Focusable="false"
+                                                   PopupAnimation="Slide"
+                                                   IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                                <Border x:Name="DropDownBorder"
+                                                        Background="White"
+                                                        BorderBrush="DimGray"
+                                                        BorderThickness="1">
+                                                    <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel"
+                                                                          Margin="2"
+                                                                          WrapWidth="200"
+                                                                          Focusable="true"
+                                                                          FocusVisualStyle="{x:Null}"
+                                                                          KeyboardNavigation.TabNavigation="Cycle"
+                                                                          KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                                </Border>
+                                            </Popup>
+                                        </ToggleButton>
+                                        <ToolBarPanel x:Name="PART_ToolBarPanel"
+                                                      IsItemsHost="true"
+                                                      Margin="0,1,2,2" />
+                                    </DockPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ToolBar.Style>
         </ToolBar>
-        <WindowsFormsHost  MinHeight="200" MinWidth="300"
-                           Grid.Row="2"
-                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                           Margin="2, 2, 2, 1" 
-                           explorerHub:WindowsFormsHostHelper.ChildForm="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem.(explorers:ExplorerViewModel.Browser), Mode=OneWay}"
-        />
+        <WindowsFormsHost MinHeight="200" MinWidth="300"
+                          Grid.Row="2"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          Margin="2, 2, 2, 1"
+                          explorerHub:WindowsFormsHostHelper.ChildForm="{Binding ElementName=ExplorerHeaderBar, Path=SelectedItem.(explorers:ExplorerViewModel.Browser), Mode=OneWay}" />
     </Grid>
 </pu:WindowX>

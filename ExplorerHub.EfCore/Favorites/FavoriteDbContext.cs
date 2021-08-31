@@ -37,7 +37,7 @@ namespace ExplorerHub.EfCore.Favorites
                     .HasMaxLength(FavoriteDomainConstants.MaxUrlLength)
                     .IsRequired();
 
-                builder.HasIndex(favorite => favorite.Name)
+                builder.HasIndex(favorite => favorite.Location)
                     .IsUnique();
 
                 builder.Property(favorite => favorite.Icon)

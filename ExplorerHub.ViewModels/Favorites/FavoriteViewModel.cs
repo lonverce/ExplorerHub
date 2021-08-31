@@ -31,7 +31,7 @@ namespace ExplorerHub.ViewModels.Favorites
             LocationUrl = data.Url;
             
             using var logoStream = new MemoryStream(data.Icon, false);
-            var decoder = new JpegBitmapDecoder(logoStream, BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
+            var decoder = new PngBitmapDecoder(logoStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
             var frame = decoder.Frames[0];
             Logo = frame;
         }

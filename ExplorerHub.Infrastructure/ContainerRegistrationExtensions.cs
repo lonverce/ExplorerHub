@@ -76,29 +76,8 @@ namespace ExplorerHub.Infrastructure
                 .InterceptedBy(typeof(CommandInterceptor));
         }
 
-        public static void AddApplicationServices(this ContainerBuilder builder, string connectionStr)
+        public static void AddEntityMapper(this ContainerBuilder builder)
         {
-            builder.RegisterType<ApplicationInterceptor>();
-            builder.RegisterType<ProxyGenerator>()
-                .IfNotRegistered(typeof(ProxyGenerator));
-
-            builder.Register(context =>
-            {
-                var interceptor = context.Resolve<ApplicationInterceptor>();
-                var generator = context.Resolve<ProxyGenerator>();
-                return generator.CreateInterfaceProxyWithoutTarget<IFavoriteApplication>(interceptor);
-            });
-
-            builder.RegisterType<FavoriteApplication>()
-                .As<IApplicationService>()
-                .WithMetadata(ApplicationInterceptor.ApplicationInterfaceKey, typeof(IFavoriteApplication));
-
-            builder.Register(context => new FavoriteDbContext(connectionStr))
-                .InjectProperties()
-                .AsSelf()
-                .As<IFavoriteRepository>()
-                .InstancePerLifetimeScope();
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Favorite, FavoriteDto>()
@@ -106,6 +85,38 @@ namespace ExplorerHub.Infrastructure
             });
 
             builder.RegisterInstance(config.CreateMapper());
+        }
+
+        public static void AddExplorerHubDbContext(this ContainerBuilder builder, string connectionStr)
+        {
+            builder.Register(context => new FavoriteDbContext(connectionStr))
+                .InjectProperties()
+                .AsSelf()
+                .As<IFavoriteRepository>()
+                .InstancePerLifetimeScope();
+        }
+
+        public static void AddApplicationService<TAppServiceInterface, TAppService>(this ContainerBuilder builder)
+            where TAppServiceInterface: class
+            where TAppService : class, TAppServiceInterface, IApplicationService
+        {
+            builder.RegisterType<ApplicationInterceptor>()
+                .IfNotRegistered(typeof(ApplicationInterceptor));
+
+            builder.RegisterType<ProxyGenerator>()
+                .IfNotRegistered(typeof(ProxyGenerator));
+
+            builder.Register(context =>
+            {
+                var interceptor = context.Resolve<ApplicationInterceptor>();
+                var generator = context.Resolve<ProxyGenerator>();
+                return generator.CreateInterfaceProxyWithoutTarget<TAppServiceInterface>(interceptor);
+            }).IfNotRegistered(typeof(TAppServiceInterface));
+
+            builder.RegisterType<TAppService>()
+                .As<IApplicationService>()
+                .WithMetadata(ApplicationInterceptor.ApplicationInterfaceKey, typeof(TAppServiceInterface))
+                .IfNotRegistered(typeof(TAppService));
         }
     }
 }
