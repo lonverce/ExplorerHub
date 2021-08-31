@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Autofac;
 using ExplorerHub.AppInitializations;
-using ExplorerHub.BackgroundTasks;
-using ExplorerHub.Infrastructures;
+using ExplorerHub.Applications.Favorites;
+using ExplorerHub.EfCore;
+using ExplorerHub.Infrastructure;
+using ExplorerHub.Infrastructure.BackgroundTasks;
+using ExplorerHub.Infrastructure.Initializations;
 using ExplorerHub.Subscribers;
 using ExplorerHub.UI;
+using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
 using ExplorerHub.ViewModels.Explorers;
+using ExplorerHub.ViewModels.Favorites;
+using ExplorerHub.ViewModels.Initializations;
+using ExplorerHub.ViewModels.Subscribers;
 using MindLab.Messaging;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -122,12 +130,12 @@ namespace ExplorerHub
 
             containerBuilder.RegisterType<ManagedObjectPool<ExplorerViewModel>>()
                 .AsSelf()
-                .As<IViewModelRepository<ExplorerViewModel>>()
+                .As<IManagedObjectRepository<ExplorerViewModel>>()
                 .SingleInstance();
 
             containerBuilder.RegisterType<ManagedObjectPool<ExplorerHubViewModel>>()
                 .AsSelf()
-                .As<IViewModelRepository<ExplorerHubViewModel>>()
+                .As<IManagedObjectRepository<ExplorerHubViewModel>>()
                 .SingleInstance();
 
             containerBuilder.RegisterType<HubWindowsManager>()
@@ -157,6 +165,8 @@ namespace ExplorerHub
             containerBuilder.AddAppInitialization<StartupArgInitialization>()
                 .WithParameter(new TypedParameter(typeof(SplashScreen), splashScreen));
             containerBuilder.AddAppInitialization<BackgroundTasksInitialization>();
+            containerBuilder.AddAppInitialization<DbContextInitialization>();
+            containerBuilder.AddAppInitialization<FavoriteInitialization>();
 
             // background tasks
             containerBuilder.AddBackgroundTask<EventMessageDispatchTask>();
@@ -173,8 +183,13 @@ namespace ExplorerHub
 #if DEBUG
             containerBuilder.AddEventSubscriber<NavigationChangedEventSubscriber>(); 
 #endif
+            containerBuilder.AddEventSubscriber<FavoriteAddedEventSubscriber>();
+            containerBuilder.AddEventSubscriber<FavoriteRemovedEventSubscriber>();
 
             // view models
+            containerBuilder.RegisterType<FavoriteViewModelProvider>()
+                .SingleInstance();
+
             containerBuilder.RegisterType<ExplorerHubViewModel>()
                 .InjectProperties()
                 .AsSelf()
@@ -185,16 +200,39 @@ namespace ExplorerHub
                 .AsSelf()
                 .InstancePerOwned<ExplorerViewModel>();
 
+            containerBuilder.RegisterType<FavoriteViewModel>()
+                .InjectProperties()
+                .InstancePerOwned<FavoriteViewModel>()
+                .AsSelf();
+
             // commands
-            containerBuilder.RegisterType<AddBrowserCommand>();
-            containerBuilder.RegisterType<SearchCommand>();
-            containerBuilder.RegisterType<NavBackCommand>();
-            containerBuilder.RegisterType<NavForwardCommand>();
-            containerBuilder.RegisterType<GoToParentCommand>();
-            containerBuilder.RegisterType<CloseBrowserCommand>();
-            containerBuilder.RegisterType<ShowInNewWindowCommand>();
+            containerBuilder.AddCommand<AddBrowserCommand>();
+            containerBuilder.AddCommand<SearchCommand>();
+            containerBuilder.AddCommand<NavBackCommand>();
+            containerBuilder.AddCommand<NavForwardCommand>();
+            containerBuilder.AddCommand<GoToParentCommand>();
+            containerBuilder.AddCommand<CloseBrowserCommand>();
+            containerBuilder.AddCommand<ShowInNewWindowCommand>();
+            containerBuilder.AddCommand<CloseExplorerCommand>();
+            containerBuilder.AddCommand<AddFavoriteCommand>();
+            containerBuilder.AddCommand<RemoveFavoriteCommand>();
+            containerBuilder.AddCommand<OpenFavoriteLinkCommand>();
+            containerBuilder.AddCommand<RemoveFavoriteLinkCommand>();
+
+            // others
             containerBuilder.RegisterType<ExplorerHubDropTarget>();
-            containerBuilder.RegisterType<CloseExplorerCommand>();
+
+            // application services
+            containerBuilder.AddApplicationService<IFavoriteApplication, FavoriteApplication>();
+
+            // database
+            var appDataDir = Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData,
+                Environment.SpecialFolderOption.Create);
+            containerBuilder.AddExplorerHubDbContext(Path.Combine(appDataDir, "explorer-hub.db"));
+
+            // mapper
+            containerBuilder.AddEntityMapper();
 
             // done
             _container = containerBuilder.Build();

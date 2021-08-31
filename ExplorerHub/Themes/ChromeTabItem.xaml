@@ -4,7 +4,6 @@
     xmlns:ui="clr-namespace:ExplorerHub.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
     mc:Ignorable="d">
     <Style TargetType="{x:Type ui:ChromeTabItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=ListBox}, Path=ActualHeight}"/>

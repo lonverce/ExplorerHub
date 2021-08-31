@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:explorers="clr-namespace:ExplorerHub.ViewModels.Explorers"
+             xmlns:explorers1="clr-namespace:ExplorerHub.ViewModels.Explorers;assembly=ExplorerHub.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="800">
     <DockPanel LastChildFill="True" 
-               d:DataContext="{d:DesignInstance explorers:ExplorerViewModel}">
+               d:DataContext="{d:DesignInstance explorers1:ExplorerViewModel}">
         <DockPanel.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
                 <Setter Property="FontSize" Value="17"/>
@@ -40,15 +40,31 @@
                 Name="AddressBar">
             <DockPanel VerticalAlignment="Center" Height="26">
                 <DockPanel.Resources>
-                    <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                    <Style x:Key="InnerBtnStyle" TargetType="Button" BasedOn="{StaticResource BtnStyle}">
                         <Setter Property="FontSize" Value="14"/>
                     </Style>
                 </DockPanel.Resources>
                 <Image Source="{Binding Logo}" 
                        Width="15" Height="15" Margin="3, 2"
                        VerticalAlignment="Center" />
-                <Button DockPanel.Dock="Right" Content="&#xf006;"
-                        FontFamily="{StaticResource FontAwesome}" ToolTip="添加收藏" />
+                <Button DockPanel.Dock="Right"
+                        FontFamily="{StaticResource FontAwesome}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource InnerBtnStyle}">
+                            <Setter Property="Content" Value="&#xf006;"/>
+                            <Setter Property="ToolTip" Value="添加收藏"></Setter>
+                            <Setter Property="Command" Value="{Binding AddToFavorite, Mode=OneWay}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCurrentNavigationInFavorite}" Value="true">
+                                    <Setter Property="Foreground" Value="DodgerBlue"/>
+                                    <Setter Property="Content" Value="&#xf005;"/>
+                                    <Setter Property="ToolTip" Value="取消收藏"/>
+                                    <Setter Property="Command" Value="{Binding RemoveFavorite, Mode=OneWay}"/>
+                            </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <TextBox TextWrapping="NoWrap" BorderThickness="0" 
                          MaxLines="1" MaxLength="256" IsReadOnly="False" AutoWordSelection="True"
                          Background="Transparent"

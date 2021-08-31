@@ -4,13 +4,14 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using ExplorerHub.ViewModels.ExplorerHubs;
+using Panuon.UI.Silver;
 
 namespace ExplorerHub
 {
     /// <summary>
     /// ExplorerHubWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class ExplorerHubWindow
+    public partial class ExplorerHubWindow : WindowX
     {
         private readonly ExplorerHubViewModel _vm;
 
