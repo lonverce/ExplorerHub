@@ -16,9 +16,6 @@
                 <Setter Property="Margin" Value="0"/>
             </Style>
         </Grid.Resources>
-        <Grid.InputBindings>
-            <MouseBinding MouseAction="MiddleClick" Command="{Binding CloseExplorer}"/>
-        </Grid.InputBindings>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>

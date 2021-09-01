@@ -26,23 +26,6 @@
                             Background="{TemplateBinding Background}">
                         <ContentPresenter Margin="4,0"/>
                     </Border>
-                    <!--<ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="White"/>
-                            <Setter Property="Foreground" Value="#222222"/>
-                            <Setter Property="Grid.ZIndex" Value="999"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Grid.ZIndex" Value="998"/>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                                <Condition Property="IsSelected" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="{DynamicResource {x:Static ui:AppColors.SystemInactiveBackgroundKey}}"/>
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

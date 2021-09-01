@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using ExplorerHub.ViewModels.Explorers;
 
 namespace ExplorerHub.UI
 {
@@ -45,6 +47,16 @@ namespace ExplorerHub.UI
         public ChromeTabItem(ChromeTabControl tabControl)
         {
             _tabControl = tabControl;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var explorer = (ExplorerViewModel) DataContext;
+            if (explorer != null)
+            {
+                InputBindings.Add(new MouseBinding(explorer.CloseExplorer, new MouseGesture(MouseAction.MiddleClick)));
+            }
         }
 
         protected override void OnRender(DrawingContext dc)
