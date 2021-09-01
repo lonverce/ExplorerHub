@@ -1,23 +1,20 @@
-﻿using System;
-using ExplorerHub.Events;
-using Microsoft.WindowsAPICodePack.Shell;
+﻿using ExplorerHub.Events;
+using ExplorerHub.Framework;
+using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Subscribers
 {
     [EventSubscriber(NewExplorerEventData.EventName, UiHandle = true)]
     public class NewBrowserEventSubscriber : IEventSubscriber
     {
-        private readonly IShellUrlParser _parser;
-        private readonly IHubWindowsManager _windowsManager;
+        private readonly IAbsorbService _absorbService;
         private readonly IUserNotificationService _notificationService;
 
         public NewBrowserEventSubscriber(
-            IShellUrlParser parser,
-            IHubWindowsManager windowsManager, 
+            IAbsorbService absorbService,
             IUserNotificationService notificationService)
         {
-            _parser = parser;
-            _windowsManager = windowsManager;
+            _absorbService = absorbService;
             _notificationService = notificationService;
         }
 
@@ -26,44 +23,15 @@ namespace ExplorerHub.ViewModels.Subscribers
             var data = (NewExplorerEventData) eventData;
             var shellBrowser = data.Window;
 
-            ShellObject target;
-
-            if (!string.IsNullOrWhiteSpace(shellBrowser.LocationUrl))
+            try
             {
-                var uri = new Uri(shellBrowser.LocationUrl);
-                if (!uri.IsFile)
-                {
-                    _notificationService.Notify(
-                        $"无法识别URL: {shellBrowser.LocationUrl}",
-                        "ExplorerHub", NotificationLevel.Warn);
-                    return;
-                }
-                
-                try
-                {
-                    target = ShellObject.FromParsingName(shellBrowser.LocationUrl);
-                }
-                catch (Exception e)
-                {
-                    _notificationService.Notify($"无法导航到: {shellBrowser.LocationUrl}\n原因: {e.Message}",
-                        "错误", NotificationLevel.Error);
-                    return;
-                }
+                _absorbService.Absorb(shellBrowser);
             }
-            else if (_parser.KnownFolders.TryGetValue(shellBrowser.LocationName, out var objs))
+            catch (AbsorbFailureException e)
             {
-                target = objs[0];
+                shellBrowser.Close();
+                _notificationService.Notify(e.Message, "ExplorerHub", NotificationLevel.Warn);
             }
-            else
-            {
-                _notificationService.Notify(
-                    $"无法识别路径: {shellBrowser.LocationName}",
-                    "ExplorerHub", NotificationLevel.Warn);
-                target = _parser.Default;
-            }
-
-            shellBrowser.Close();
-            _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(target);
         }
     }
 }

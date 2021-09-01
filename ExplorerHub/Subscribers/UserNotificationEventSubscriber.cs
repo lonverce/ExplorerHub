@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
-using ExplorerHub.Infrastructure.Events;
-using ExplorerHub.ViewModels;
+using ExplorerHub.Framework;
+using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.Subscribers
 {

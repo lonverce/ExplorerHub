@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using SHDocVw;
 
 namespace ExplorerHub.Infrastructure
@@ -22,7 +23,7 @@ namespace ExplorerHub.Infrastructure
 
         public IEnumerable<IShellWindow> GetCurrentWindows()
         {
-            foreach (InternetExplorer shellBrowser in _shell)
+            foreach (var shellBrowser in _shell.OfType<IWebBrowser2>().ToArray())
             {
                 if (!string.Equals("explorer.exe", Path.GetFileName(shellBrowser.FullName), StringComparison.CurrentCultureIgnoreCase))
                 {

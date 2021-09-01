@@ -157,23 +157,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppElector.cs" />
-    <Compile Include="ApplicationInterceptor.cs" />
-    <Compile Include="CommandInterceptor.cs" />
     <Compile Include="ContainerRegistrationExtensions.cs" />
-    <Compile Include="Events\UserNotificationEventData.cs" />
-    <Compile Include="Initializations\BackgroundTasksInitialization.cs" />
-    <Compile Include="BackgroundTasks\EventMessageDispatchTask.cs" />
     <Compile Include="BackgroundTasks\ExternalShellWindowsMonitoringTask.cs" />
-    <Compile Include="BackgroundTasks\FollowerProcessWatchingTask.cs" />
     <Compile Include="BackgroundTasks\SystemUserPreferenceMonitoringTask.cs" />
-    <Compile Include="EventBus.cs" />
-    <Compile Include="ManagedObjectPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShellUrlParser.cs" />
     <Compile Include="ShellWindowManager.cs" />
     <Compile Include="SystemColorManager.cs" />
-    <Compile Include="UserNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExplorerHub.Applications.Contract\ExplorerHub.Applications.Contract.csproj">
@@ -191,6 +181,14 @@
     <ProjectReference Include="..\ExplorerHub.EfCore\ExplorerHub.EfCore.csproj">
       <Project>{7f862875-0144-4608-850c-66efc57e8da3}</Project>
       <Name>ExplorerHub.EfCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Framework.DDD\ExplorerHub.Framework.DDD.csproj">
+      <Project>{c8717666-d05f-4515-92ae-9553b8e07c89}</Project>
+      <Name>ExplorerHub.Framework.DDD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Framework.Impl\ExplorerHub.Framework.Impl.csproj">
+      <Project>{f415070b-a883-4170-92c8-c00a0f9ac46f}</Project>
+      <Name>ExplorerHub.Framework.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExplorerHub.Framework\ExplorerHub.Framework.csproj">
       <Project>{c3dd16ee-d4dd-4f3f-8efe-28ce935cfd84}</Project>
@@ -216,6 +214,9 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Initializations\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

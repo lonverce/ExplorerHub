@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ExplorerHub.EfCore.Migrations
 {
-    [DbContext(typeof(FavoriteDbContext))]
+    [DbContext(typeof(ExplorerHubDbContext))]
     [Migration("20210830200824_InitCreate")]
     partial class InitCreate
     {

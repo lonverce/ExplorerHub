@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using ExplorerHub.Applications.Favorites;
 using ExplorerHub.Domain.Favorites;
+using ExplorerHub.Framework;
 using ExplorerHub.ViewModels.Favorites;
 
 namespace ExplorerHub.ViewModels.Subscribers

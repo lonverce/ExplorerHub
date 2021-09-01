@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using ExplorerHub.Framework;
 
 namespace ExplorerHub.Events
 {

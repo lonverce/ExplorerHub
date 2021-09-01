@@ -1,4 +1,5 @@
 ﻿using System;
+using ExplorerHub.Framework;
 
 namespace ExplorerHub.Domain.Favorites
 {

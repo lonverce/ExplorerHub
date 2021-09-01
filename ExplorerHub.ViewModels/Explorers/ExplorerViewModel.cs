@@ -3,6 +3,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
+using ExplorerHub.Framework;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Favorites;
 using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Controls.WindowsForms;

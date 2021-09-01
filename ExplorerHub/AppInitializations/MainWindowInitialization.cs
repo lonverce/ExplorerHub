@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ExplorerHub.Framework;
 using ExplorerHub.ViewModels;
 
 namespace ExplorerHub.AppInitializations

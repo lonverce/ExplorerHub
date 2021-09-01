@@ -1,4 +1,6 @@
-﻿namespace ExplorerHub.ViewModels
+﻿using ExplorerHub.Framework;
+
+namespace ExplorerHub.ViewModels
 {
     public class ExplorerNavigationUpdatedEventData : IEventData
     {

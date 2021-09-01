@@ -1,4 +1,5 @@
 ﻿using ExplorerHub.Applications.Favorites;
+using ExplorerHub.Framework;
 using ExplorerHub.ViewModels.Favorites;
 
 namespace ExplorerHub.ViewModels.Initializations

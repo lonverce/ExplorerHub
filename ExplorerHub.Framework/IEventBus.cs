@@ -1,7 +1,7 @@
-﻿namespace ExplorerHub
+﻿namespace ExplorerHub.Framework
 {
     /// <summary>
-    /// 事件消息发布对象
+    /// 应用程序事件总线
     /// </summary>
     public interface IEventBus
     {
@@ -12,7 +12,7 @@
     }
 
     /// <summary>
-    /// 事件数据
+    /// 应用程序事件数据
     /// </summary>
     public interface IEventData
     {

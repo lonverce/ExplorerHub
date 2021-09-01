@@ -1,20 +1,21 @@
-﻿using ExplorerHub.EfCore.Favorites;
+﻿using ExplorerHub.Framework;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExplorerHub.EfCore
 {
     public class DbContextInitialization : IAppInitialization
     {
-        private readonly FavoriteDbContext _dbContext;
+        private readonly ExplorerHubDbContext _dbContext;
 
-        public DbContextInitialization(FavoriteDbContext dbContext)
+        public DbContextInitialization(ExplorerHubDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         public void InitializeAppComponents()
         {
-            _dbContext.Database.Migrate();
+            var db = _dbContext.Database;
+            db.Migrate();
         }
     }
 }

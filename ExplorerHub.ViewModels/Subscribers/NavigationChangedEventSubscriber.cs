@@ -1,4 +1,6 @@
 ﻿using System;
+using ExplorerHub.Framework;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 using Microsoft.WindowsAPICodePack.Shell;
 

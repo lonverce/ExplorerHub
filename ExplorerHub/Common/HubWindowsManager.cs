@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels;
 using ExplorerHub.ViewModels.ExplorerHubs;
 

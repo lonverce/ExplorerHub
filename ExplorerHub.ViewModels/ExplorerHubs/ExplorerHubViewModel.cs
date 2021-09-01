@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using ExplorerHub.Framework;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 using ExplorerHub.ViewModels.Favorites;
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Autofac.Features.OwnedInstances;
 using ExplorerHub.Applications.Favorites;
+using ExplorerHub.Framework;
 
 namespace ExplorerHub.ViewModels.Favorites
 {

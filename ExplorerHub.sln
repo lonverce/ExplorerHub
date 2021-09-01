@@ -21,13 +21,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.EfCore", "Explo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Common", "00.Common", "{2891742F-31EF-40F9-AE4D-0DFB0E3C6A9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Applications", "ExplorerHub.Applications\ExplorerHub.Applications.csproj", "{0212BB64-99BB-44BC-BF7C-678963656D12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Applications", "ExplorerHub.Applications\ExplorerHub.Applications.csproj", "{0212BB64-99BB-44BC-BF7C-678963656D12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Applications.Contract", "ExplorerHub.Applications.Contract\ExplorerHub.Applications.Contract.csproj", "{9E62A8FD-CD90-4B4C-865A-A950DADF8761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Applications.Contract", "ExplorerHub.Applications.Contract\ExplorerHub.Applications.Contract.csproj", "{9E62A8FD-CD90-4B4C-865A-A950DADF8761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Domain.Contract", "ExplorerHub.Domain.Contract\ExplorerHub.Domain.Contract.csproj", "{9D8866BD-C79F-4C45-B1DA-F82DAC7A31DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Domain.Contract", "ExplorerHub.Domain.Contract\ExplorerHub.Domain.Contract.csproj", "{9D8866BD-C79F-4C45-B1DA-F82DAC7A31DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Infrastructures", "04.Infrastructures", "{B4F13F85-05BF-4964-9ED1-671F9B3A44BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.Impl", "ExplorerHub.Framework.Impl\ExplorerHub.Framework.Impl.csproj", "{F415070B-A883-4170-92C8-C00A0F9AC46F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.DDD", "ExplorerHub.Framework.DDD\ExplorerHub.Framework.DDD.csproj", "{C8717666-D05F-4515-92AE-9553B8E07C89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.DDD.Impl", "ExplorerHub.Framework.DDD.Impl\ExplorerHub.Framework.DDD.Impl.csproj", "{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.WPF", "ExplorerHub.Framework.WPF\ExplorerHub.Framework.WPF.csproj", "{A776AFB7-D677-4110-9F9B-B354079D732A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +79,22 @@ Global
 		{9D8866BD-C79F-4C45-B1DA-F82DAC7A31DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D8866BD-C79F-4C45-B1DA-F82DAC7A31DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D8866BD-C79F-4C45-B1DA-F82DAC7A31DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F415070B-A883-4170-92C8-C00A0F9AC46F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F415070B-A883-4170-92C8-C00A0F9AC46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F415070B-A883-4170-92C8-C00A0F9AC46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F415070B-A883-4170-92C8-C00A0F9AC46F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8717666-D05F-4515-92AE-9553B8E07C89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8717666-D05F-4515-92AE-9553B8E07C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8717666-D05F-4515-92AE-9553B8E07C89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8717666-D05F-4515-92AE-9553B8E07C89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A776AFB7-D677-4110-9F9B-B354079D732A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A776AFB7-D677-4110-9F9B-B354079D732A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A776AFB7-D677-4110-9F9B-B354079D732A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A776AFB7-D677-4110-9F9B-B354079D732A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +109,10 @@ Global
 		{0212BB64-99BB-44BC-BF7C-678963656D12} = {CF15D4E3-579F-4444-A0C9-A31DD170BF7E}
 		{9E62A8FD-CD90-4B4C-865A-A950DADF8761} = {CF15D4E3-579F-4444-A0C9-A31DD170BF7E}
 		{9D8866BD-C79F-4C45-B1DA-F82DAC7A31DB} = {CF15D4E3-579F-4444-A0C9-A31DD170BF7E}
+		{F415070B-A883-4170-92C8-C00A0F9AC46F} = {2891742F-31EF-40F9-AE4D-0DFB0E3C6A9F}
+		{C8717666-D05F-4515-92AE-9553B8E07C89} = {2891742F-31EF-40F9-AE4D-0DFB0E3C6A9F}
+		{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91} = {2891742F-31EF-40F9-AE4D-0DFB0E3C6A9F}
+		{A776AFB7-D677-4110-9F9B-B354079D732A} = {2891742F-31EF-40F9-AE4D-0DFB0E3C6A9F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2264A530-681D-4EF5-8764-A01063B2FCF3}

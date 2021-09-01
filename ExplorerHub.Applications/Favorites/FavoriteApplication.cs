@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using ExplorerHub.Domain.Favorites;
+using ExplorerHub.Framework.Domain;
 
 namespace ExplorerHub.Applications.Favorites
 {

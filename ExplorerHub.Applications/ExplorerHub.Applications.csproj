@@ -13,6 +13,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ExplorerHub.Applications.Contract\ExplorerHub.Applications.Contract.csproj" />
     <ProjectReference Include="..\ExplorerHub.Domain\ExplorerHub.Domain.csproj" />
+    <ProjectReference Include="..\ExplorerHub.Framework.DDD\ExplorerHub.Framework.DDD.csproj" />
+    <ProjectReference Include="..\ExplorerHub.Framework\ExplorerHub.Framework.csproj" />
   </ItemGroup>
 
 </Project>

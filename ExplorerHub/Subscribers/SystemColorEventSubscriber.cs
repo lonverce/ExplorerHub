@@ -1,4 +1,5 @@
 ﻿using ExplorerHub.Events;
+using ExplorerHub.Framework;
 
 namespace ExplorerHub.Subscribers
 {

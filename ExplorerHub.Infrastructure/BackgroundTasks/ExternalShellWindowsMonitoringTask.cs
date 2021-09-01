@@ -1,5 +1,6 @@
 ﻿using System;
 using ExplorerHub.Events;
+using ExplorerHub.Framework;
 
 namespace ExplorerHub.Infrastructure.BackgroundTasks
 {
@@ -20,7 +21,6 @@ namespace ExplorerHub.Infrastructure.BackgroundTasks
         public void Start()
         {
             _windowsManager.WindowCreated += WindowsManagerOnWindowCreated;
-            WindowsManagerOnWindowCreated(this, EventArgs.Empty);
         }
 
         private void WindowsManagerOnWindowCreated(object sender, EventArgs e)

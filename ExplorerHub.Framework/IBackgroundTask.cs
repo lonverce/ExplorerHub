@@ -1,4 +1,4 @@
-﻿namespace ExplorerHub
+﻿namespace ExplorerHub.Framework
 {
     /// <summary>
     /// 后台任务

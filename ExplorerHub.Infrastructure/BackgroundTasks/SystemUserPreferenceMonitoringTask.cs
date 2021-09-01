@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using ExplorerHub.Events;
+using ExplorerHub.Framework;
 
 namespace ExplorerHub.Infrastructure.BackgroundTasks
 {

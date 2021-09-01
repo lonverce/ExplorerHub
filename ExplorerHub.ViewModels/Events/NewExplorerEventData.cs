@@ -1,4 +1,6 @@
-﻿namespace ExplorerHub.Events
+﻿using ExplorerHub.Framework;
+
+namespace ExplorerHub.Events
 {
     /// <summary>
     /// 新建浏览器页面

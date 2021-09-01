@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 
 namespace ExplorerHub.ViewModels.ExplorerHubs

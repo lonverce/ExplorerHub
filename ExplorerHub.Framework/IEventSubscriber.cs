@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace ExplorerHub
+namespace ExplorerHub.Framework
 {
     /// <summary>
-    /// 事件订阅者
+    /// 应用程序事件订阅者
     /// </summary>
     /// <remarks>实现类需配合<see cref="EventSubscriberAttribute"/>使用</remarks>
     public interface IEventSubscriber
@@ -14,6 +14,9 @@ namespace ExplorerHub
         void Handle(IEventData eventData);
     }
 
+    /// <summary>
+    /// 标记当前订阅实现类的元数据
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class EventSubscriberAttribute : Attribute
     {

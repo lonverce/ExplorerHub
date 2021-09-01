@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace ExplorerHub
+namespace ExplorerHub.Framework
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class InjectPropertyAttribute : Attribute
     {
-        public Type ResolvedType { get; set; }
     }
 }

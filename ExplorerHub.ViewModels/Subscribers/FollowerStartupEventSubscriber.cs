@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Events;
+﻿using ExplorerHub.Framework;
+using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Subscribers
 {

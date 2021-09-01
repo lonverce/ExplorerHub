@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 using Microsoft.WindowsAPICodePack.Shell;
 
@@ -29,7 +30,7 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             Execute(initialNav:null);
         }
 
-        public void Execute(ShellObject initialNav = null)
+        public ExplorerViewModel Execute(ShellObject initialNav = null)
         {
             var vm = _explorerRepository.Create();
             vm.OwnerId = _owner.ManagedObjectId;
@@ -37,6 +38,7 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
 
             _owner.Explorers.Add(vm);
             _owner.SelectedIndex = _owner.Explorers.Count - 1;
+            return vm;
         }
 
         public void Execute(ExplorerViewModel model, int index)

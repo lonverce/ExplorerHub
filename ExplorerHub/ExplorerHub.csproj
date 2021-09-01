@@ -215,8 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppInitializations\ExternalShellWindowInitialization.cs" />
     <Compile Include="AppInitializations\MainWindowInitialization.cs" />
     <Compile Include="AppInitializations\StartupArgInitialization.cs" />
+    <Compile Include="AppRegistrationModule.cs" />
     <Compile Include="Common\HubWindowsManager.cs" />
     <Compile Include="Subscribers\SystemColorEventSubscriber.cs" />
     <Compile Include="UI\AppColors.cs" />
@@ -341,6 +343,22 @@
     <ProjectReference Include="..\ExplorerHub.EfCore\ExplorerHub.EfCore.csproj">
       <Project>{7f862875-0144-4608-850c-66efc57e8da3}</Project>
       <Name>ExplorerHub.EfCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Framework.DDD.Impl\ExplorerHub.Framework.DDD.Impl.csproj">
+      <Project>{b6fde210-4aa0-49cf-aadc-3e16dce51c91}</Project>
+      <Name>ExplorerHub.Framework.DDD.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Framework.DDD\ExplorerHub.Framework.DDD.csproj">
+      <Project>{c8717666-d05f-4515-92ae-9553b8e07c89}</Project>
+      <Name>ExplorerHub.Framework.DDD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Framework.Impl\ExplorerHub.Framework.Impl.csproj">
+      <Project>{f415070b-a883-4170-92c8-c00a0f9ac46f}</Project>
+      <Name>ExplorerHub.Framework.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExplorerHub.Framework.WPF\ExplorerHub.Framework.WPF.csproj">
+      <Project>{a776afb7-d677-4110-9f9b-b354079d732a}</Project>
+      <Name>ExplorerHub.Framework.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExplorerHub.Framework\ExplorerHub.Framework.csproj">
       <Project>{c3dd16ee-d4dd-4f3f-8efe-28ce935cfd84}</Project>

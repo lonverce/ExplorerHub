@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 using GongSolutions.Wpf.DragDrop;
 
