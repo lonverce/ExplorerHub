@@ -12,5 +12,7 @@
         /// 实现此方法, 以执行应用程序初始化工作.
         /// </summary>
         void InitializeAppComponents();
+
+        void ReleaseAppComponent();
     }
 }

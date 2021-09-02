@@ -25,7 +25,7 @@ namespace ExplorerHub.Framework
             containerBuilder.RegisterType<EventBus>()
                 .SingleInstance()
                 .As<IEventBus>();
-
+            containerBuilder.RegisterType<BackgroundTaskManager>().SingleInstance();
             containerBuilder.AddAppInitialization<BackgroundTasksInitialization>();
             containerBuilder.AddBackgroundTask<EventMessageDispatchTask>();
             containerBuilder.AddBackgroundTask<FollowerProcessWatchingTask>()

@@ -17,5 +17,10 @@ namespace ExplorerHub.EfCore
             var db = _dbContext.Database;
             db.Migrate();
         }
+
+        public void ReleaseAppComponent()
+        {
+            
+        }
     }
 }

@@ -35,5 +35,9 @@ namespace ExplorerHub.AppInitializations
                 }
             }
         }
+
+        void IAppInitialization.ReleaseAppComponent()
+        {
+        }
     }
 }

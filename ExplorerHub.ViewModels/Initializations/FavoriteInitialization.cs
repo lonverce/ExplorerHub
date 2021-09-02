@@ -22,5 +22,9 @@ namespace ExplorerHub.ViewModels.Initializations
                 _favoriteViewModelProvider.Add(favoriteDto);
             }
         }
+
+        public void ReleaseAppComponent()
+        {
+        }
     }
 }

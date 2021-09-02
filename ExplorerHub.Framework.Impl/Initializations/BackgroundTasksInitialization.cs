@@ -1,44 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Autofac.Features.OwnedInstances;
-
-namespace ExplorerHub.Framework.Initializations
+﻿namespace ExplorerHub.Framework.Initializations
 {
     /// <summary>
     /// 启动所有后台任务
     /// </summary>
-    internal sealed class BackgroundTasksInitialization : IAppInitialization, IDisposable
+    internal sealed class BackgroundTasksInitialization : IAppInitialization
     {
-        private readonly Owned<IBackgroundTask>[] _taskCollections;
-        private bool _inited;
+        private readonly BackgroundTaskManager _taskManager;
 
-        public BackgroundTasksInitialization(IEnumerable<Owned<IBackgroundTask>> taskFactories)
+        public BackgroundTasksInitialization(BackgroundTaskManager taskManager)
         {
-            _taskCollections = taskFactories.ToArray();
+            _taskManager = taskManager;
         }
 
         public void InitializeAppComponents()
         {
-            foreach (var taskOwner in _taskCollections)
-            {
-                taskOwner.Value.Start();
-            }
-
-            _inited = true;
+            _taskManager.Start();
         }
 
-        public void Dispose()
+        public void ReleaseAppComponent()
         {
-            if (!_inited)
-            {
-                return;
-            }
-
-            foreach (var taskOwner in _taskCollections.Reverse())
-            {
-                taskOwner.Value.Stop();
-            }
+            _taskManager.Stop();
         }
     }
 }

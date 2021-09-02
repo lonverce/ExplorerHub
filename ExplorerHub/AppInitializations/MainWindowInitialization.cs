@@ -30,5 +30,10 @@ namespace ExplorerHub.AppInitializations
             hiddenWnd.WindowState = WindowState.Minimized;
             hiddenWnd.Show();
         }
+
+        public void ReleaseAppComponent()
+        {
+            _app.MainWindow?.Close();
+        }
     }
 }

@@ -58,5 +58,9 @@ namespace ExplorerHub.AppInitializations
 
             _splash.Close(TimeSpan.Zero);
         }
+
+        void IAppInitialization.ReleaseAppComponent()
+        {
+        }
     }
 }

@@ -21,7 +21,8 @@ namespace ExplorerHub
     {
         #region Fields
         private IContainer _container;
-        private IAppLeader _leader; 
+        private IAppLeader _leader;
+        private readonly Stack<IAppInitialization> _initializations = new Stack<IAppInitialization>();
         #endregion
 
         public StartupEventArgs StartupEventArgs { get; private set; }
@@ -45,6 +46,7 @@ namespace ExplorerHub
             foreach (var initialization in _container.Resolve<IEnumerable<IAppInitialization>>())
             {
                 initialization.InitializeAppComponents();
+                _initializations.Push(initialization);
             }
         }
 
@@ -61,6 +63,12 @@ namespace ExplorerHub
 
         protected override void OnExit(ExitEventArgs e)
         {
+            while (_initializations.Any())
+            {
+                var initialization = _initializations.Pop();
+                initialization.ReleaseAppComponent();
+            }
+
             _container?.Dispose();
             base.OnExit(e);
         }
