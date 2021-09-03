@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Autofac.Features.OwnedInstances;
 
 namespace ExplorerHub.Framework
@@ -16,22 +17,22 @@ namespace ExplorerHub.Framework
             _backgroundTasks = new Stack<Owned<IBackgroundTask>>();
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
             foreach (var backgroundTaskFactory in _backgroundTaskFactories)
             {
                 var taskOwner = backgroundTaskFactory();
-                taskOwner.Value.Start();
+                await taskOwner.Value.StartAsync();
                 _backgroundTasks.Push(taskOwner);
             }
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
             while (_backgroundTasks.Any())
             {
-                using var taskOwner = _backgroundTasks.Pop();
-                taskOwner.Value.Stop();
+                await using var taskOwner = _backgroundTasks.Pop();
+                await taskOwner.Value.StopAsync();
             }
         }
     }

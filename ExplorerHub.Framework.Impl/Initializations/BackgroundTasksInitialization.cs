@@ -1,4 +1,6 @@
-﻿namespace ExplorerHub.Framework.Initializations
+﻿using System.Threading.Tasks;
+
+namespace ExplorerHub.Framework.Initializations
 {
     /// <summary>
     /// 启动所有后台任务
@@ -12,14 +14,14 @@
             _taskManager = taskManager;
         }
 
-        public void InitializeAppComponents()
+        public async Task InitializeAppComponentsAsync()
         {
-            _taskManager.Start();
+            await _taskManager.StartAsync();
         }
 
-        public void ReleaseAppComponent()
+        public async Task ReleaseAppComponentAsync()
         {
-            _taskManager.Stop();
+            await _taskManager.StopAsync();
         }
     }
 }

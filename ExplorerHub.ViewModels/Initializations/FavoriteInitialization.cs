@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Applications.Favorites;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Applications.Favorites;
 using ExplorerHub.Framework;
 using ExplorerHub.ViewModels.Favorites;
 
@@ -14,17 +15,18 @@ namespace ExplorerHub.ViewModels.Initializations
             _favoriteViewModelProvider = favoriteViewModelProvider;
             _favoriteApplication = favoriteApplication;
         }
-
-        public void InitializeAppComponents()
+        
+        public async Task InitializeAppComponentsAsync()
         {
-            foreach (var favoriteDto in _favoriteApplication.GetAllFavorites())
+            foreach (var favoriteDto in await _favoriteApplication.GetAllFavoritesAsync())
             {
                 _favoriteViewModelProvider.Add(favoriteDto);
             }
         }
 
-        public void ReleaseAppComponent()
+        public Task ReleaseAppComponentAsync()
         {
+            return Task.CompletedTask;
         }
     }
 }

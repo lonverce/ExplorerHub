@@ -1,10 +1,10 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Threading.Tasks;
 using ExplorerHub.Applications.Favorites;
+using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Favorites
 {
-    public class RemoveFavoriteLinkCommand : ICommand
+    public class RemoveFavoriteLinkCommand : AsyncCommand
     {
         private readonly FavoriteViewModel _vm;
         private readonly IFavoriteApplication _favoriteApplication;
@@ -14,19 +14,15 @@ namespace ExplorerHub.ViewModels.Favorites
             _vm = vm;
             _favoriteApplication = favoriteApplication;
         }
-
-        public bool CanExecute(object parameter) => true;
-
-        public virtual void Execute(object parameter)
+        
+        public override async Task ExecuteAsync(object parameter)
         {
-            Execute();
+            await ExecuteAsync();
         }
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
-            _favoriteApplication.DeleteFavorite(_vm.Id);
+            await _favoriteApplication.DeleteFavoriteAsync(_vm.Id);
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

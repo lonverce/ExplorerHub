@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Threading.Tasks;
 using ExplorerHub.Applications.Favorites;
 using ExplorerHub.Domain.Favorites;
 using ExplorerHub.Framework;
@@ -18,10 +18,10 @@ namespace ExplorerHub.ViewModels.Subscribers
             _favoriteApplication = favoriteApplication;
         }
 
-        public void Handle(IEventData eventData)
+        public async Task HandleAsync(IEventData eventData)
         {
             var data = (FavoriteAddedEventData) eventData;
-            var favorite = _favoriteApplication.Find(data.NewFavoriteId);
+            var favorite = await _favoriteApplication.FindAsync(data.NewFavoriteId);
             if (favorite == null)
             {
                 return;

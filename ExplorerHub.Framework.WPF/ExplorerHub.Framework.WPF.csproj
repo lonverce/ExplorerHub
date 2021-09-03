@@ -78,11 +78,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandInterceptor.cs" />
+    <Compile Include="AsyncCommand.cs" />
+    <Compile Include="ICommandExceptionHandler.cs" />
+    <Compile Include="Impl\AsyncCommandAdapter.cs" />
+    <Compile Include="Impl\AsyncCommandInterceptor.cs" />
+    <Compile Include="Impl\CommandInterceptor.cs" />
+    <Compile Include="IAsyncCommand.cs" />
+    <Compile Include="IAsyncCommandAdapter.cs" />
     <Compile Include="IManagedObject.cs" />
     <Compile Include="IManagedObjectRepository.cs" />
+    <Compile Include="Impl\DefaultCommandExceptionHandler.cs" />
     <Compile Include="Impl\ManagedObjectPool.cs" />
     <Compile Include="Impl\UiDispatcher.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UserNotificationEventData.cs" />
     <Compile Include="Impl\UserNotificationService.cs" />
     <Compile Include="IUserNotificationService.cs" />

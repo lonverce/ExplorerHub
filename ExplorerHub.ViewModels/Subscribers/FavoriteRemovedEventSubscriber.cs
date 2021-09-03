@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Domain.Favorites;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Domain.Favorites;
 using ExplorerHub.Framework;
 using ExplorerHub.ViewModels.Favorites;
 
@@ -14,8 +15,9 @@ namespace ExplorerHub.ViewModels.Subscribers
             _provider = provider;
         }
 
-        public void Handle(IEventData eventData)
+        public async Task HandleAsync(IEventData eventData)
         {
+            await Task.CompletedTask;
             var data = (FavoriteRemovedEventData) eventData;
             _provider.Remove(data.FavoriteId);
         }

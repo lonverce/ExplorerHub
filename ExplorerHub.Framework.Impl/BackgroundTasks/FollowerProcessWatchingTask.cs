@@ -12,7 +12,7 @@ namespace ExplorerHub.Framework.BackgroundTasks
         private readonly IAppLeader _leader;
         private readonly IEventBus _eventBus;
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
-        private readonly ManualResetEvent _evt = new ManualResetEvent(false);
+        private Task _bgTask = Task.CompletedTask;
 
         public FollowerProcessWatchingTask(
             IAppLeader leader, 
@@ -22,9 +22,10 @@ namespace ExplorerHub.Framework.BackgroundTasks
             _eventBus = eventBus;
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
-            Task.Run(ReadThread);
+            _bgTask = Task.Run(ReadThread);
+            await Task.CompletedTask;
         }
 
         private async Task ReadThread()
@@ -34,25 +35,20 @@ namespace ExplorerHub.Framework.BackgroundTasks
                 while (!_tokenSource.IsCancellationRequested)
                 {
                     var msg = await _leader.ReadMessageFromFollowerAsync(_tokenSource.Token);
-                    _eventBus.PublishEvent(new FollowerStartupEventData(msg));
+                    await _eventBus.PublishEventAsync(new FollowerStartupEventData(msg));
                 }
             }
             catch (OperationCanceledException e)when (e.CancellationToken == _tokenSource.Token)
             {
                 return;
             }
-            finally
-            {
-                _evt.Set();
-            }
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
             _tokenSource.Cancel();
-            _evt.WaitOne(TimeSpan.FromSeconds(3));
+            await _bgTask;
             _leader.Quit();
-            _evt.Dispose();
         }
     }
 }

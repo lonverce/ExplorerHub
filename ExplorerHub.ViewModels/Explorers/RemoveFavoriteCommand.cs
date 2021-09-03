@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
+using System.Threading.Tasks;
 using ExplorerHub.Applications.Favorites;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Favorites;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class RemoveFavoriteCommand : ICommand
+    public class RemoveFavoriteCommand : AsyncCommand
     {
         private readonly ExplorerViewModel _vm;
         private readonly IFavoriteApplication _favoriteApplication;
@@ -29,14 +30,14 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
-        public bool CanExecute(object parameter) => _vm.IsCurrentNavigationInFavorite;
+        public override bool CanExecute(object parameter) => _vm.IsCurrentNavigationInFavorite;
 
-        public virtual void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             var model = _favoriteViewModelProvider.Favorites.Single(model => model.LocationUrl == _vm.NavigationPath);
-            _favoriteApplication.DeleteFavorite(model.Id);
+            await _favoriteApplication.DeleteFavoriteAsync(model.Id);
         }
 
-        public event EventHandler CanExecuteChanged;
+        public override event EventHandler CanExecuteChanged;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Threading.Tasks;
+using System.Windows.Forms;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 
@@ -14,8 +15,9 @@ namespace ExplorerHub.Subscribers
             _window = app.MainWindow as HiddenMainWindow;
         }
 
-        public void Handle(IEventData eventData)
+        public async Task HandleAsync(IEventData eventData)
         {
+            await Task.CompletedTask;
             var data = (UserNotificationEventData) eventData;
             if (data.IsAsync)
             {

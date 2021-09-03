@@ -1,46 +1,47 @@
 ﻿using System;
-using System.Windows.Input;
+using System.Threading.Tasks;
+using ExplorerHub.Framework.WPF;
 using Microsoft.WindowsAPICodePack.Controls;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class NavForwardCommand : ICommand
+    public class NavForwardCommand : AsyncCommand
     {
         private readonly ExplorerViewModel _owner;
 
-        public bool CanExecute { get; private set; } = false;
+        private bool _canExecute = false;
 
         public NavForwardCommand(ExplorerViewModel owner)
         {
             _owner = owner;
             
             _owner.Browser.NavigationLog.NavigationLogChanged += NavigationLogOnNavigationLogChanged;
-            CanExecute = _owner.Browser.NavigationLog.CanNavigateForward;
+            _canExecute = _owner.Browser.NavigationLog.CanNavigateForward;
         }
 
         private void NavigationLogOnNavigationLogChanged(object sender, NavigationLogEventArgs e)
         {
             var canExec = _owner.Browser.NavigationLog.CanNavigateForward;
 
-            if (canExec == CanExecute)
+            if (canExec == _canExecute)
             {
                 return;
             }
-            CanExecute = canExec;
+            _canExecute = canExec;
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        bool ICommand.CanExecute(object parameter) => CanExecute;
+        public override bool CanExecute(object parameter) => _canExecute;
 
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
-            Execute();
+            await ExecuteAsync();
         }
 
-        public bool Execute()
+        public async Task<bool> ExecuteAsync()
         {
-            if (!CanExecute)
+            await Task.CompletedTask;
+            if (!_canExecute)
             {
                 return false;
             }
@@ -49,6 +50,6 @@ namespace ExplorerHub.ViewModels.Explorers
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public override event EventHandler CanExecuteChanged;
     }
 }

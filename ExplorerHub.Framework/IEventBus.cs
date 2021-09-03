@@ -1,4 +1,6 @@
-﻿namespace ExplorerHub.Framework
+﻿using System.Threading.Tasks;
+
+namespace ExplorerHub.Framework
 {
     /// <summary>
     /// 应用程序事件总线
@@ -8,7 +10,7 @@
         /// <summary>
         /// 发布事件
         /// </summary>
-        void PublishEvent(IEventData eventData);
+        Task PublishEventAsync(IEventData eventData);
     }
 
     /// <summary>

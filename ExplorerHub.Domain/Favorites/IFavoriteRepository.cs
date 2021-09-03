@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ExplorerHub.Domain.Favorites
 {
     public interface IFavoriteRepository
     {
-        Favorite Add(Favorite favorite);
+        Task<Favorite> AddAsync(Favorite favorite);
 
-        void Delete(Favorite favorite);
+        Task DeleteAsync(Favorite favorite);
 
-        Favorite FindById(Guid id);
+        Task<Favorite> FindByIdAsync(Guid id);
 
-        List<Favorite> GetAll();
+        Task<List<Favorite>> GetAllAsync();
     }
 }

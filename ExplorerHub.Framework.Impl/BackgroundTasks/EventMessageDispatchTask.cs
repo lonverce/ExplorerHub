@@ -18,7 +18,9 @@ namespace ExplorerHub.Framework.BackgroundTasks
         private readonly IMessageRouter<IEventData> _messageRouter;
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private readonly IReadOnlyDictionary<string, SubscriberCollection> _subscribers;
-        private readonly ManualResetEvent _endEvt = new ManualResetEvent(false);
+        private Task _bgTask = Task.CompletedTask;
+        private IAsyncDisposable _binding;
+        private readonly MessageQueue<IEventData> _queue = new MessageQueue<IEventData>();
 
         private class SubscriberCollection
         {
@@ -75,52 +77,25 @@ namespace ExplorerHub.Framework.BackgroundTasks
                 });
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
-            using var initEvt = new ManualResetEvent(false);
+            _binding = await _queue.BindAsync(string.Empty, _messageRouter);
+            _bgTask = Task.Run(DispatchTask);
+        }
 
-            var tsk = Task.Run(async () =>
+        private async Task DispatchTask()
+        {
+            while (!_tokenSource.IsCancellationRequested)
             {
-                MessageQueue<IEventData> queue;
-                IAsyncDisposable binding;
-
                 try
                 {
-                    queue = new MessageQueue<IEventData>();
-                    binding = await queue.BindAsync(string.Empty, _messageRouter);
+                    var msg = await _queue.TakeMessageAsync(_tokenSource.Token);
+                    await HandleMessageAsync(msg.Payload);
                 }
-                finally
+                catch (OperationCanceledException e) when (e.CancellationToken == _tokenSource.Token)
                 {
-                    initEvt.Set();
+                    break;
                 }
-
-                await using var _ = binding;
-                try
-                {
-                    while (!_tokenSource.IsCancellationRequested)
-                    {
-                        try
-                        {
-                            var msg = await queue.TakeMessageAsync(_tokenSource.Token);
-                            await HandleMessageAsync(msg.Payload);
-                        }
-                        catch (OperationCanceledException e) when (e.CancellationToken == _tokenSource.Token)
-                        {
-                            break;
-                        }
-                    }
-                }
-                finally
-                {
-                    _endEvt.Set();
-                }
-            });
-
-            initEvt.WaitOne();
-
-            if (tsk.IsFaulted)
-            {
-                throw tsk.Exception;
             }
         }
 
@@ -133,12 +108,12 @@ namespace ExplorerHub.Framework.BackgroundTasks
 
             var bgTasks = subscriberCollection.BackgroundSubscribers.Select(subFac =>
             {
-                return Task.Run(() =>
+                return Task.Run(async () =>
                 {
                     try
                     {
-                        using var sb = subFac();
-                        sb.Value.Handle(data);
+                        await using var sb = subFac();
+                        await sb.Value.HandleAsync(data);
                     }
                     catch (Exception e)
                     {
@@ -147,14 +122,14 @@ namespace ExplorerHub.Framework.BackgroundTasks
                 });
             }).ToArray();
             
-            await _uiDispatcher.InvokeAsync(() =>
+            await _uiDispatcher.InvokeAsync(async () =>
             {
                 foreach (var uiSubscriber in subscriberCollection.UiSubscribers)
                 {
                     try
                     {
-                        using var usb = uiSubscriber();
-                        usb.Value.Handle(data);
+                        await using var usb = uiSubscriber();
+                        await usb.Value.HandleAsync(data);
                     }
                     catch (Exception e)
                     {
@@ -166,10 +141,11 @@ namespace ExplorerHub.Framework.BackgroundTasks
             await Task.WhenAll(bgTasks);
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
             _tokenSource.Cancel();
-            _endEvt.WaitOne(TimeSpan.FromSeconds(3));
+            await _bgTask;
+            await _binding.DisposeAsync();
         }
     }
 }

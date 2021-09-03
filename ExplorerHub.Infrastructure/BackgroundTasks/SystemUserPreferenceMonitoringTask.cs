@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Threading.Tasks;
+using System.Windows.Media;
 using ExplorerHub.Events;
 using ExplorerHub.Framework;
 
@@ -17,20 +18,22 @@ namespace ExplorerHub.Infrastructure.BackgroundTasks
             _eventBus = eventBus;
             _colorManager = colorManager;
         }
-
-        public void Start()
+        
+        private async void ColorManagerOnSystemColorChanged(object sender, Color newColor)
+        {
+            await _eventBus.PublishEventAsync(new SystemColorChangedEventData(newColor));
+        }
+        
+        public Task StartAsync()
         {
             _colorManager.SystemColorChanged += ColorManagerOnSystemColorChanged;
+            return Task.CompletedTask;
         }
 
-        private void ColorManagerOnSystemColorChanged(object sender, Color newColor)
-        {
-            _eventBus.PublishEvent(new SystemColorChangedEventData(newColor));
-        }
-
-        public void Stop()
+        public Task StopAsync()
         {
             _colorManager.SystemColorChanged -= ColorManagerOnSystemColorChanged;
+            return Task.CompletedTask;
         }
     }
 }

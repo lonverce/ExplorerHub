@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ExplorerHub.Framework.WPF;
 using Microsoft.WindowsAPICodePack.Shell;
 
@@ -17,7 +18,7 @@ namespace ExplorerHub.ViewModels.Explorers
             _parser = parser;
         }
 
-        public ExplorerViewModel Absorb(IShellWindow shellBrowser)
+        public async Task<ExplorerViewModel> AbsorbAsync(IShellWindow shellBrowser)
         {
             ShellObject target;
 
@@ -44,7 +45,7 @@ namespace ExplorerHub.ViewModels.Explorers
             }
             else
             {
-                _notificationService.Notify(
+                await _notificationService.NotifyAsync(
                     $"无法识别路径: {shellBrowser.LocationName}",
                     "ExplorerHub", NotificationLevel.Warn);
                 target = _parser.Default;

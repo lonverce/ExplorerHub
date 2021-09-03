@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Windows.Input;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using ExplorerHub.Applications.Favorites;
+using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class AddFavoriteCommand : ICommand
+    public class AddFavoriteCommand : AsyncCommand
     {
         private readonly ExplorerViewModel _vm;
         private readonly IFavoriteApplication _favoriteApplication;
@@ -28,17 +29,17 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
-        public bool CanExecute(object parameter) =>
+        public override bool CanExecute(object parameter) =>
             !_vm.IsCurrentNavigationInFavorite && _vm.DisplayingTarget?.IsFileSystemObject == true;
 
-        public virtual void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             var jpegEncoder = new PngBitmapEncoder();
             using var ms = new MemoryStream();
             jpegEncoder.Frames.Add(BitmapFrame.Create(_vm.Logo));
             jpegEncoder.Save(ms);
             
-            _favoriteApplication.AddFavorite(new AddFavoriteRequest
+            await _favoriteApplication.AddFavoriteAsync(new AddFavoriteRequest
             {
                 Name = _vm.Title,
                 Url = _vm.NavigationPath,
@@ -46,6 +47,6 @@ namespace ExplorerHub.ViewModels.Explorers
             });
         }
 
-        public event EventHandler CanExecuteChanged;
+        public override event EventHandler CanExecuteChanged;
     }
 }

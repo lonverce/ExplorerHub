@@ -1,12 +1,14 @@
-﻿namespace ExplorerHub.Framework
+﻿using System.Threading.Tasks;
+
+namespace ExplorerHub.Framework
 {
     /// <summary>
     /// 后台任务
     /// </summary>
     public interface IBackgroundTask
     {
-        void Start();
+        Task StartAsync();
 
-        void Stop();
+        Task StopAsync();
     }
 }

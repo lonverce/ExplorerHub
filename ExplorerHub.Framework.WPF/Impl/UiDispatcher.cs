@@ -17,5 +17,10 @@ namespace ExplorerHub.Framework.WPF.Impl
         {
             await _app.Dispatcher.InvokeAsync(action);
         }
+
+        public async Task InvokeAsync(Func<Task> asyncFunc)
+        {
+            await _app.Dispatcher.InvokeAsync(asyncFunc);
+        }
     }
 }

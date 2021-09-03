@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
@@ -32,7 +33,7 @@ namespace ExplorerHub.AppInitializations
             _splash = splash;
         }
 
-        public void InitializeAppComponents()
+        public async Task InitializeAppComponentsAsync()
         {
             var e = _app.StartupEventArgs;
 
@@ -44,7 +45,7 @@ namespace ExplorerHub.AppInitializations
                 }
                 else
                 {
-                    _notificationService.Notify($"启动参数有误, 无法导航到 '{e.Args[0]}'", "ExplorerHub", NotificationLevel.Warn);
+                    await _notificationService.NotifyAsync($"启动参数有误, 无法导航到 '{e.Args[0]}'", "ExplorerHub", NotificationLevel.Warn);
                 }
             }
             else
@@ -59,8 +60,9 @@ namespace ExplorerHub.AppInitializations
             _splash.Close(TimeSpan.Zero);
         }
 
-        void IAppInitialization.ReleaseAppComponent()
+        public Task ReleaseAppComponentAsync()
         {
+            return Task.CompletedTask;
         }
     }
 }

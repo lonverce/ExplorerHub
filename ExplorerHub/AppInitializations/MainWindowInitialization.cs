@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using ExplorerHub.Framework;
 using ExplorerHub.ViewModels;
 
@@ -19,8 +20,8 @@ namespace ExplorerHub.AppInitializations
             _windowsManager = windowsManager;
             _colorManager = colorManager;
         }
-
-        public void InitializeAppComponents()
+        
+        public Task InitializeAppComponentsAsync()
         {
             _app.SetAppBackground(_colorManager.GetSystemColor());
             var hiddenWnd = new HiddenMainWindow(_app, _windowsManager);
@@ -29,11 +30,13 @@ namespace ExplorerHub.AppInitializations
             hiddenWnd.Visibility = Visibility.Hidden;
             hiddenWnd.WindowState = WindowState.Minimized;
             hiddenWnd.Show();
+            return Task.CompletedTask;
         }
 
-        public void ReleaseAppComponent()
+        public Task ReleaseAppComponentAsync()
         {
             _app.MainWindow?.Close();
+            return Task.CompletedTask;
         }
     }
 }

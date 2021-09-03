@@ -6,5 +6,7 @@ namespace ExplorerHub.Framework
     public interface IUiDispatcher
     {
         Task InvokeAsync(Action action);
+
+        Task InvokeAsync(Func<Task> asyncFunc);
     }
 }

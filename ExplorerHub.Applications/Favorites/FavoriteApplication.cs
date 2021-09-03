@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using ExplorerHub.Domain.Favorites;
 using ExplorerHub.Framework.Domain;
@@ -16,32 +17,32 @@ namespace ExplorerHub.Applications.Favorites
             _favorites = favorites;
             _mapper = mapper;
         }
-
-        public FavoriteDto AddFavorite(AddFavoriteRequest request)
+        
+        public async Task<FavoriteDto> AddFavoriteAsync(AddFavoriteRequest request)
         {
             var newFavorite = new Favorite(request.Name, request.Url, request.Icon);
-            return _mapper.Map<FavoriteDto>(_favorites.Add(newFavorite));
+            return _mapper.Map<FavoriteDto>( await _favorites.AddAsync(newFavorite));
         }
 
-        public void DeleteFavorite(Guid favoriteId)
+        public async Task DeleteFavoriteAsync(Guid favoriteId)
         {
-            var favorite = _favorites.FindById(favoriteId);
+            var favorite = await _favorites.FindByIdAsync(favoriteId);
             if (favorite == null)
             {
                 return;
             }
 
-            _favorites.Delete(favorite);
+            await _favorites.DeleteAsync(favorite);
         }
 
-        public List<FavoriteDto> GetAllFavorites()
+        public async Task<List<FavoriteDto>> GetAllFavoritesAsync()
         {
-            return _mapper.Map<List<FavoriteDto>>(_favorites.GetAll());
+            return _mapper.Map<List<FavoriteDto>>(await _favorites.GetAllAsync());
         }
 
-        public FavoriteDto Find(Guid id)
+        public async Task<FavoriteDto> FindAsync(Guid id)
         {
-            var favorite = _favorites.FindById(id);
+            var favorite = await _favorites.FindByIdAsync(id);
             if (favorite == null)
             {
                 return null;

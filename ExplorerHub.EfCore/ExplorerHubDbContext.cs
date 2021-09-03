@@ -50,7 +50,9 @@ namespace ExplorerHub.EfCore
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={_dbFilePath}");
+            optionsBuilder.UseSqlite($"Data Source={_dbFilePath}", builder =>
+            {
+            });
         }
 
         public override int SaveChanges(bool accept)
@@ -69,7 +71,7 @@ namespace ExplorerHub.EfCore
 
                 foreach (var eventData in events)
                 {
-                    EventBus.PublishEvent(eventData);
+                    EventBus.PublishEventAsync(eventData);
                 }
 
                 entity.ClearDomainEvents();
@@ -94,7 +96,7 @@ namespace ExplorerHub.EfCore
 
                 foreach (var eventData in events)
                 {
-                    EventBus.PublishEvent(eventData);
+                    await EventBus.PublishEventAsync(eventData);
                 }
 
                 entity.ClearDomainEvents();

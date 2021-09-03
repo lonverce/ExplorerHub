@@ -8,11 +8,17 @@ namespace ExplorerHub.Framework.WPF
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
+            builder.RegisterType<DefaultCommandExceptionHandler>()
+                .As<ICommandExceptionHandler>();
             builder.RegisterType<UiDispatcher>().As<IUiDispatcher>();
             builder.RegisterType<UserNotificationService>()
                 .As<IUserNotificationService>();
+            
             builder.RegisterType<CommandInterceptor>()
                 .IfNotRegistered(typeof(CommandInterceptor));
+
+            builder.RegisterType<AsyncCommandInterceptor>()
+                .IfNotRegistered(typeof(AsyncCommandInterceptor));
         }
     }
 }

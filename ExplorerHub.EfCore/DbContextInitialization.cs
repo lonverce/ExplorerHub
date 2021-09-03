@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Framework;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Framework;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExplorerHub.EfCore
@@ -12,15 +13,15 @@ namespace ExplorerHub.EfCore
             _dbContext = dbContext;
         }
 
-        public void InitializeAppComponents()
+        public async Task InitializeAppComponentsAsync()
         {
             var db = _dbContext.Database;
-            db.Migrate();
+            await db.MigrateAsync();
         }
 
-        public void ReleaseAppComponent()
+        public Task ReleaseAppComponentAsync()
         {
-            
+            return Task.CompletedTask;
         }
     }
 }

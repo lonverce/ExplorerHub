@@ -29,7 +29,7 @@ namespace ExplorerHub
 
         public IEnumerable<ExplorerHubWindow> HubWindows => Windows.OfType<ExplorerHubWindow>();
         
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
@@ -45,7 +45,7 @@ namespace ExplorerHub
             // 执行所有初始化
             foreach (var initialization in _container.Resolve<IEnumerable<IAppInitialization>>())
             {
-                initialization.InitializeAppComponents();
+                await initialization.InitializeAppComponentsAsync();
                 _initializations.Push(initialization);
             }
         }
@@ -61,12 +61,12 @@ namespace ExplorerHub
             MessageBox.Show(e.ExceptionObject.ToString(), "Domain Error");
         }
 
-        protected override void OnExit(ExitEventArgs e)
+        protected override async void OnExit(ExitEventArgs e)
         {
             while (_initializations.Any())
             {
                 var initialization = _initializations.Pop();
-                initialization.ReleaseAppComponent();
+                await initialization.ReleaseAppComponentAsync();
             }
 
             _container?.Dispose();

@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Events;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Events;
 using ExplorerHub.Framework;
 
 namespace ExplorerHub.Subscribers
@@ -13,11 +14,12 @@ namespace ExplorerHub.Subscribers
             _app = app;
         }
 
-        public void Handle(IEventData eventData)
+        public Task HandleAsync(IEventData eventData)
         {
             var data = (SystemColorChangedEventData) eventData;
             var color = data.NewColor;
             _app.SetAppBackground(color);
+            return Task.CompletedTask;
         }
     }
 }

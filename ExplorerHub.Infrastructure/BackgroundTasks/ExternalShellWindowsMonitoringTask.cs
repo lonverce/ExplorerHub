@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ExplorerHub.Events;
 using ExplorerHub.Framework;
 
@@ -17,23 +18,25 @@ namespace ExplorerHub.Infrastructure.BackgroundTasks
             _eventBus = eventBus;
             _windowsManager = windowsManager;
         }
-
-        public void Start()
-        {
-            _windowsManager.WindowCreated += WindowsManagerOnWindowCreated;
-        }
-
-        private void WindowsManagerOnWindowCreated(object sender, EventArgs e)
+        
+        private async void WindowsManagerOnWindowCreated(object sender, EventArgs e)
         {
             foreach (var window in _windowsManager.GetCurrentWindows())
             {
-                _eventBus.PublishEvent(new NewExplorerEventData(window));
+                await _eventBus.PublishEventAsync(new NewExplorerEventData(window));
             }
         }
         
-        public void Stop()
+        public Task StartAsync()
+        {
+            _windowsManager.WindowCreated += WindowsManagerOnWindowCreated;
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync()
         {
             _windowsManager.WindowCreated -= WindowsManagerOnWindowCreated;
+            return Task.CompletedTask;
         }
     }
 }

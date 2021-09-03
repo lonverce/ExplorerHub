@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Events;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Events;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 
@@ -18,19 +19,19 @@ namespace ExplorerHub.ViewModels.Subscribers
             _notificationService = notificationService;
         }
 
-        public void Handle(IEventData eventData)
+        public async Task HandleAsync(IEventData eventData)
         {
             var data = (NewExplorerEventData) eventData;
             var shellBrowser = data.Window;
 
             try
             {
-                _absorbService.Absorb(shellBrowser);
+                await _absorbService.AbsorbAsync(shellBrowser);
             }
             catch (AbsorbFailureException e)
             {
                 shellBrowser.Close();
-                _notificationService.Notify(e.Message, "ExplorerHub", NotificationLevel.Warn);
+                await _notificationService.NotifyAsync(e.Message, "ExplorerHub", NotificationLevel.Warn);
             }
         }
     }

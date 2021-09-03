@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ExplorerHub.Applications.Favorites
 {
     public interface IFavoriteApplication
     {
-        FavoriteDto AddFavorite(AddFavoriteRequest request);
+        Task<FavoriteDto> AddFavoriteAsync(AddFavoriteRequest request);
 
-        void DeleteFavorite(Guid favoriteId);
+        Task DeleteFavoriteAsync(Guid favoriteId);
 
-        List<FavoriteDto> GetAllFavorites();
+        Task<List<FavoriteDto>> GetAllFavoritesAsync();
 
-        FavoriteDto Find(Guid id);
+        Task<FavoriteDto> FindAsync(Guid id);
     }
 }

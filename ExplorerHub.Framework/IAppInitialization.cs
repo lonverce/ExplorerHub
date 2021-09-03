@@ -1,4 +1,6 @@
-﻿namespace ExplorerHub.Framework
+﻿using System.Threading.Tasks;
+
+namespace ExplorerHub.Framework
 {
     /// <summary>
     /// 框架中的初始化流程接口
@@ -11,8 +13,8 @@
         /// <summary>
         /// 实现此方法, 以执行应用程序初始化工作.
         /// </summary>
-        void InitializeAppComponents();
+        Task InitializeAppComponentsAsync();
 
-        void ReleaseAppComponent();
+        Task ReleaseAppComponentAsync();
     }
 }

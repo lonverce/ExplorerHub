@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Framework;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Subscribers
@@ -20,7 +21,7 @@ namespace ExplorerHub.ViewModels.Subscribers
             _windowsManager = windowsManager;
         }
 
-        public void Handle(IEventData eventData)
+        public async Task HandleAsync(IEventData eventData)
         {
             var data = (FollowerStartupEventData) eventData;
             var args = data.Args;
@@ -38,7 +39,8 @@ namespace ExplorerHub.ViewModels.Subscribers
                 var firstPath = args[0];
                 if (!_parser.TryParse(firstPath, out var shellObject))
                 {
-                    _notificationService.Notify($"错误路径：'{firstPath}'", "ExplorerHub", NotificationLevel.Error);
+                    await _notificationService.NotifyAsync($"错误路径：'{firstPath}'", 
+                        "ExplorerHub", NotificationLevel.Error);
                     return;
                 }
 

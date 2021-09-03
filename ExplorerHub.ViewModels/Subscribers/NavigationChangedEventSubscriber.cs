@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
@@ -16,8 +17,9 @@ namespace ExplorerHub.ViewModels.Subscribers
             _explorers = explorers;
         }
         
-        public void Handle(IEventData eventData)
+        public async Task HandleAsync(IEventData eventData)
         {
+            await Task.CompletedTask;
             var data = (ExplorerNavigationUpdatedEventData) eventData;
             if (!_explorers.TryGetModelById(data.ExplorerId, out var model))
             {

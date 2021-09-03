@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
+using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 
 namespace ExplorerHub.ViewModels.Favorites
 {
-    public class OpenFavoriteLinkCommand : ICommand
+    public class OpenFavoriteLinkCommand : AsyncCommand
     {
         private readonly FavoriteViewModel _vm;
 
@@ -15,17 +15,15 @@ namespace ExplorerHub.ViewModels.Favorites
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter) => true;
-
-        public virtual void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             if (parameter is ExplorerViewModel explorer)
             {
-                Execute(explorer);
+                await ExecuteAsync(explorer);
             }
         }
 
-        public void Execute(ExplorerViewModel explorer)
+        public async Task ExecuteAsync(ExplorerViewModel explorer)
         {
             if (!Directory.Exists(_vm.LocationUrl))
             {
@@ -37,13 +35,11 @@ namespace ExplorerHub.ViewModels.Favorites
                     return;
                 }
 
-                _vm.RemoveFavoriteLink.Execute();
+                await _vm.RemoveFavoriteLink.ExecuteAsync();
                 return;
             }
 
-            explorer.Search.Execute(_vm.LocationUrl);
+            await explorer.Search.ExecuteAsync(_vm.LocationUrl);
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

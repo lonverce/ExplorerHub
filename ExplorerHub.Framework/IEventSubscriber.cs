@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ExplorerHub.Framework
 {
@@ -11,7 +12,7 @@ namespace ExplorerHub.Framework
         /// <summary>
         /// 处理事件
         /// </summary>
-        void Handle(IEventData eventData);
+        Task HandleAsync(IEventData eventData);
     }
 
     /// <summary>

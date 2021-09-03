@@ -1,4 +1,5 @@
-﻿using ExplorerHub.Framework;
+﻿using System.Threading.Tasks;
+using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels;
 
@@ -19,25 +20,26 @@ namespace ExplorerHub.AppInitializations
             _notificationService = notificationService;
             _shellWindowsManager = shellWindowsManager;
         }
-
-        public void InitializeAppComponents()
+        
+        public async Task InitializeAppComponentsAsync()
         {
             foreach (var shellWindow in _shellWindowsManager.GetCurrentWindows())
             {
                 try
                 {
-                    _absorbService.Absorb(shellWindow);
+                    await _absorbService.AbsorbAsync(shellWindow);
                 }
                 catch (AbsorbFailureException e)
                 {
                     shellWindow.Close();
-                    _notificationService.Notify(e.Message, "ExplorerHub", NotificationLevel.Warn);
+                    await _notificationService.NotifyAsync(e.Message, "ExplorerHub", NotificationLevel.Warn);
                 }
             }
         }
 
-        void IAppInitialization.ReleaseAppComponent()
+        public Task ReleaseAppComponentAsync()
         {
+            return Task.CompletedTask;
         }
     }
 }

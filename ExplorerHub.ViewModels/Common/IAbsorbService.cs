@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ExplorerHub.ViewModels.Explorers;
 
 namespace ExplorerHub.ViewModels
@@ -11,7 +12,7 @@ namespace ExplorerHub.ViewModels
         /// <param name="shellWindow"></param>
         /// <returns></returns>
         /// <exception cref="AbsorbFailureException">外部Shell窗体的导航路径无法被当前进程打开</exception>
-        ExplorerViewModel Absorb(IShellWindow shellWindow);
+        Task<ExplorerViewModel> AbsorbAsync(IShellWindow shellWindow);
     }
 
     public class AbsorbFailureException : Exception

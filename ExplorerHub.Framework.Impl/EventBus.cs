@@ -1,4 +1,5 @@
-﻿using MindLab.Messaging;
+﻿using System.Threading.Tasks;
+using MindLab.Messaging;
 
 namespace ExplorerHub.Framework
 {
@@ -13,12 +14,17 @@ namespace ExplorerHub.Framework
 
         public void PublishEvent(IEventData eventData)
         {
+            PublishEventAsync(eventData);
+        }
+
+        public async Task PublishEventAsync(IEventData eventData)
+        {
             if (eventData == null)
             {
                 return;
             }
 
-            _publisher.PublishMessageAsync(string.Empty, eventData);
+            await _publisher.PublishMessageAsync(string.Empty, eventData);
         }
     }
 }

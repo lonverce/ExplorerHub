@@ -23,5 +23,13 @@ namespace ExplorerHub.Framework.WPF
                 .EnableClassInterceptors()
                 .InterceptedBy(typeof(CommandInterceptor));
         }
+
+        public static void AddAsyncCommand<TAsyncCommand>(this ContainerBuilder builder)
+            where TAsyncCommand: AsyncCommand
+        {
+            builder.RegisterType<TAsyncCommand>()
+                .EnableClassInterceptors()
+                .InterceptedBy(typeof(AsyncCommandInterceptor));
+        }
     }
 }
