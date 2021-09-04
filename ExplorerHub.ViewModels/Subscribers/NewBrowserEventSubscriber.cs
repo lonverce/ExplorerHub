@@ -31,7 +31,7 @@ namespace ExplorerHub.ViewModels.Subscribers
             catch (AbsorbFailureException e)
             {
                 shellBrowser.Close();
-                await _notificationService.NotifyAsync(e.Message, "ExplorerHub", NotificationLevel.Warn);
+                _notificationService.Notify(e.Message, "ExplorerHub", NotificationLevel.Warn);
             }
         }
     }

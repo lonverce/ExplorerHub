@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace ExplorerHub.Framework
 {
@@ -10,7 +11,7 @@ namespace ExplorerHub.Framework
         /// <summary>
         /// 发布事件
         /// </summary>
-        Task PublishEventAsync(IEventData eventData);
+        void PublishEvent(IEventData eventData);
     }
 
     /// <summary>

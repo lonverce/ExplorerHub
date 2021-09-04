@@ -13,7 +13,7 @@ namespace ExplorerHub.Framework.WPF.Impl
 
         public void HandleException(Exception e)
         {
-            _notificationService.NotifyAsync(e.Message, "ExplorerHub", NotificationLevel.Error);
+            _notificationService.Notify(e.Message, "ExplorerHub", NotificationLevel.Error);
         }
     }
 }

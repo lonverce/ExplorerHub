@@ -188,7 +188,7 @@ namespace ExplorerHub.ViewModels.Explorers
         {
             var log = (ExplorerBrowserNavigationLog)sender;
             DisplayingTarget = log.CurrentLocation;
-            _eventBus.PublishEventAsync(new ExplorerNavigationUpdatedEventData(ManagedObjectId));
+            _eventBus.PublishEvent(new ExplorerNavigationUpdatedEventData(ManagedObjectId));
         }
 
         private void OnNavigationUpdated()

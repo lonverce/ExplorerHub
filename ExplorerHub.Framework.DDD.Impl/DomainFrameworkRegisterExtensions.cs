@@ -12,16 +12,15 @@ namespace ExplorerHub.Framework.DDD.Impl
         {
             builder.Register(context =>
             {
-                var interceptor = context.Resolve<ApplicationInterceptor>();
+                var interceptor = context.Resolve<ApplicationClientInterceptor>();
                 var generator = context.Resolve<ProxyGenerator>();
-                return generator.CreateInterfaceProxyWithoutTarget<TAppServiceInterface>(interceptor);
+                return generator.CreateInterfaceProxyWithoutTarget<TAppServiceInterface>(interceptor.ToInterceptor());
             }).IfNotRegistered(typeof(TAppServiceInterface));
 
             builder.RegisterType<TAppService>()
                 .As<IApplicationService>()
-                .WithMetadata(ApplicationInterceptor.ApplicationInterfaceKey, typeof(TAppServiceInterface))
+                .WithMetadata(ApplicationClientInterceptor.ApplicationInterfaceKey, typeof(TAppServiceInterface))
                 .IfNotRegistered(typeof(TAppService));
         }
-        
     }
 }

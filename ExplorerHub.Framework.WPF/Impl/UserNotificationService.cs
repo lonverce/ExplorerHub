@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace ExplorerHub.Framework.WPF.Impl
 {
@@ -11,15 +10,15 @@ namespace ExplorerHub.Framework.WPF.Impl
         {
             _eventBus = eventBus;
         }
-
-        public async Task NotifyAsync(string message, string title, NotificationLevel level, bool isAsync)
+        
+        public void Notify(string message, string title, NotificationLevel level = NotificationLevel.Min, bool isAsync = true)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
                 throw new ArgumentNullException(nameof(message));
             }
 
-            await _eventBus.PublishEventAsync(new UserNotificationEventData(message)
+            _eventBus.PublishEvent(new UserNotificationEventData(message)
             {
                 Title = title,
                 Level = level,

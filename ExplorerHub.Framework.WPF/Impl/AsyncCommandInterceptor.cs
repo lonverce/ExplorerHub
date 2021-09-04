@@ -5,15 +5,20 @@ namespace ExplorerHub.Framework.WPF.Impl
 {
     internal class AsyncCommandInterceptor : CommandInterceptor
     {
-        public override void Intercept(IInvocation invocation)
+        protected override void OnCommandExecute(IInvocation invocation)
         {
-            var command = (AsyncCommand)invocation.Proxy;
-            if (command.IsExecuting)
+            if (!(invocation.Proxy is AsyncCommand command))
             {
-                throw new InvalidOperationException();
+                base.OnCommandExecute(invocation);
+                return;
             }
 
-            base.Intercept(invocation);
+            if (command.IsExecuting)
+            {
+                throw new InvalidOperationException("AsyncCommand is executing.");
+            }
+
+            base.OnCommandExecute(invocation);
 
             if (command.IsExecuting)
             {

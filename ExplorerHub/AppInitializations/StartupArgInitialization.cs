@@ -45,7 +45,7 @@ namespace ExplorerHub.AppInitializations
                 }
                 else
                 {
-                    await _notificationService.NotifyAsync($"启动参数有误, 无法导航到 '{e.Args[0]}'", "ExplorerHub", NotificationLevel.Warn);
+                    _notificationService.Notify($"启动参数有误, 无法导航到 '{e.Args[0]}'", "ExplorerHub", NotificationLevel.Warn);
                 }
             }
             else
@@ -58,6 +58,7 @@ namespace ExplorerHub.AppInitializations
             }
 
             _splash.Close(TimeSpan.Zero);
+            await Task.CompletedTask;
         }
 
         public Task ReleaseAppComponentAsync()

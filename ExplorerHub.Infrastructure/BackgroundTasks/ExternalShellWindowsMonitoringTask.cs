@@ -19,11 +19,11 @@ namespace ExplorerHub.Infrastructure.BackgroundTasks
             _windowsManager = windowsManager;
         }
         
-        private async void WindowsManagerOnWindowCreated(object sender, EventArgs e)
+        private void WindowsManagerOnWindowCreated(object sender, EventArgs e)
         {
             foreach (var window in _windowsManager.GetCurrentWindows())
             {
-                await _eventBus.PublishEventAsync(new NewExplorerEventData(window));
+                _eventBus.PublishEvent(new NewExplorerEventData(window));
             }
         }
         

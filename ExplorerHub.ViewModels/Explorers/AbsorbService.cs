@@ -45,13 +45,14 @@ namespace ExplorerHub.ViewModels.Explorers
             }
             else
             {
-                await _notificationService.NotifyAsync(
+                _notificationService.Notify(
                     $"无法识别路径: {shellBrowser.LocationName}",
                     "ExplorerHub", NotificationLevel.Warn);
                 target = _parser.Default;
             }
 
             shellBrowser.Close();
+            await Task.CompletedTask;
             return _hubWindows.GetOrCreateActiveHubWindow().AddBrowser.Execute(target);
         }
     }

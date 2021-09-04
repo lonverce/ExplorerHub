@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace ExplorerHub.Framework.WPF
+﻿namespace ExplorerHub.Framework.WPF
 {
     public enum NotificationLevel
     {
@@ -22,6 +20,6 @@ namespace ExplorerHub.Framework.WPF
         /// <param name="title"></param>
         /// <param name="level"></param>
         /// <param name="isAsync"></param>
-        Task NotifyAsync(string message, string title, NotificationLevel level = NotificationLevel.Min, bool isAsync = true);
+        void Notify(string message, string title, NotificationLevel level = NotificationLevel.Min, bool isAsync = true);
     }
 }

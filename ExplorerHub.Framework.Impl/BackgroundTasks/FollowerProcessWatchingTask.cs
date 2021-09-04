@@ -35,7 +35,7 @@ namespace ExplorerHub.Framework.BackgroundTasks
                 while (!_tokenSource.IsCancellationRequested)
                 {
                     var msg = await _leader.ReadMessageFromFollowerAsync(_tokenSource.Token);
-                    await _eventBus.PublishEventAsync(new FollowerStartupEventData(msg));
+                    _eventBus.PublishEvent(new FollowerStartupEventData(msg));
                 }
             }
             catch (OperationCanceledException e)when (e.CancellationToken == _tokenSource.Token)

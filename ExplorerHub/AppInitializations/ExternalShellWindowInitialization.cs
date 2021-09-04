@@ -32,7 +32,7 @@ namespace ExplorerHub.AppInitializations
                 catch (AbsorbFailureException e)
                 {
                     shellWindow.Close();
-                    await _notificationService.NotifyAsync(e.Message, "ExplorerHub", NotificationLevel.Warn);
+                    _notificationService.Notify(e.Message, "ExplorerHub", NotificationLevel.Warn);
                 }
             }
         }

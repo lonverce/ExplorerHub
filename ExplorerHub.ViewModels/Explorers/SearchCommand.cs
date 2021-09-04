@@ -33,7 +33,7 @@ namespace ExplorerHub.ViewModels.Explorers
 
             if (!_parser.TryParse(address, out var target))
             {
-                await _notificationService.NotifyAsync("无法导航到指定路径", "操作失败", NotificationLevel.Warn, false);
+                _notificationService.Notify("无法导航到指定路径", "操作失败", NotificationLevel.Warn, false);
                 _owner.FlushData();
                 return;
             }

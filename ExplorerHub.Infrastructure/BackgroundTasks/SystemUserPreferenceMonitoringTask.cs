@@ -19,9 +19,9 @@ namespace ExplorerHub.Infrastructure.BackgroundTasks
             _colorManager = colorManager;
         }
         
-        private async void ColorManagerOnSystemColorChanged(object sender, Color newColor)
+        private void ColorManagerOnSystemColorChanged(object sender, Color newColor)
         {
-            await _eventBus.PublishEventAsync(new SystemColorChangedEventData(newColor));
+            _eventBus.PublishEvent(new SystemColorChangedEventData(newColor));
         }
         
         public Task StartAsync()

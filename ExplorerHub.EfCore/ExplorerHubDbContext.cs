@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ExplorerHub.Domain.Favorites;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.Domain;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExplorerHub.EfCore
@@ -50,7 +51,12 @@ namespace ExplorerHub.EfCore
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={_dbFilePath}", builder =>
+            var sb = new SqliteConnectionStringBuilder
+            {
+                DataSource = _dbFilePath,
+            };
+
+            optionsBuilder.UseSqlite(sb.ToString(), builder =>
             {
             });
         }
@@ -71,7 +77,7 @@ namespace ExplorerHub.EfCore
 
                 foreach (var eventData in events)
                 {
-                    EventBus.PublishEventAsync(eventData);
+                    EventBus.PublishEvent(eventData);
                 }
 
                 entity.ClearDomainEvents();
@@ -96,7 +102,7 @@ namespace ExplorerHub.EfCore
 
                 foreach (var eventData in events)
                 {
-                    await EventBus.PublishEventAsync(eventData);
+                    EventBus.PublishEvent(eventData);
                 }
 
                 entity.ClearDomainEvents();

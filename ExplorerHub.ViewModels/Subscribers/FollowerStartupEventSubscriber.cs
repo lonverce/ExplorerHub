@@ -39,13 +39,15 @@ namespace ExplorerHub.ViewModels.Subscribers
                 var firstPath = args[0];
                 if (!_parser.TryParse(firstPath, out var shellObject))
                 {
-                    await _notificationService.NotifyAsync($"错误路径：'{firstPath}'", 
+                    _notificationService.Notify($"错误路径：'{firstPath}'", 
                         "ExplorerHub", NotificationLevel.Error);
                     return;
                 }
 
                 _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(shellObject);
             }
+
+            await Task.CompletedTask;
         }
     }
 }

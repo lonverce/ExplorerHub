@@ -29,11 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Domain.Contract
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Infrastructures", "04.Infrastructures", "{B4F13F85-05BF-4964-9ED1-671F9B3A44BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.Impl", "ExplorerHub.Framework.Impl\ExplorerHub.Framework.Impl.csproj", "{F415070B-A883-4170-92C8-C00A0F9AC46F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Framework.Impl", "ExplorerHub.Framework.Impl\ExplorerHub.Framework.Impl.csproj", "{F415070B-A883-4170-92C8-C00A0F9AC46F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.DDD", "ExplorerHub.Framework.DDD\ExplorerHub.Framework.DDD.csproj", "{C8717666-D05F-4515-92AE-9553B8E07C89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Framework.DDD", "ExplorerHub.Framework.DDD\ExplorerHub.Framework.DDD.csproj", "{C8717666-D05F-4515-92AE-9553B8E07C89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.DDD.Impl", "ExplorerHub.Framework.DDD.Impl\ExplorerHub.Framework.DDD.Impl.csproj", "{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerHub.Framework.DDD.Impl", "ExplorerHub.Framework.DDD.Impl\ExplorerHub.Framework.DDD.Impl.csproj", "{B6FDE210-4AA0-49CF-AADC-3E16DCE51C91}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerHub.Framework.WPF", "ExplorerHub.Framework.WPF\ExplorerHub.Framework.WPF.csproj", "{A776AFB7-D677-4110-9F9B-B354079D732A}"
 EndProject

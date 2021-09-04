@@ -8,9 +8,10 @@ namespace ExplorerHub.Framework.DDD.Impl
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            builder.RegisterType<ApplicationInterceptor>()
-                .IfNotRegistered(typeof(ApplicationInterceptor));
-
+            builder.RegisterType<ApplicationClientInterceptor>()
+                .SingleInstance()
+                .IfNotRegistered(typeof(ApplicationClientInterceptor));
+            
             builder.RegisterType<ProxyGenerator>()
                 .IfNotRegistered(typeof(ProxyGenerator));
         }
