@@ -1,30 +1,33 @@
-﻿using System.Threading.Tasks;
-using MindLab.Messaging;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using MindLab.Threading;
 
 namespace ExplorerHub.Framework
 {
     internal sealed class EventBus : IEventBus
     {
-        private readonly IMessagePublisher<IEventData> _publisher;
+        private readonly AsyncBlockingCollection<IEventData> _queue;
 
-        public EventBus(IMessagePublisher<IEventData> publisher)
+        public EventBus(AsyncBlockingCollection<IEventData> queue)
         {
-            _publisher = publisher;
+            _queue = queue;
         }
 
         public void PublishEvent(IEventData eventData)
         {
-            PublishEventAsync(eventData);
-        }
-
-        public async Task PublishEventAsync(IEventData eventData)
-        {
-            if (eventData == null)
+            if (_queue.TryAdd(eventData))
             {
                 return;
             }
 
-            await _publisher.PublishMessageAsync(string.Empty, eventData);
+            var process = Process.GetCurrentProcess();
+            process.Kill();
+        }
+
+        public async Task PublishEventAsync(IEventData eventData)
+        {
+            PublishEvent(eventData);
+            await Task.CompletedTask;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac.Features.Metadata;
 using Autofac.Features.OwnedInstances;
-using MindLab.Messaging;
+using MindLab.Threading;
 
 namespace ExplorerHub.Framework.BackgroundTasks
 {
@@ -15,12 +15,10 @@ namespace ExplorerHub.Framework.BackgroundTasks
     internal sealed class EventMessageDispatchTask : IBackgroundTask
     {
         private readonly IUiDispatcher _uiDispatcher;
-        private readonly IMessageRouter<IEventData> _messageRouter;
+        private readonly AsyncBlockingCollection<IEventData> _queue;
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private readonly IReadOnlyDictionary<string, SubscriberCollection> _subscribers;
         private Task _bgTask = Task.CompletedTask;
-        private IAsyncDisposable _binding;
-        private readonly MessageQueue<IEventData> _queue = new MessageQueue<IEventData>();
 
         private class SubscriberCollection
         {
@@ -34,12 +32,12 @@ namespace ExplorerHub.Framework.BackgroundTasks
 
         public EventMessageDispatchTask(
             IUiDispatcher uiDispatcher,
-            IMessageRouter<IEventData> messageRouter, 
+            AsyncBlockingCollection<IEventData> queue,
             IEnumerable<Meta<Func<Owned<IEventSubscriber>>>> subscribers)
         {
             _uiDispatcher = uiDispatcher;
-            _messageRouter = messageRouter;
-            
+            _queue = queue;
+
             _subscribers = subscribers.Select(meta =>
                 {
                     if (!meta.Metadata.TryGetValue(nameof(EventSubscriberAttribute), out var attr)
@@ -79,8 +77,7 @@ namespace ExplorerHub.Framework.BackgroundTasks
 
         public async Task StartAsync()
         {
-            _binding = await _queue.BindAsync(string.Empty, _messageRouter);
-            _bgTask = Task.Run(DispatchTask);
+            _bgTask = await Task.Factory.StartNew(DispatchTask);
         }
 
         private async Task DispatchTask()
@@ -89,8 +86,8 @@ namespace ExplorerHub.Framework.BackgroundTasks
             {
                 try
                 {
-                    var msg = await _queue.TakeMessageAsync(_tokenSource.Token);
-                    await HandleMessageAsync(msg.Payload);
+                    var msg = await _queue.TakeAsync(_tokenSource.Token);
+                    await HandleMessageAsync(msg);
                 }
                 catch (OperationCanceledException e) when (e.CancellationToken == _tokenSource.Token)
                 {
@@ -145,7 +142,6 @@ namespace ExplorerHub.Framework.BackgroundTasks
         {
             _tokenSource.Cancel();
             await _bgTask;
-            await _binding.DisposeAsync();
         }
     }
 }

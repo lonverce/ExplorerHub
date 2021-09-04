@@ -2,6 +2,7 @@
 using ExplorerHub.Framework.BackgroundTasks;
 using ExplorerHub.Framework.Initializations;
 using MindLab.Messaging;
+using MindLab.Threading;
 using Module = Autofac.Module;
 
 namespace ExplorerHub.Framework
@@ -21,13 +22,15 @@ namespace ExplorerHub.Framework
                 .As<IMessageRouter<IEventData>>()
                 .As<IMessagePublisher<IEventData>>()
                 .SingleInstance();
-
+            var queue = new AsyncBlockingCollection<IEventData>();
             containerBuilder.RegisterType<EventBus>()
                 .SingleInstance()
+                .WithParameter("queue", queue)
                 .As<IEventBus>();
             containerBuilder.RegisterType<BackgroundTaskManager>().SingleInstance();
             containerBuilder.AddAppInitialization<BackgroundTasksInitialization>();
-            containerBuilder.AddBackgroundTask<EventMessageDispatchTask>();
+            containerBuilder.AddBackgroundTask<EventMessageDispatchTask>()
+                .WithParameter("queue", queue);
             containerBuilder.AddBackgroundTask<FollowerProcessWatchingTask>()
                 .WithParameter(new TypedParameter(typeof(IAppLeader), _leader));
         }
