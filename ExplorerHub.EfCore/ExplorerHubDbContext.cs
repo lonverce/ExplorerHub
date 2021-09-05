@@ -54,6 +54,7 @@ namespace ExplorerHub.EfCore
             var sb = new SqliteConnectionStringBuilder
             {
                 DataSource = _dbFilePath,
+                Mode = SqliteOpenMode.ReadWriteCreate
             };
 
             optionsBuilder.UseSqlite(sb.ToString(), builder =>

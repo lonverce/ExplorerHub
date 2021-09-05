@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Autofac.Features.Metadata;
 using Autofac.Features.OwnedInstances;
@@ -13,10 +12,14 @@ namespace ExplorerHub.Framework.DDD.Impl
 {
     public class ApplicationClientInterceptor : AsyncInterceptorBase
     {
+        private readonly ILogger<ApplicationClientInterceptor> _logger;
         private readonly IReadOnlyDictionary<Type, Func<Owned<IApplicationService>>> _appServices;
 
-        public ApplicationClientInterceptor(IEnumerable<Meta<Func<Owned<IApplicationService>>>> appServices)
+        public ApplicationClientInterceptor(
+            IEnumerable<Meta<Func<Owned<IApplicationService>>>> appServices, 
+            ILogger<ApplicationClientInterceptor> logger)
         {
+            _logger = logger;
             var serviceMeta = appServices.ToDictionary(
                 meta => (Type)meta.Metadata[ApplicationInterfaceKey], 
                 meta => meta.Value);
@@ -39,26 +42,19 @@ namespace ExplorerHub.Framework.DDD.Impl
             
             await Task.Run(async () =>
             {
-#if DEBUG
-                Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] begin call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})"); 
-#endif
+                _logger.Log(LogLevel.Info, $"begin call '{applicationInterfaceType.FullName}::{method.Name}'");
+
                 try
                 {
                     await using var appOwned = appConstructor();
                     var app = appOwned.Value;
 
                     await (Task)method.Invoke(app, invocation.Arguments);
-#if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] end call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})");
-#endif
+                    _logger.Log(LogLevel.Info, $"end call '{applicationInterfaceType.FullName}::{method.Name}'");
                 }
                 catch (Exception e)
                 {
-#if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] error " +
-                                      $"'{applicationInterfaceType.FullName}::{method.Name}'" +
-                                      $"({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})\n{JsonConvert.SerializeObject(e)}");
-#endif
+                    _logger.Log(LogLevel.Error, $"error '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})", e);
                     throw new ApplicationServiceException(applicationInterfaceType.Name, method.Name, e.Message);
                 }
             });
@@ -78,28 +74,19 @@ namespace ExplorerHub.Framework.DDD.Impl
             
             return await Task.Run(async () =>
             {
-#if DEBUG
-                Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] begin call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})");
-#endif
+                _logger.Log(LogLevel.Info, $"begin call '{applicationInterfaceType.FullName}::{method.Name}'");
                 try
                 {
                     await using var appOwned = appConstructor();
                     var app = appOwned.Value;
                     var apiResult = await (Task<TResult>)method.Invoke(app, invocation.Arguments);
-#if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] success " +
-                                      $"'{applicationInterfaceType.FullName}::{method.Name}'" +
-                                      $"({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})\n{JsonConvert.SerializeObject(apiResult)}");
-#endif
+                    _logger.Log(LogLevel.Info, $"end call " +
+                                               $"'{applicationInterfaceType.FullName}::{method.Name}'");
                     return apiResult;
                 }
                 catch (Exception e)
                 {
-#if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] error " +
-                                      $"'{applicationInterfaceType.FullName}::{method.Name}'" +
-                                      $"({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})\n{JsonConvert.SerializeObject(e)}");
-#endif
+                    _logger.Log(LogLevel.Error, $"error '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})", e);
                     throw new ApplicationServiceException(applicationInterfaceType.Name, method.Name, e.Message);
                 }
             });

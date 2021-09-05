@@ -223,6 +223,7 @@
     <Compile Include="AppInitializations\StartupArgInitialization.cs" />
     <Compile Include="AppRegistrationModule.cs" />
     <Compile Include="Common\HubWindowsManager.cs" />
+    <Compile Include="Subscribers\LogEventSubscriber.cs" />
     <Compile Include="Subscribers\SystemColorEventSubscriber.cs" />
     <Compile Include="UI\AppColors.cs" />
     <Compile Include="UI\ChromeAddressBar.xaml.cs">

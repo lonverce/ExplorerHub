@@ -61,6 +61,7 @@ namespace ExplorerHub
                 .SingleInstance();
 
             containerBuilder.RegisterType<AbsorbService>().As<IAbsorbService>();
+            containerBuilder.UseLog4NetLogService();
 
             // initializations
             containerBuilder.AddAppInitialization<MainWindowInitialization>();
@@ -84,6 +85,7 @@ namespace ExplorerHub
 #endif
             containerBuilder.AddEventSubscriber<FavoriteAddedEventSubscriber>();
             containerBuilder.AddEventSubscriber<FavoriteRemovedEventSubscriber>();
+            containerBuilder.AddEventSubscriber<LogEventSubscriber>();
 
             // view models
             containerBuilder.RegisterType<FavoriteViewModelProvider>()
@@ -129,9 +131,12 @@ namespace ExplorerHub
             containerBuilder.AddRepository<IFavoriteRepository, FavoriteRepository>();
 
             // database
-            var appDataDir = Environment.GetFolderPath(
+            var appDataDir = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData,
-                Environment.SpecialFolderOption.Create);
+                Environment.SpecialFolderOption.Create), "ExplorerHub");
+
+            Directory.CreateDirectory(appDataDir);
+
             containerBuilder.AddExplorerHubDbContext(Path.Combine(appDataDir, "explorer-hub.db"));
 
             // mapper

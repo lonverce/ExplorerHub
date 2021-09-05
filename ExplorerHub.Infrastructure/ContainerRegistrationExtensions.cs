@@ -43,5 +43,12 @@ namespace ExplorerHub.Infrastructure
                 .As<TRepositoryInterface>()
                 .InstancePerOwned<IApplicationService>();
         }
+
+        public static void UseLog4NetLogService(this ContainerBuilder builder)
+        {
+            builder.RegisterType<Log4NetLogService>()
+                .As<ILogService>()
+                .SingleInstance();
+        }
     }
 }
