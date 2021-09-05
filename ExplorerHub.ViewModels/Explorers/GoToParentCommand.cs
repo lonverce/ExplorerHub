@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
-using ExplorerHub.Framework.WPF;
+using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class GoToParentCommand : AsyncCommand
+    public class GoToParentCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
         private ShellObject _parent;
@@ -33,19 +32,19 @@ namespace ExplorerHub.ViewModels.Explorers
             }
         }
 
-        public override bool CanExecute(object parameter) => _canExecute;
+        public bool CanExecute(object parameter) => _canExecute;
 
-        public override async Task ExecuteAsync(object parameter)
+        [Obsolete]
+        public virtual void Execute(object parameter)
         {
-            await ExecuteAsync();
+            Execute();
         }
 
-        public async Task ExecuteAsync()
+        public void Execute()
         {
             _owner.Browser.Navigate(_parent);
-            await Task.CompletedTask;
         }
 
-        public override event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 }

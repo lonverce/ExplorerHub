@@ -19,10 +19,23 @@ namespace ExplorerHub.Infrastructure
                 .ToDictionary(folder => folder.Key,
                     folder => folder.ToArray(),
                     StringComparer.CurrentCultureIgnoreCase);
-            //var so = ShellObject.FromParsingName("::{679F85CB-0220-4080-B29B-5540CC05AAB6}");
-            // 快速访问
-            //var quickVisit = .FromParsingName("");//KnownFolderHelper.FromKnownFolderId(Guid.Parse("{679F85CB-0220-4080-B29B-5540CC05AAB6}"));
-            //folders[quickVisit.ToString()] = new[] {(ShellObject)quickVisit};
+
+            // 兼容Win10: 快速访问
+            try
+            {
+                var so = ShellObject.FromParsingName("shell:::{679F85CB-0220-4080-B29B-5540CC05AAB6}");
+                var key = so.GetDisplayName(DisplayNameType.Default);
+
+                if (!folders.ContainsKey(key))
+                {
+                    folders.Add(key, new[] { so });
+                }
+            }
+            catch (ShellException)
+            {
+                
+            }
+
             KnownFolders = folders;
         }
     }

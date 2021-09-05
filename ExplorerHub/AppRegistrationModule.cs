@@ -106,13 +106,14 @@ namespace ExplorerHub
 
             // commands
             containerBuilder.AddCommand<AddBrowserCommand>();
-            containerBuilder.AddAsyncCommand<SearchCommand>();
-            containerBuilder.AddAsyncCommand<NavBackCommand>();
-            containerBuilder.AddAsyncCommand<NavForwardCommand>();
-            containerBuilder.AddAsyncCommand<GoToParentCommand>();
+            containerBuilder.AddCommand<SearchCommand>();
+            containerBuilder.AddCommand<NavBackCommand>();
+            containerBuilder.AddCommand<NavForwardCommand>();
+            containerBuilder.AddCommand<GoToParentCommand>();
             containerBuilder.AddCommand<CloseBrowserCommand>();
             containerBuilder.AddCommand<ShowInNewWindowCommand>();
             containerBuilder.AddCommand<CloseExplorerCommand>();
+
             containerBuilder.AddAsyncCommand<AddFavoriteCommand>();
             containerBuilder.AddAsyncCommand<RemoveFavoriteCommand>();
             containerBuilder.AddAsyncCommand<OpenFavoriteLinkCommand>();

@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Windows.Input;
 using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class SearchCommand : AsyncCommand
+    public class SearchCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
         private readonly IShellUrlParser _parser;
@@ -16,15 +17,15 @@ namespace ExplorerHub.ViewModels.Explorers
             _notificationService = notificationService;
         }
         
-        public override async Task ExecuteAsync(object parameter)
+        bool ICommand.CanExecute(object parameter) => true;
+
+        public virtual void Execute(object parameter)
         {
-            var address = (string) parameter;
-            await ExecuteAsync(address:address);
+            Execute(parameter.ToString());
         }
 
-        public async Task ExecuteAsync(string address)
+        public void Execute(string address)
         {
-            await Task.CompletedTask;
             if (string.IsNullOrWhiteSpace(address))
             {
                 _owner.FlushData();
@@ -40,5 +41,7 @@ namespace ExplorerHub.ViewModels.Explorers
             
             _owner.Browser.Navigate(target);
         }
+
+        public event EventHandler CanExecuteChanged;
     }
 }

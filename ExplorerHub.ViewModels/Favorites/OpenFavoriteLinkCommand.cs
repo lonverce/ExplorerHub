@@ -39,7 +39,7 @@ namespace ExplorerHub.ViewModels.Favorites
                 return;
             }
 
-            await explorer.Search.ExecuteAsync(_vm.LocationUrl);
+            explorer.Search.Execute(_vm.LocationUrl);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace ExplorerHub.Framework.DDD.Impl
             await Task.Run(async () =>
             {
 #if DEBUG
-                Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.Name}] begin call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})"); 
+                Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] begin call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})"); 
 #endif
                 try
                 {
@@ -49,13 +49,13 @@ namespace ExplorerHub.Framework.DDD.Impl
 
                     await (Task)method.Invoke(app, invocation.Arguments);
 #if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.Name}] end call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})");
+                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] end call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})");
 #endif
                 }
                 catch (Exception e)
                 {
 #if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.Name}] error " +
+                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] error " +
                                       $"'{applicationInterfaceType.FullName}::{method.Name}'" +
                                       $"({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})\n{JsonConvert.SerializeObject(e)}");
 #endif
@@ -79,7 +79,7 @@ namespace ExplorerHub.Framework.DDD.Impl
             return await Task.Run(async () =>
             {
 #if DEBUG
-                Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.Name}] begin call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})");
+                Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] begin call '{applicationInterfaceType.FullName}::{method.Name}'({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})");
 #endif
                 try
                 {
@@ -87,7 +87,7 @@ namespace ExplorerHub.Framework.DDD.Impl
                     var app = appOwned.Value;
                     var apiResult = await (Task<TResult>)method.Invoke(app, invocation.Arguments);
 #if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.Name}] success " +
+                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] success " +
                                       $"'{applicationInterfaceType.FullName}::{method.Name}'" +
                                       $"({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})\n{JsonConvert.SerializeObject(apiResult)}");
 #endif
@@ -96,7 +96,7 @@ namespace ExplorerHub.Framework.DDD.Impl
                 catch (Exception e)
                 {
 #if DEBUG
-                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.Name}] error " +
+                    Console.WriteLine($"[{DateTime.Now:s}] [{Thread.CurrentThread.ManagedThreadId}] error " +
                                       $"'{applicationInterfaceType.FullName}::{method.Name}'" +
                                       $"({string.Join(", ", invocation.Arguments.Select(JsonConvert.SerializeObject))})\n{JsonConvert.SerializeObject(e)}");
 #endif

@@ -33,6 +33,8 @@ namespace ExplorerHub.Framework
                 .WithParameter("queue", queue);
             containerBuilder.AddBackgroundTask<FollowerProcessWatchingTask>()
                 .WithParameter(new TypedParameter(typeof(IAppLeader), _leader));
+            containerBuilder.RegisterGeneric(typeof(Logger<>))
+                .As(typeof(ILogger<>));
         }
     }
 }

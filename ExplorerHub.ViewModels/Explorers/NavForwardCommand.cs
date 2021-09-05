@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
-using ExplorerHub.Framework.WPF;
+using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Controls;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class NavForwardCommand : AsyncCommand
+    public class NavForwardCommand : ICommand
     {
         private readonly ExplorerViewModel _owner;
 
@@ -31,16 +30,16 @@ namespace ExplorerHub.ViewModels.Explorers
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public override bool CanExecute(object parameter) => _canExecute;
+        public bool CanExecute(object parameter) => _canExecute;
 
-        public override async Task ExecuteAsync(object parameter)
+        [Obsolete]
+        public virtual void Execute(object parameter)
         {
-            await ExecuteAsync();
+            Execute();
         }
 
-        public async Task<bool> ExecuteAsync()
+        public bool Execute()
         {
-            await Task.CompletedTask;
             if (!_canExecute)
             {
                 return false;
@@ -50,6 +49,6 @@ namespace ExplorerHub.ViewModels.Explorers
             return true;
         }
 
-        public override event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 }
