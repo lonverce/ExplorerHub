@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
+using CommandLine;
 
 namespace ExplorerHub
 {
@@ -8,11 +10,19 @@ namespace ExplorerHub
         /// Application Entry Point.
         /// </summary>
         [System.STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
-            var app = new App();
-            app.InitializeComponent();
-            app.Run();
+            Parser.Default.ParseArguments<AppStartupOptions>(args)
+                .WithParsed(options =>
+                {
+                    var app = new App(options);
+                    app.InitializeComponent();
+                    app.Run();
+                })
+                .WithNotParsed(errors =>
+                {
+                    MessageBox.Show($"启动参数错误:\n{string.Join(",", errors.Select(error => error.Tag))}", "ExplorerHub", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
     }
 }

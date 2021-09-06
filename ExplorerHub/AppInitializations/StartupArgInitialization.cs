@@ -5,6 +5,7 @@ using System.Windows;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels;
+using ExplorerHub.ViewModels.ExplorerHubs;
 
 namespace ExplorerHub.AppInitializations
 {
@@ -15,6 +16,7 @@ namespace ExplorerHub.AppInitializations
     {
         private readonly App _app;
         private readonly IHubWindowsManager _windowsManager;
+        private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubRepository;
         private readonly IUserNotificationService _notificationService;
         private readonly IShellUrlParser _parser;
         private readonly SplashScreen _splash;
@@ -22,12 +24,14 @@ namespace ExplorerHub.AppInitializations
         public StartupArgInitialization(
             App app, 
             IHubWindowsManager windowsManager,
+            IManagedObjectRepository<ExplorerHubViewModel> hubRepository,
             IUserNotificationService notificationService,
             IShellUrlParser parser,
             SplashScreen splash)
         {
             _app = app;
             _windowsManager = windowsManager;
+            _hubRepository = hubRepository;
             _notificationService = notificationService;
             _parser = parser;
             _splash = splash;
@@ -35,20 +39,23 @@ namespace ExplorerHub.AppInitializations
 
         public async Task InitializeAppComponentsAsync()
         {
-            var e = _app.StartupEventArgs;
+            await Task.CompletedTask;
 
-            if (e.Args.Any())
+            var e = _app.Options;
+
+            if (!string.IsNullOrWhiteSpace(e.Directory))
             {
-                if (_parser.TryParse(e.Args[0], out var initShellObj))
+                if (_parser.TryParse(e.Directory, out var initShellObj))
                 {
                     _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(initShellObj);
+                    _splash.Close(TimeSpan.Zero);
+                    return;
                 }
-                else
-                {
-                    _notificationService.Notify($"启动参数有误, 无法导航到 '{e.Args[0]}'", "ExplorerHub", NotificationLevel.Warn);
-                }
+
+                _notificationService.Notify($"启动参数有误, 无法导航到 '{e.Directory}'", "ExplorerHub", NotificationLevel.Warn);
             }
-            else
+
+            if(!e.MiniStart)
             {
                 var wnd = _windowsManager.GetOrCreateActiveHubWindow();
                 if (!wnd.Explorers.Any())
@@ -57,8 +64,12 @@ namespace ExplorerHub.AppInitializations
                 }
             }
 
+            if (!_hubRepository.Any())
+            {
+                _notificationService.Notify("已最小化到托盘", "ExplorerHub", NotificationLevel.Info);
+            }
+
             _splash.Close(TimeSpan.Zero);
-            await Task.CompletedTask;
         }
 
         public Task ReleaseAppComponentAsync()

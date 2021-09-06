@@ -19,11 +19,18 @@ namespace ExplorerHub
     /// </summary>
     public partial class App
     {
+        public AppStartupOptions Options { get; }
+
         #region Fields
         private IContainer _container;
         private IAppLeader _leader;
-        private readonly Stack<IAppInitialization> _initializations = new Stack<IAppInitialization>();
+        private AppExecutor _appExecutor;
         #endregion
+
+        public App(AppStartupOptions options = null)
+        {
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
         public StartupEventArgs StartupEventArgs { get; private set; }
 
@@ -43,11 +50,8 @@ namespace ExplorerHub
             OnConfigureServices();
             
             // 执行所有初始化
-            foreach (var initialization in _container.Resolve<IEnumerable<IAppInitialization>>())
-            {
-                await initialization.InitializeAppComponentsAsync();
-                _initializations.Push(initialization);
-            }
+            _appExecutor = _container.Resolve<AppExecutor>();
+            await _appExecutor.StartAsync();
         }
 
         private void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -63,12 +67,7 @@ namespace ExplorerHub
 
         protected override async void OnExit(ExitEventArgs e)
         {
-            while (_initializations.Any())
-            {
-                var initialization = _initializations.Pop();
-                await initialization.ReleaseAppComponentAsync();
-            }
-
+            await _appExecutor.StopAsync();
             _container?.Dispose();
             base.OnExit(e);
         }

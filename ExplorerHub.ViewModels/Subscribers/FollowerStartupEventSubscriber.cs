@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CommandLine;
 using ExplorerHub.Framework;
 using ExplorerHub.Framework.WPF;
 
@@ -26,27 +27,29 @@ namespace ExplorerHub.ViewModels.Subscribers
             var data = (FollowerStartupEventData) eventData;
             var args = data.Args;
 
-            if (args.Length == 0)
-            {
-                var hub = _windowsManager.GetOrCreateActiveHubWindow();
-                if (hub.Explorers.Count == 0)
+            Parser.Default.ParseArguments<AppStartupOptions>(args)
+                .WithParsed(options =>
                 {
-                    hub.AddBrowser.Execute();
-                }
-            }
-            else
-            {
-                var firstPath = args[0];
-                if (!_parser.TryParse(firstPath, out var shellObject))
-                {
-                    _notificationService.Notify($"错误路径：'{firstPath}'", 
-                        "ExplorerHub", NotificationLevel.Error);
-                    return;
-                }
+                    if (!string.IsNullOrWhiteSpace(options.Directory))
+                    {
+                        if (!_parser.TryParse(options.Directory, out var shellObject))
+                        {
+                            _notificationService.Notify($"错误路径：'{options.Directory}'",
+                                "ExplorerHub", NotificationLevel.Error);
+                            return;
+                        }
 
-                _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(shellObject);
-            }
-
+                        _windowsManager.GetOrCreateActiveHubWindow().AddBrowser.Execute(shellObject);
+                    }
+                    else if (!options.MiniStart)
+                    {
+                        var hub = _windowsManager.GetOrCreateActiveHubWindow();
+                        if (hub.Explorers.Count == 0)
+                        {
+                            hub.AddBrowser.Execute();
+                        }
+                    }
+                });
             await Task.CompletedTask;
         }
     }

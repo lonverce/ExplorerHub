@@ -30,6 +30,7 @@ namespace ExplorerHub.Framework
                 .WithParameter(new TypedParameter(typeof(IAppLeader), _leader));
             containerBuilder.RegisterGeneric(typeof(Logger<>))
                 .As(typeof(ILogger<>));
+            containerBuilder.RegisterType<AppExecutor>().SingleInstance();
         }
     }
 }
