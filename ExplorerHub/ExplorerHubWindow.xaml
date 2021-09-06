@@ -96,9 +96,10 @@
                                        VerticalAlignment="Center" />
                         </StackPanel>
                         <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                 <Setter Property="Background" Value="Transparent" />
                                 <Setter Property="Padding" Value="8,3" />
+                                <Setter Property="Margin" Value="5,4"></Setter>
                                 <Setter Property="pu:ButtonHelper.ButtonStyle" Value="Link" />
                                 <Setter Property="FontSize" Value="12" />
                                 <Style.Triggers>

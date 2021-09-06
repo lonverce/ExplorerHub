@@ -13,10 +13,25 @@
             <Style TargetType="Button"
                    x:Key="BtnStyle"
                    BasedOn="{StaticResource {x:Type Button}}">
-                <Setter Property="silver:ButtonHelper.ButtonStyle" 
-                        Value="Outline"/>
+                <Setter Property="silver:ButtonHelper.ButtonStyle" Value="Standard"/>
+                <Setter Property="MinWidth" Value="23"></Setter>
+                <Setter Property="silver:ButtonHelper.CornerRadius" Value="14"></Setter>
+                <Setter Property="silver:ButtonHelper.HoverBrush" Value="#CCCCCC"/>
+                <Setter Property="silver:ButtonHelper.ClickStyle" Value="None"></Setter>
                 <Setter Property="Cursor" Value="Hand"/>
-                <Style.Triggers>
+                <Setter Property="Padding" Value="7,0"/>
+                <Setter Property="BorderThickness" Value="0"></Setter>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="DimGray"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0"></Setter>
+                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Mode=OneWay}"/>
+                <!--<Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                    </Trigger>
+                </Style.Triggers>-->
+                <!--<Style.Triggers>
                     <DataTrigger Binding="{Binding Path=(silver:ButtonHelper.ButtonStyle),RelativeSource={RelativeSource Self}, Mode=OneWay}"
                                  Value="Outline">
                         <Setter Property="silver:ButtonHelper.ClickStyle"
@@ -26,7 +41,7 @@
                         <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Margin" Value="3,0"></Setter>
                     </DataTrigger>
-                </Style.Triggers>
+                </Style.Triggers>-->
             </Style>
         </ResourceDictionary>
         

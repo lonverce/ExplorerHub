@@ -132,7 +132,7 @@ namespace ExplorerHub.ViewModels.Explorers
 
             Browser = new ExplorerBrowser
             {
-                BorderStyle = BorderStyle.None
+                BorderStyle = BorderStyle.None,
             };
             var log = Browser.NavigationLog;
             log.NavigationLogChanged += NavigationLogOnNavigationLogChanged;

@@ -11,7 +11,7 @@
         <DockPanel.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource BtnStyle}">
                 <Setter Property="FontSize" Value="17"/>
-                <Setter Property="Margin" Value="10,0,10,0"></Setter>
+                <Setter Property="Margin" Value="2,0,4,0"></Setter>
             </Style>
         </DockPanel.Resources>
         <Button DockPanel.Dock="Left"
@@ -29,17 +29,17 @@
                 FontFamily="{StaticResource FontAwesome}"
                 ToolTip="上一层"
                 Command="{Binding GoToParent}" />
-        <Button DockPanel.Dock="Left"
-                Content="&#xf021;"
-                FontFamily="{StaticResource FontAwesome}"
-                ToolTip="刷新"
-                Command="{Binding Refresh}" />
         <Button DockPanel.Dock="Right" 
                 Content="&#xf142;" 
                 FontFamily="{StaticResource FontAwesome}"
                 ToolTip="设置" />
+        <Button DockPanel.Dock="Right"
+                Content="&#xf021;"
+                FontFamily="{StaticResource FontAwesome}"
+                ToolTip="刷新"
+                Command="{Binding Refresh}" />
         <Border CornerRadius="15" 
-                Margin="8,1" Padding="10,0"
+                Margin="5,1" Padding="10,1"
                 BorderThickness="2"
                 VerticalAlignment="Center"
                 Name="AddressBar">

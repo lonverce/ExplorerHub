@@ -18,6 +18,7 @@ namespace ExplorerHub.ViewModels.Explorers
 
         public void Execute()
         {
+            //_owner.Browser.Refresh();
             _owner.Browser.NavigateLogLocation(_owner.Browser.NavigationLog.CurrentLocationIndex);
         }
     }
