@@ -113,6 +113,9 @@ namespace ExplorerHub.ViewModels.Explorers
         [InjectProperty]
         public RemoveFavoriteCommand RemoveFavorite { get; set; }
         
+        [InjectProperty]
+        public RefreshCommand Refresh { get; set; }
+
         #endregion
 
         #region Constructor

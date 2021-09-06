@@ -29,12 +29,17 @@
                 FontFamily="{StaticResource FontAwesome}"
                 ToolTip="上一层"
                 Command="{Binding GoToParent}" />
+        <Button DockPanel.Dock="Left"
+                Content="&#xf021;"
+                FontFamily="{StaticResource FontAwesome}"
+                ToolTip="刷新"
+                Command="{Binding Refresh}" />
         <Button DockPanel.Dock="Right" 
                 Content="&#xf142;" 
                 FontFamily="{StaticResource FontAwesome}"
                 ToolTip="设置" />
         <Border CornerRadius="15" 
-                Margin="15,1" Padding="10,0"
+                Margin="8,1" Padding="10,0"
                 BorderThickness="2"
                 VerticalAlignment="Center"
                 Name="AddressBar">

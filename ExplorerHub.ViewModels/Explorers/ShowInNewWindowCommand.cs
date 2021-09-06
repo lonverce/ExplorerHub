@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows.Input;
 using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.ExplorerHubs;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class ShowInNewWindowCommand : ICommand, IDisposable
+    public class ShowInNewWindowCommand : SyncCommand, IDisposable
     {
         private readonly IHubWindowsManager _windowsManager;
         private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubRepository;
         private readonly ExplorerViewModel _model;
         private ExplorerHubViewModel _hubModel;
 
-        public bool CanExecute { get; private set; }
+        private bool _canExecute;
 
         public ShowInNewWindowCommand(
             IHubWindowsManager windowsManager,
@@ -31,14 +30,13 @@ namespace ExplorerHub.ViewModels.Explorers
 
         private void SetCanExecute(bool canExec)
         {
-            if (CanExecute == canExec)
+            if (_canExecute == canExec)
             {
                 return;
             }
 
-            CanExecute = canExec;
-
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            _canExecute = canExec;
+            OnCanExecuteChanged(EventArgs.Empty);
         }
 
         private void StartMonitoring()
@@ -87,10 +85,9 @@ namespace ExplorerHub.ViewModels.Explorers
             StartMonitoring();
         }
 
-        bool ICommand.CanExecute(object parameter) => CanExecute;
+        public override bool CanExecute(object parameter) => _canExecute;
 
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             Execute();  
         }
@@ -101,9 +98,7 @@ namespace ExplorerHub.ViewModels.Explorers
             hubModel.CloseBrowser.Execute(_model, false);
             _windowsManager.CreateHubWindow().AddBrowser.Execute(_model, 0);
         }
-
-        public event EventHandler CanExecuteChanged;
-
+        
         public void Dispose()
         {
             if (_hubModel == null)

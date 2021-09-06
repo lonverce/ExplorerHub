@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows.Input;
-using ExplorerHub.Framework.WPF;
+﻿using ExplorerHub.Framework.WPF;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class SearchCommand : ICommand
+    public class SearchCommand : SyncCommand
     {
         private readonly ExplorerViewModel _owner;
         private readonly IShellUrlParser _parser;
@@ -17,9 +15,7 @@ namespace ExplorerHub.ViewModels.Explorers
             _notificationService = notificationService;
         }
         
-        bool ICommand.CanExecute(object parameter) => true;
-
-        public virtual void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             Execute(parameter.ToString());
         }
@@ -41,7 +37,5 @@ namespace ExplorerHub.ViewModels.Explorers
             
             _owner.Browser.Navigate(target);
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

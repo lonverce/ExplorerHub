@@ -1,16 +1,15 @@
-﻿using System;
-using System.Windows.Input;
+﻿using ExplorerHub.Framework.WPF;
 using Microsoft.WindowsAPICodePack.Controls;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class GoToParentCommand : ICommand
+    public class GoToParentCommand : SyncCommand
     {
         private readonly ExplorerViewModel _owner;
         private ShellObject _parent;
 
-        private bool _canExecute = false;
+        private bool _canExecute;
 
         public GoToParentCommand(ExplorerViewModel owner)
         {
@@ -24,18 +23,18 @@ namespace ExplorerHub.ViewModels.Explorers
             var target = log.CurrentLocation;
             
             _parent = target.Parent;
+            
             var canExec = _parent != null;
             if (canExec != _canExecute)
             {
                 _canExecute = canExec;
-                CanExecuteChanged?.Invoke(this, e);
+                OnCanExecuteChanged(e);
             }
         }
 
-        public bool CanExecute(object parameter) => _canExecute;
+        public override bool CanExecute(object parameter) => _canExecute;
 
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             Execute();
         }
@@ -43,8 +42,7 @@ namespace ExplorerHub.ViewModels.Explorers
         public void Execute()
         {
             _owner.Browser.Navigate(_parent);
+            
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

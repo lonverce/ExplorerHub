@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ExplorerHub
+namespace ExplorerHub.ViewModels
 {
     public interface IShellWindowsManager
     {
@@ -15,6 +15,8 @@ namespace ExplorerHub
         string LocationName { get; }
 
         string LocationUrl { get; }
+
+        IntPtr Handle { get; }
 
         void Close();
     }

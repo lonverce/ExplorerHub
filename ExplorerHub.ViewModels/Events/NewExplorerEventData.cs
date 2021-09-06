@@ -1,6 +1,6 @@
 ﻿using ExplorerHub.Framework;
 
-namespace ExplorerHub.Events
+namespace ExplorerHub.ViewModels
 {
     /// <summary>
     /// 新建浏览器页面

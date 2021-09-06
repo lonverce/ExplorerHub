@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using ExplorerHub.Framework.BackgroundTasks;
 using ExplorerHub.Framework.Initializations;
-using MindLab.Messaging;
 using MindLab.Threading;
 using Module = Autofac.Module;
 
@@ -18,10 +17,6 @@ namespace ExplorerHub.Framework
 
         protected override void Load(ContainerBuilder containerBuilder)
         {
-            containerBuilder.Register(context => new BroadcastMessageRouter<IEventData>())
-                .As<IMessageRouter<IEventData>>()
-                .As<IMessagePublisher<IEventData>>()
-                .SingleInstance();
             var queue = new AsyncBlockingCollection<IEventData>();
             containerBuilder.RegisterType<EventBus>()
                 .SingleInstance()

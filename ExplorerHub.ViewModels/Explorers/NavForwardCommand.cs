@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Windows.Input;
+using ExplorerHub.Framework.WPF;
 using Microsoft.WindowsAPICodePack.Controls;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class NavForwardCommand : ICommand
+    public class NavForwardCommand : SyncCommand
     {
         private readonly ExplorerViewModel _owner;
 
@@ -27,13 +27,12 @@ namespace ExplorerHub.ViewModels.Explorers
                 return;
             }
             _canExecute = canExec;
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            OnCanExecuteChanged(EventArgs.Empty);
         }
 
-        public bool CanExecute(object parameter) => _canExecute;
+        public override bool CanExecute(object parameter) => _canExecute;
 
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             Execute();
         }
@@ -48,7 +47,5 @@ namespace ExplorerHub.ViewModels.Explorers
             _owner.Browser.NavigateLogLocation(NavigationLogDirection.Forward);
             return true;
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

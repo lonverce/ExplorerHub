@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ExplorerHub.Events;
 using ExplorerHub.Framework;
+using ExplorerHub.ViewModels;
 
 namespace ExplorerHub.Infrastructure.BackgroundTasks
 {

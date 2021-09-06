@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ExplorerHub.ViewModels;
 using SHDocVw;
 
 namespace ExplorerHub.Infrastructure
@@ -46,6 +47,8 @@ namespace ExplorerHub.Infrastructure
             public string LocationName => _nativeBrowser.LocationName;
 
             public string LocationUrl => _nativeBrowser.LocationURL;
+
+            public IntPtr Handle => new IntPtr(_nativeBrowser.HWND);
 
             public ShellWindowController(IWebBrowser2 nativeBrowser)
             {

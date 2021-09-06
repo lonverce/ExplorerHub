@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Windows.Input;
 using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 
 namespace ExplorerHub.ViewModels.ExplorerHubs
 {
-    public class CloseBrowserCommand : ICommand
+    public class CloseBrowserCommand : SyncCommand
     {
         private readonly IManagedObjectRepository<ExplorerViewModel> _explorerRepository;
         private readonly ExplorerHubViewModel _hubViewModel;
@@ -17,11 +16,8 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             _explorerRepository = explorerRepository;
             _hubViewModel = hubViewModel;
         }
-
-        bool ICommand.CanExecute(object parameter) => true;
-
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        
+        public override void Execute(object parameter)
         {
             var explorerVm = (ExplorerViewModel)parameter;
             Execute(explorerVm, true);
@@ -57,7 +53,5 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
                 _explorerRepository.Delete(vm.ManagedObjectId);
             }
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

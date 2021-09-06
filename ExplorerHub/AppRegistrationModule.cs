@@ -115,6 +115,7 @@ namespace ExplorerHub
             containerBuilder.AddCommand<CloseBrowserCommand>();
             containerBuilder.AddCommand<ShowInNewWindowCommand>();
             containerBuilder.AddCommand<CloseExplorerCommand>();
+            containerBuilder.AddCommand<RefreshCommand>();
 
             containerBuilder.AddAsyncCommand<AddFavoriteCommand>();
             containerBuilder.AddAsyncCommand<RemoveFavoriteCommand>();

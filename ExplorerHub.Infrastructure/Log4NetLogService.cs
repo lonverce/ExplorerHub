@@ -60,26 +60,15 @@ namespace ExplorerHub.Infrastructure
 
         private static Level ConvertLevel(LogLevel level)
         {
-            switch (level)
+            return level switch
             {
-                case LogLevel.Debug:
-                    return Level.Debug;
-                    break;
-                case LogLevel.Info:
-                    return Level.Info;
-                    break;
-                case LogLevel.Warn:
-                    return Level.Warn;
-                    break;
-                case LogLevel.Error:
-                    return Level.Error;
-                    break;
-                case LogLevel.Fatal:
-                    return Level.Fatal;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
-            }
+                LogLevel.Debug => Level.Debug,
+                LogLevel.Info => Level.Info,
+                LogLevel.Warn => Level.Warn,
+                LogLevel.Error => Level.Error,
+                LogLevel.Fatal => Level.Fatal,
+                _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
+            };
         }
     }
 }

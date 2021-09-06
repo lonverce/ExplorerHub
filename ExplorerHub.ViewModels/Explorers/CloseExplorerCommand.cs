@@ -5,7 +5,7 @@ using ExplorerHub.ViewModels.ExplorerHubs;
 
 namespace ExplorerHub.ViewModels.Explorers
 {
-    public class CloseExplorerCommand : ICommand
+    public class CloseExplorerCommand : SyncCommand
     {
         private readonly IManagedObjectRepository<ExplorerHubViewModel> _hubs;
         private readonly ExplorerViewModel _vm;
@@ -15,11 +15,8 @@ namespace ExplorerHub.ViewModels.Explorers
             _hubs = hubs;
             _vm = vm;
         }
-
-        bool ICommand.CanExecute(object parameter) => true;
-
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        
+        public override void Execute(object parameter)
         {
             Execute();
         }
@@ -32,7 +29,5 @@ namespace ExplorerHub.ViewModels.Explorers
             }
             hubVm.CloseBrowser.Execute(_vm);
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

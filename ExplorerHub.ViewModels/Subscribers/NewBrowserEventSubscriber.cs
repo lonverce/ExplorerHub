@@ -8,13 +8,16 @@ namespace ExplorerHub.ViewModels.Subscribers
     [EventSubscriber(NewExplorerEventData.EventName, UiHandle = true)]
     public class NewBrowserEventSubscriber : IEventSubscriber
     {
+        private readonly ILogger<NewBrowserEventSubscriber> _logger;
         private readonly IAbsorbService _absorbService;
         private readonly IUserNotificationService _notificationService;
 
         public NewBrowserEventSubscriber(
+            ILogger<NewBrowserEventSubscriber> logger,
             IAbsorbService absorbService,
             IUserNotificationService notificationService)
         {
+            _logger = logger;
             _absorbService = absorbService;
             _notificationService = notificationService;
         }
@@ -23,7 +26,7 @@ namespace ExplorerHub.ViewModels.Subscribers
         {
             var data = (NewExplorerEventData) eventData;
             var shellBrowser = data.Window;
-
+            
             try
             {
                 await _absorbService.AbsorbAsync(shellBrowser);

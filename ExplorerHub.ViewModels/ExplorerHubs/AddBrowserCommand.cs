@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows.Input;
-using ExplorerHub.Framework.WPF;
+﻿using ExplorerHub.Framework.WPF;
 using ExplorerHub.ViewModels.Explorers;
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ExplorerHub.ViewModels.ExplorerHubs
 {
-    public class AddBrowserCommand : ICommand
+    public class AddBrowserCommand : SyncCommand
     {
         private readonly IManagedObjectRepository<ExplorerViewModel> _explorerRepository;
         private readonly ExplorerHubViewModel _owner;
@@ -22,10 +20,7 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             _parser = parser;
         }
 
-        bool ICommand.CanExecute(object parameter) => true;
-
-        [Obsolete]
-        public virtual void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             Execute(initialNav:null);
         }
@@ -47,7 +42,5 @@ namespace ExplorerHub.ViewModels.ExplorerHubs
             _owner.Explorers.Insert(index, model);
             _owner.SelectedIndex = _owner.Explorers.Count - 1;
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }
