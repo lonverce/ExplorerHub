@@ -23,6 +23,7 @@ namespace ExplorerHub.Framework.WPF
 
         #region ICommand
 
+        [UserEntry]
         public virtual async void Execute(object parameter)
         {
             if (IsExecuting)

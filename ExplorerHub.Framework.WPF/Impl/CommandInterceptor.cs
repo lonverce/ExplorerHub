@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Windows.Input;
 using Castle.DynamicProxy;
 
 namespace ExplorerHub.Framework.WPF.Impl
@@ -20,27 +17,20 @@ namespace ExplorerHub.Framework.WPF.Impl
             _exceptionHandler = exceptionHandler;
         }
 
-        private static bool IsCommandExecuteMethod(MethodInfo method)
+        private static bool IsUserEntry(MethodInfo method)
         {
-            if (method.Name != "Execute")
-            {
-                return false;
-            }
-
             return _isCommandExecuteMethod.GetOrAdd(method, info =>
             {
-                Debug.Assert(method.DeclaringType != null);
-
-                var map = method.DeclaringType.GetInterfaceMap(typeof(ICommand));
-                return map.TargetMethods.Contains(method);
+                var attr = method.GetCustomAttribute<UserEntryAttribute>(true);
+                return attr != null;
             });
         }
 
         public void Intercept(IInvocation invocation)
         {
-            if (IsCommandExecuteMethod(invocation.Method))
+            if (IsUserEntry(invocation.Method))
             {
-                OnCommandExecute(invocation);
+                OnUserEntryExecute(invocation);
             }
             else
             {
@@ -48,7 +38,7 @@ namespace ExplorerHub.Framework.WPF.Impl
             }
         }
 
-        protected virtual void OnCommandExecute(IInvocation invocation)
+        protected virtual void OnUserEntryExecute(IInvocation invocation)
         {
             try
             {
